@@ -8,10 +8,18 @@ import { CookieService } from 'ngx-cookie-service';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './auth.interceptor';
 import { routes } from './app.routes';
+import { CoreModule } from './core/core.module';
+import { SessionModule } from './session/session.module';
 
 @NgModule({
   declarations: [AppComponent],
-  imports: [BrowserModule, HttpClientModule, RouterModule.forRoot(routes)],
+  imports: [
+    BrowserModule,
+    HttpClientModule,
+    RouterModule.forRoot(routes),
+    CoreModule,
+    SessionModule,
+  ],
   providers: [
     AuthService,
     CookieService,
