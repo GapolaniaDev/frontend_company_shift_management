@@ -1,0 +1,5 @@
+.banner {
+  background-image: url('/assets/images/banner-background.webp');
+  background-size: cover;
+  background-position: center;
+}
