@@ -6,13 +6,15 @@ import {AppComponent} from "./app.component";
 import {MainLayoutComponent} from "./main-layout/main-layout.component";
 import {DashboardComponent} from "./core/components/dashboard/dashboard.component";
 import {ForgotPasswordComponent} from "./session/components/forgot-password/forgot-password.component";
-import {Pages}
+import {PagesNotFoundComponent} from "./core/components/pages-not-found/pages-not-found.component";
+import {TermsConditionsComponent} from "./session/components/terms-conditions/terms-conditions.component";
 
 export const routes: Routes = [
 
   {path: 'login', component: LoginComponent},
   {path: 'register', component: RegisterComponent},
   {path: 'forgot-password', component: ForgotPasswordComponent},
+  {path: 'terms-conditions', component: TermsConditionsComponent},
   {
     path: '', component: MainLayoutComponent, children: [
       {path: '', component: HomeComponent},
@@ -21,5 +23,5 @@ export const routes: Routes = [
 
     ]
   },
-  { path: '**', component: PageNotFoundComponent }
+  {path: '**', component: PagesNotFoundComponent}
 ];
