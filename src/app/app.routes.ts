@@ -8,6 +8,7 @@ import {DashboardComponent} from "./core/components/dashboard/dashboard.componen
 import {ForgotPasswordComponent} from "./session/components/forgot-password/forgot-password.component";
 import {PagesNotFoundComponent} from "./core/components/pages-not-found/pages-not-found.component";
 import {TermsConditionsComponent} from "./session/components/terms-conditions/terms-conditions.component";
+import {ScheduleComponent} from "./shift-schedule/components/schedule/schedule.component";
 
 export const routes: Routes = [
 
@@ -20,7 +21,7 @@ export const routes: Routes = [
       {path: '', component: HomeComponent},
       {path: 'home', component: HomeComponent},
       {path: 'dashboard', component: DashboardComponent},
-
+      {path: 'schedule', component: ScheduleComponent},
     ]
   },
   {path: '**', component: PagesNotFoundComponent}

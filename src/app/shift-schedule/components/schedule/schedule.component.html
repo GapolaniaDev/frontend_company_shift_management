@@ -1,0 +1,142 @@
+<style>
+  .table-fixed-column {
+    border-collapse: separate;
+    border-spacing: 0;
+  }
+
+  .table-fixed-column th,
+  .table-fixed-column td {
+    border: 1px solid #e2e8f0;
+  }
+
+  .table-fixed-column thead th {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+  }
+</style>
+
+<!-- Web version -->
+<div class="hidden md:block container mx-auto p-4 overflow-x-auto relative" style="max-width: 100%;">
+  <h1 class="text-2xl font-bold mb-4">Shift Schedule (Web)</h1>
+  <div class="overflow-x-auto">
+    <table class="min-w-full bg-white table-fixed-column">
+      <thead>
+      <tr class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
+        <th class="py-3 px-6 text-left bg-gray-200 sticky left-0 z-10">Employee</th>
+        <th class="py-3 px-6 text-center">Monday</th>
+        <th class="py-3 px-6 text-center">Tuesday</th>
+        <th class="py-3 px-6 text-center">Wednesday</th>
+        <th class="py-3 px-6 text-center">Thursday</th>
+        <th class="py-3 px-6 text-center">Friday</th>
+        <th class="py-3 px-6 text-center">Saturday</th>
+        <th class="py-3 px-6 text-center">Sunday</th>
+      </tr>
+      </thead>
+      <tbody class="text-gray-600 text-sm font-light">
+      <tr class="border-b border-gray-200 hover:bg-gray-100">
+        <td class="py-3 px-6 text-left whitespace-nowrap bg-white sticky left-0 z-10">
+          <div class="flex items-center">
+            <div class="mr-2">
+              <img class="w-6 h-6 rounded-full" src="https://randomuser.me/api/portraits/men/1.jpg"/>
+            </div>
+            <span class="font-medium">John Doe</span>
+          </div>
+        </td>
+        <td class="py-3 px-6 text-center">9AM - 5PM</td>
+        <td class="py-3 px-6 text-center">9AM - 5PM</td>
+        <td class="py-3 px-6 text-center">OFF</td>
+        <td class="py-3 px-6 text-center">9AM - 5PM</td>
+        <td class="py-3 px-6 text-center">9AM - 5PM</td>
+        <td class="py-3 px-6 text-center">10AM - 4PM</td>
+        <td class="py-3 px-6 text-center">OFF</td>
+      </tr>
+      <!-- Añade más filas según sea necesario -->
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Mobile version -->
+<div class="md:hidden container mx-auto p-4">
+  <h1 class="text-2xl font-bold mb-4">Shift Schedule (Mobile)</h1>
+  <div class="space-y-4">
+    <!-- Employee 1 -->
+    <div class="bg-white shadow rounded-lg overflow-hidden">
+      <div class="p-4 bg-gray-100 flex items-center">
+        <img class="w-10 h-10 rounded-full mr-4" src="https://randomuser.me/api/portraits/men/1.jpg" alt="John Doe"/>
+        <span class="font-medium text-lg">John Doe</span>
+      </div>
+      <div class="p-4 grid grid-cols-2 gap-2">
+        <div class="text-sm">
+          <p class="font-semibold">Monday</p>
+          <p>9AM - 5PM</p>
+        </div>
+        <div class="text-sm">
+          <p class="font-semibold">Tuesday</p>
+          <p>9AM - 5PM</p>
+        </div>
+        <div class="text-sm">
+          <p class="font-semibold">Wednesday</p>
+          <p>OFF</p>
+        </div>
+        <div class="text-sm">
+          <p class="font-semibold">Thursday</p>
+          <p>9AM - 5PM</p>
+        </div>
+        <div class="text-sm">
+          <p class="font-semibold">Friday</p>
+          <p>9AM - 5PM</p>
+        </div>
+        <div class="text-sm">
+          <p class="font-semibold">Saturday</p>
+          <p>10AM - 4PM</p>
+        </div>
+        <div class="text-sm">
+          <p class="font-semibold">Sunday</p>
+          <p>OFF</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Employee 2 -->
+    <div class="bg-white shadow rounded-lg overflow-hidden">
+      <div class="p-4 bg-gray-100 flex items-center">
+        <img class="w-10 h-10 rounded-full mr-4" src="https://randomuser.me/api/portraits/women/1.jpg"
+             alt="Jane Smith"/>
+        <span class="font-medium text-lg">Jane Smith</span>
+      </div>
+      <div class="p-4 grid grid-cols-2 gap-2">
+        <div class="text-sm">
+          <p class="font-semibold">Monday</p>
+          <p>2PM - 10PM</p>
+        </div>
+        <div class="text-sm">
+          <p class="font-semibold">Tuesday</p>
+          <p>2PM - 10PM</p>
+        </div>
+        <div class="text-sm">
+          <p class="font-semibold">Wednesday</p>
+          <p>2PM - 10PM</p>
+        </div>
+        <div class="text-sm">
+          <p class="font-semibold">Thursday</p>
+          <p>OFF</p>
+        </div>
+        <div class="text-sm">
+          <p class="font-semibold">Friday</p>
+          <p>OFF</p>
+        </div>
+        <div class="text-sm">
+          <p class="font-semibold">Saturday</p>
+          <p>12PM - 8PM</p>
+        </div>
+        <div class="text-sm">
+          <p class="font-semibold">Sunday</p>
+          <p>12PM - 8PM</p>
+        </div>
+      </div>
+    </div>
+    <!-- Añade más tarjetas de empleados según sea necesario -->
+  </div>
+</div>
