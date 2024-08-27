@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {RouterLink} from "@angular/router";
+
+import {LoginService} from '../../services/login.service';
 
 @Component({
   selector: 'app-login',
@@ -11,5 +13,13 @@ import {RouterLink} from "@angular/router";
   styleUrl: './login.component.css'
 })
 export class LoginComponent {
+  constructor(private LoginService: LoginService) {
+  }
+
+  ngOnInit(): void {
+    this.LoginService.getData().subscribe(data => {
+      console.log(data);
+    });
+  }
 
 }
