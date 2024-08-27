@@ -2,7 +2,6 @@ import {Routes} from '@angular/router';
 import {HomeComponent} from './core/components/home/home.component';
 import {LoginComponent} from './session/components/login/login.component';
 import {RegisterComponent} from './session/components/register/register.component';
-import {AppComponent} from "./app.component";
 import {MainLayoutComponent} from "./main-layout/main-layout.component";
 import {DashboardComponent} from "./core/components/dashboard/dashboard.component";
 import {ForgotPasswordComponent} from "./session/components/forgot-password/forgot-password.component";
