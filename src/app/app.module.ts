@@ -11,6 +11,9 @@ import {AuthInterceptor} from './auth.interceptor';
 import {routes} from './app.routes';
 import {CoreModule} from './core/core.module';
 import {SessionModule} from './session/session.module';
+import {FormsModule} from '@angular/forms';
+import {ReactiveFormsModule} from '@angular/forms';
+
 
 @NgModule({
   declarations: [AppComponent],
@@ -19,6 +22,8 @@ import {SessionModule} from './session/session.module';
     RouterModule.forRoot(routes),
     CoreModule,
     SessionModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [
     AuthService,
