@@ -1,7 +1,7 @@
-import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
-import { Router } from '@angular/router';
-import { RouterModule } from '@angular/router';
+import {Component} from '@angular/core';
+import {RouterOutlet} from '@angular/router';
+import {Router} from '@angular/router';
+import {RouterModule} from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -11,10 +11,14 @@ import { RouterModule } from '@angular/router';
   styleUrl: './app.component.css',
 })
 export class AppComponent {
-  constructor(private router: Router) {}
+  constructor(private router: Router) {
+  }
+
   title = 'frontend_company_shift_management';
 
   goToAbout() {
     this.router.navigate(['/home']);
   }
+
+
 }
