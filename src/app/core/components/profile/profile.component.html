@@ -1,0 +1,79 @@
+<div class="min-h-screen bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-gray-200 p-6">
+  <div class="max-w-4xl mx-auto bg-white dark:bg-gray-700 rounded-lg shadow-md p-8">
+    <!-- Profile Header -->
+    <div class="flex items-center space-x-6 mb-6">
+      <img class="h-24 w-24 rounded-full object-cover border border-gray-300 dark:border-gray-600"
+           src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=4&w=256&h=256&q=60" alt="Profile Picture" />
+      <div>
+        <h1 class="text-2xl font-bold text-gray-900 dark:text-gray-100">John Doe</h1>
+        <p class="text-sm text-gray-600 dark:text-gray-400">Software Engineer</p>
+      </div>
+    </div>
+
+    <!-- Editable Profile Details -->
+    <div class="space-y-6">
+      <!-- Name Section -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300" for="name">Full Name</label>
+        <input
+          type="text"
+          id="name"
+          value="John Doe"
+          class="mt-1 block w-full px-4 py-2 bg-gray-100 dark:bg-gray-600 text-gray-900 dark:text-gray-200 border border-gray-300 dark:border-gray-500 rounded-lg"
+        />
+      </div>
+
+      <!-- Email Section -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300" for="email">Email</label>
+        <input
+          type="email"
+          id="email"
+          value="johndoe@example.com"
+          class="mt-1 block w-full px-4 py-2 bg-gray-100 dark:bg-gray-600 text-gray-900 dark:text-gray-200 border border-gray-300 dark:border-gray-500 rounded-lg"
+        />
+      </div>
+
+      <!-- Job Title Section -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300" for="job-title">Job Title</label>
+        <input
+          type="text"
+          id="job-title"
+          value="Software Engineer"
+          class="mt-1 block w-full px-4 py-2 bg-gray-100 dark:bg-gray-600 text-gray-900 dark:text-gray-200 border border-gray-300 dark:border-gray-500 rounded-lg"
+        />
+      </div>
+
+      <!-- About Me Section -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300" for="about">About Me</label>
+        <textarea
+          id="about"
+          rows="3"
+          class="mt-1 block w-full px-4 py-2 bg-gray-100 dark:bg-gray-600 text-gray-900 dark:text-gray-200 border border-gray-300 dark:border-gray-500 rounded-lg"
+        >Experienced software engineer with a passion for building high-quality applications and solving challenging problems.</textarea>
+      </div>
+
+      <!-- Phone Number Section -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300" for="phone">Phone</label>
+        <input
+          type="tel"
+          id="phone"
+          value="+1 234 567 890"
+          class="mt-1 block w-full px-4 py-2 bg-gray-100 dark:bg-gray-600 text-gray-900 dark:text-gray-200 border border-gray-300 dark:border-gray-500 rounded-lg"
+        />
+      </div>
+
+      <!-- Update Button -->
+      <div>
+        <button
+          type="button"
+          class="py-2 px-6 bg-blue-500 hover:bg-blue-600 text-white rounded-lg shadow dark:bg-blue-600 dark:hover:bg-blue-500">
+          Update Profile
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

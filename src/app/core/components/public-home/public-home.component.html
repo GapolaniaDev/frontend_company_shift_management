@@ -1,0 +1,39 @@
+<div class="bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-white min-h-screen flex flex-col">
+  <!-- Header -->
+  <header class="bg-blue-600 text-white p-4 shadow-md">
+    <div class="max-w-6xl mx-auto flex justify-between items-center">
+      <h1 class="text-2xl font-bold">Welcome to Public Home Shift Management</h1>
+      <nav>
+        <a routerLink="/about" class="px-4 py-2 hover:underline">About</a>
+        <a routerLink="/features" class="px-4 py-2 hover:underline">Features</a>
+        <a routerLink="/contact" class="px-4 py-2 hover:underline">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Section -->
+  <main class="flex flex-col items-center justify-center flex-grow px-4">
+    <section class="text-center max-w-3xl">
+      <h2 class="text-4xl font-bold mb-4">Manage Employee Shifts Easily</h2>
+      <p class="text-lg text-gray-700 dark:text-gray-300 mb-6">
+        Assign shifts, track clock-ins and clock-outs, and simplify employee scheduling with our powerful platform.
+      </p>
+      <div class="space-x-4">
+        <button
+          class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-md shadow-md"
+          (click)="navigateToLogin()">
+          Get Started
+        </button>
+        <button
+          class="bg-gray-300 dark:bg-gray-700 hover:bg-gray-400 dark:hover:bg-gray-600 text-gray-900 dark:text-white font-semibold px-6 py-3 rounded-md shadow-md">
+          Learn More
+        </button>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="text-center text-gray-600 dark:text-gray-400 py-4">
+    © 2025 Shift Management. All rights reserved.
+  </footer>
+</div>

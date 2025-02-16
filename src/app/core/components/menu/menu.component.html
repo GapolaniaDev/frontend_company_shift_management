@@ -1,6 +1,6 @@
 <!-- Botón para abrir/cerrar el menú en móviles -->
 <button (click)="toggleMenu()"
-        class="fixed top-2 left-4 z-50 p-2 bg-transparent text-gray-900 dark:text-white rounded shadow-md border-gray-300 dark:border-gray-700">
+        class="fixed top-2 text-3xl left-4 z-50 p-2 bg-transparent text-gray-900 dark:text-white rounded shadow-md border-gray-300 dark:border-gray-700">
   ☰
 </button>
 
@@ -17,18 +17,49 @@
           class="absolute top-4 right-4 text-gray-600 dark:text-gray-300 text-2xl">
     ✕
   </button>
-
-  <!-- Contenido del menú -->
   <nav class="mt-10 space-y-4 text-gray-800 dark:text-gray-300">
-    <a routerLink="/" class="block px-6 py-2 hover:bg-gray-200 dark:hover:bg-gray-700">Home</a>
-    <a routerLink="/dashboard" class="block px-6 py-2 hover:bg-gray-200 dark:hover:bg-gray-700">Dashboard</a>
+    <a routerLink="/"
+       routerLinkActive="text-blue-500 font-bold"
+       class="block px-6 py-2 hover:bg-gray-200 dark:hover:bg-gray-700">
+      Home
+    </a>
+
+    <a routerLink="/dashboard"
+       routerLinkActive="text-blue-500 font-bold"
+       class="block px-6 py-2 hover:bg-gray-200 dark:hover:bg-gray-700">
+      Dashboard
+    </a>
 
     <div class="px-6 py-2 font-semibold">Configurations</div>
-    <a routerLink="/employees" class="block px-8 py-2 hover:bg-gray-200 dark:hover:bg-gray-700">Employees</a>
-    <a routerLink="/shift-types" class="block px-8 py-2 hover:bg-gray-200 dark:hover:bg-gray-700">Shift Types</a>
-    <a routerLink="/shift-settings" class="block px-8 py-2 hover:bg-gray-200 dark:hover:bg-gray-700">Shift Settings</a>
-    <a routerLink="/payment-periods" class="block px-8 py-2 hover:bg-gray-200 dark:hover:bg-gray-700">Payment Periods</a>
 
-    <a routerLink="/profile" class="block px-6 py-2 hover:bg-gray-200 dark:hover:bg-gray-700">Profile</a>
+    <a routerLink="/employees"
+       routerLinkActive="text-blue-500 font-bold"
+       class="block px-8 py-2 hover:bg-gray-200 dark:hover:bg-gray-700">
+      Employees
+    </a>
+
+    <a routerLink="/shift-types"
+       routerLinkActive="text-blue-500 font-bold"
+       class="block px-8 py-2 hover:bg-gray-200 dark:hover:bg-gray-700">
+      Shift Types
+    </a>
+
+    <a routerLink="/shift-settings"
+       routerLinkActive="text-blue-500 font-bold"
+       class="block px-8 py-2 hover:bg-gray-200 dark:hover:bg-gray-700">
+      Shift Settings
+    </a>
+
+    <a routerLink="/payment-periods"
+       routerLinkActive="text-blue-500 font-bold"
+       class="block px-8 py-2 hover:bg-gray-200 dark:hover:bg-gray-700">
+      Payment Periods
+    </a>
+
+    <a routerLink="/profile"
+       routerLinkActive="text-blue-500 font-bold"
+       class="block px-6 py-2 hover:bg-gray-200 dark:hover:bg-gray-700">
+      Profile
+    </a>
   </nav>
 </div>
