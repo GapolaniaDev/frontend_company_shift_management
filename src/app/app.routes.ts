@@ -14,6 +14,9 @@ import {ShiftSettingsComponent} from "./core/components/shift-settings/shift-set
 import {ShiftTypesComponent} from "./core/components/shift-types/shift-types.component";
 import {PaymentPeriodsComponent} from "./core/components/payment-periods/payment-periods.component";
 import {ProfileComponent} from "./core/components/profile/profile.component";
+import {AuthGuard} from "./guard/auth.guard";
+import {PublicHomeComponent} from "./core/components/public-home/public-home.component";
+import {PublicHomeLayoutComponent} from "./core/layouts/public-home-layout/public-home-layout.component";
 
 export const routes: Routes = [
 
@@ -21,17 +24,26 @@ export const routes: Routes = [
   {path: 'register', component: RegisterComponent},
   {path: 'forgot-password', component: ForgotPasswordComponent},
   {path: 'terms-conditions', component: TermsConditionsComponent},
+
+  // Ruta independiente para PublicHome (con su propio layout)
+  {
+    path: '',
+    component: PublicHomeLayoutComponent, // Public Home tiene un layout propio
+    children: [
+      {path: '', component: PublicHomeComponent}, // Página principal pública
+    ]
+  },
+
   {
     path: '', component: MainLayoutComponent, children: [
-      {path: '', component: HomeComponent},
-      {path: 'home', component: HomeComponent},
-      {path: 'dashboard', component: DashboardComponent},
-      {path: 'schedule', component: ScheduleComponent},
-      {path: 'employees', component: EmployeesComponent},
-      {path: 'shift-settings', component: ShiftSettingsComponent},
-      {path: 'shift-types', component: ShiftTypesComponent},
-      {path: 'payment-periods', component: PaymentPeriodsComponent},
-      {path: 'profile', component: ProfileComponent},
+      {path: 'home', component: HomeComponent, canActivate: [AuthGuard]},
+      {path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard]},
+      {path: 'schedule', component: ScheduleComponent, canActivate: [AuthGuard]},
+      {path: 'employees', component: EmployeesComponent, canActivate: [AuthGuard]},
+      {path: 'shift-settings', component: ShiftSettingsComponent, canActivate: [AuthGuard]},
+      {path: 'shift-types', component: ShiftTypesComponent, canActivate: [AuthGuard]},
+      {path: 'payment-periods', component: PaymentPeriodsComponent, canActivate: [AuthGuard]},
+      {path: 'profile', component: ProfileComponent, canActivate: [AuthGuard]},
       {path: '**', component: PagesNotFoundComponent}
     ]
   },
