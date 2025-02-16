@@ -9,6 +9,12 @@ import {PagesNotFoundComponent} from "./core/components/pages-not-found/pages-no
 import {TermsConditionsComponent} from "./session/components/terms-conditions/terms-conditions.component";
 import {ScheduleComponent} from "./shift-schedule/components/schedule/schedule.component";
 
+import {EmployeesComponent} from "./core/components/employees/employees.component";
+import {ShiftSettingsComponent} from "./core/components/shift-settings/shift-settings.component";
+import {ShiftTypesComponent} from "./core/components/shift-types/shift-types.component";
+import {PaymentPeriodsComponent} from "./core/components/payment-periods/payment-periods.component";
+import {ProfileComponent} from "./core/components/profile/profile.component";
+
 export const routes: Routes = [
 
   {path: 'login', component: LoginComponent},
@@ -21,6 +27,12 @@ export const routes: Routes = [
       {path: 'home', component: HomeComponent},
       {path: 'dashboard', component: DashboardComponent},
       {path: 'schedule', component: ScheduleComponent},
+      {path: 'employees', component: EmployeesComponent},
+      {path: 'shift-settings', component: ShiftSettingsComponent},
+      {path: 'shift-types', component: ShiftTypesComponent},
+      {path: 'payment-periods', component: PaymentPeriodsComponent},
+      {path: 'profile', component: ProfileComponent},
+      {path: '**', component: PagesNotFoundComponent}
     ]
   },
   {path: '**', component: PagesNotFoundComponent}
