@@ -7,7 +7,7 @@ import {DashboardComponent} from "./core/components/dashboard/dashboard.componen
 import {ForgotPasswordComponent} from "./session/components/forgot-password/forgot-password.component";
 import {PagesNotFoundComponent} from "./core/components/pages-not-found/pages-not-found.component";
 import {TermsConditionsComponent} from "./session/components/terms-conditions/terms-conditions.component";
-import {ScheduleComponent} from "./shift-schedule/components/schedule/schedule.component";
+import {ScheduleComponent} from "./core/components/schedule/schedule.component";
 
 import {EmployeesComponent} from "./core/components/employees/employees.component";
 import {ShiftSettingsComponent} from "./core/components/shift-settings/shift-settings.component";
