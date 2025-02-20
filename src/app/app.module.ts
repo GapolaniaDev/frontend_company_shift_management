@@ -10,6 +10,7 @@ import {CoreModule} from './core/core.module';
 import {SessionModule} from './session/session.module';
 import {FormsModule} from '@angular/forms';
 import {ReactiveFormsModule} from '@angular/forms';
+import {GoogleMapsModule} from "@angular/google-maps";
 
 
 @NgModule({
@@ -21,7 +22,8 @@ import {ReactiveFormsModule} from '@angular/forms';
     CoreModule,
     SessionModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    GoogleMapsModule,
   ],
   providers: [
     LoginService,
