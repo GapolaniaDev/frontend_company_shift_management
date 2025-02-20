@@ -2,11 +2,14 @@
   <!-- Map Section -->
   <div class="h-96 bg-gray-200 dark:bg-gray-600 rounded-b-md shadow mb-4">
     <app-maps
-      class="w-full h-full rounded-t-md"
+      *ngIf="mapKey"
+      [key]="mapKey"
       [center]="mapCenter"
       [zoom]="mapZoom"
       [radius]="mapRadius">
     </app-maps>
+
+
   </div>
 
   <!-- Loading message when map URL is not ready -->

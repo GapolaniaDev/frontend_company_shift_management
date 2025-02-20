@@ -1,4 +1,4 @@
-import {Component, Input, OnChanges, SimpleChanges} from '@angular/core';
+import {Component, Input, OnChanges, SimpleChanges, ViewChild} from '@angular/core';
 import {GoogleMap, MapCircle, MapMarker} from "@angular/google-maps";
 
 @Component({
@@ -18,6 +18,9 @@ export class MapsComponent implements OnChanges {
   @Input() center!: google.maps.LatLngLiteral; // Coordinates of the map center
   @Input() zoom!: number; // Zoom level
   @Input() radius!: number; // Radius for the circle
+  @Input() key!: string;
+
+  @ViewChild(GoogleMap) map!: GoogleMap;
 
   // Lifecycle hook triggered when component's input values change
   ngOnChanges(changes: SimpleChanges): void {
@@ -45,6 +48,7 @@ export class MapsComponent implements OnChanges {
     editable: false,
     zIndex: 1
   };
+
 
 
   /**
