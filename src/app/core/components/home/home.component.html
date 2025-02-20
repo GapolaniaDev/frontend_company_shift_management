@@ -1,16 +1,16 @@
 <div *ngIf="shifts?.shift" class="min-h-screen bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-gray-200">
   <!-- Map Section -->
-  <div *ngIf="mapUrl" class="h-96 bg-gray-200 dark:bg-gray-600 rounded-b-md shadow mb-4">
-    <iframe
-      [src]="mapUrl"
-      frameborder="0"
+  <div class="h-96 bg-gray-200 dark:bg-gray-600 rounded-b-md shadow mb-4">
+    <app-maps
       class="w-full h-full rounded-t-md"
-      title="Location Map"
-    ></iframe>
+      [center]="mapCenter"
+      [zoom]="mapZoom"
+      [radius]="mapRadius">
+    </app-maps>
   </div>
 
   <!-- Loading message when map URL is not ready -->
-  <div *ngIf="!mapUrl" class="p-4 bg-yellow-100 text-yellow-800 rounded shadow">
+  <div *ngIf="loadingMap" class="p-4 bg-yellow-100 text-yellow-800 rounded shadow">
     <p>Loading map data...</p>
   </div>
 
@@ -31,10 +31,6 @@
           {{ isShiftActive ? 'End Shift' : 'Start Shift' }}
         </button>
       </div>
-
-      {{ userLatitude }} ----- {{ userLongitude }}
-      <hr>
-      {{ location_lat }} ----- {{ location_lng }}
 
       <!-- Shift Information -->
       <div *ngIf="shifts.shift" class="p-4 bg-gray-100 dark:bg-gray-800 rounded-lg shadow-md text-sm">
