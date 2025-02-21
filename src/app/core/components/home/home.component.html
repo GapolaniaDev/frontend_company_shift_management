@@ -1,55 +1,51 @@
-<div *ngIf="isThereShift" class="min-h-screen bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-gray-200">
+<div *ngIf="isThereShift" class="relative h-screen">
   <!-- Map Section -->
-  <div class="h-96 bg-gray-200 dark:bg-gray-600 rounded-b-md shadow mb-4">
-    <app-maps
-      *ngIf="mapKey"
-      [key]="mapKey"
-      [center]="mapCenter"
-      [zoom]="mapZoom"
-      [radius]="mapRadius"
-      [options]="mapOptions">
-    </app-maps>
-  </div>
+  <app-maps
+    class="absolute inset-0 w-full h-full"
+    *ngIf="mapKey"
+    [key]="mapKey"
+    [center]="mapCenter"
+    [zoom]="mapZoom"
+    [radius]="mapRadius"
+    [options]="mapOptions">
+  </app-maps>
 
-  <!-- Loading message when map URL is not ready -->
-  <div *ngIf="loadingMap" class="p-4 bg-yellow-100 text-yellow-800 rounded shadow">
-    <p>Loading map data...</p>
-  </div>
+  <!-- Fullscreen Button -->
+  <button class="absolute top-20 right-4 bg-white p-2 rounded-md z-10 shadow-md">
+    <i class="fas fa-expand"></i>
+  </button>
 
-  <!-- Main Content -->
-  <div class="p-6">
-    <div class="max-w-xl mx-auto bg-white dark:bg-gray-700 rounded-lg shadow-md p-6">
-      <!-- Shift Button -->
-      <div class="text-center mb-4">
-        <button
-          [ngClass]="{
-      'bg-blue-500 hover:bg-blue-600 text-white': !isShiftActive,
+  <!-- Shift Details Section -->
+  <div
+    class="absolute bottom-8 left-1/2 transform -translate-x-1/2 w-11/12 max-w-2xl bg-black bg-opacity-70 rounded-lg p-6 text-white z-20">
 
-      'bg-red-500 hover:bg-red-600 text-white': isShiftActive
-    }"
-          class="px-8 py-2 text-lg font-semibold rounded-lg shadow transition duration-300"
-          (click)="toggleShift()"
-        >
-          {{ isShiftActive ? 'End Shift' : 'Start Shift' }}
-        </button>
+    <!-- Start Shift Button -->
+    <button
+      [ngClass]="{
+        'bg-blue-500 hover:bg-blue-600': !isShiftActive,
+        'bg-red-500 hover:bg-red-600': isShiftActive
+      }"
+      class="w-full text-white py-3 rounded-md text-lg mb-6 transition"
+      (click)="toggleShift()">
+      {{ isShiftActive ? 'End Shift' : 'Start Shift' }}
+    </button>
+
+    <!-- Shift Information -->
+    <div class="grid grid-cols-2 gap-4">
+      <div>
+        <h2 class="text-gray-300 font-semibold mb-2">Shift Details:</h2>
+        <p><span class="text-gray-400">Date:</span> {{ shifts.shift?.date_start | date: 'fullDate' }}</p>
+        <p><span class="text-gray-400">Time:</span> {{ shifts.shift?.date_start | date: 'shortTime' }}
+          - {{ shifts.shift?.date_end | date: 'shortTime' }}</p>
+        <p><span class="text-gray-400">Total Hours:</span> {{ shifts.shift?.total_hours }} hours</p>
       </div>
-
-      <!-- Shift Information -->
-      <div *ngIf="shifts.shift" class="p-4 bg-gray-100 dark:bg-gray-800 rounded-lg shadow-md text-sm">
-        <p class="font-semibold text-gray-700 dark:text-gray-300 mb-1">Shift Details:</p>
-        <p class="text-gray-800 dark:text-gray-400">
-          <strong>Date:</strong> {{ shifts.shift.date_start | date: 'fullDate' }} <br>
-          <strong>Time:</strong> {{ shifts.shift.date_start | date: 'shortTime' }}
-          - {{ shifts.shift.date_end | date: 'shortTime' }} <br>
-          <strong>Total Hours:</strong> {{ shifts.shift.total_hours }} hours <br>
-          <strong>Weekday:</strong> {{ shifts.shift.weekday_code }} <br>
-          <strong>Comments:</strong> {{ shifts.shift.comments || 'No comments' }}
-        </p>
+      <div>
+        <p><span class="text-gray-400">Weekday:</span> {{ shifts.shift?.weekday_code }}</p>
+        <p><span class="text-gray-400">Comments:</span> {{ shifts.shift?.comments || 'No comments' }}</p>
       </div>
     </div>
   </div>
 </div>
-
 
 <div class="min-h-screen bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-gray-200 flex items-center justify-center"
      *ngIf="!isThereShift">

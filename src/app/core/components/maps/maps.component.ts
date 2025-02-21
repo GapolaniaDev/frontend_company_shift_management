@@ -23,6 +23,20 @@ export class MapsComponent implements OnChanges {
   @ViewChild(GoogleMap) map!: GoogleMap;
   @Input() options!: google.maps.MapOptions;
 
+  // Marker options
+  markerOptions: google.maps.MarkerOptions = {draggable: false};
+
+  circleOptions: google.maps.CircleOptions = {
+    fillColor: 'green', // Lighter green for the fill color
+    fillOpacity: 0.5, // Adjust the opacity for the fill
+    strokeColor: '#006400', // Darker green for the border (HEX code for "dark green")
+    strokeOpacity: 1.0, // Fully opaque border
+    strokeWeight: 2, // Slightly thicker border for better visibility
+    clickable: false,
+    editable: false,
+    zIndex: 1
+  };
+
   constructor(private darkModeService: DarkModeService) {
   }
 
@@ -137,20 +151,6 @@ export class MapsComponent implements OnChanges {
       // If any additional map refresh logic is needed, handle it here
     }
   }
-
-  // Marker options
-  markerOptions: google.maps.MarkerOptions = {draggable: false};
-
-  circleOptions: google.maps.CircleOptions = {
-    fillColor: 'green', // Lighter green for the fill color
-    fillOpacity: 0.5, // Adjust the opacity for the fill
-    strokeColor: '#006400', // Darker green for the border (HEX code for "dark green")
-    strokeOpacity: 1.0, // Fully opaque border
-    strokeWeight: 2, // Slightly thicker border for better visibility
-    clickable: false,
-    editable: false,
-    zIndex: 1
-  };
 
   /**
    * Updates the map center when the user moves the map
