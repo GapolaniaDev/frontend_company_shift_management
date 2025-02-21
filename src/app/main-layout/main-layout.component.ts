@@ -4,6 +4,7 @@ import {RouterLink, RouterOutlet, Router} from "@angular/router";
 import {LoginService} from "../session/services/login.service";
 import {MenuComponent} from "../core/components/menu/menu.component";
 import {LoaderComponent} from "../core/components/loader/loader.component";
+import {DarkModeService} from "../services/dark-mode/dark-mode.service";
 
 @Component({
   selector: 'app-main-layout',
@@ -23,7 +24,12 @@ export class MainLayoutComponent implements OnInit {
   isDarkMode = false;
   menuOpen = false;
 
-  constructor(private loginService: LoginService, private router: Router, private renderer: Renderer2) {
+  constructor(
+    private loginService: LoginService,
+    private router: Router,
+    private renderer: Renderer2,
+    private darkModeService: DarkModeService
+  ) {
 
   }
 
@@ -35,9 +41,11 @@ export class MainLayoutComponent implements OnInit {
 
   toggleDarkMode() {
     this.isDarkMode = !this.isDarkMode;
-    localStorage.setItem('theme', this.isDarkMode ? 'dark' : 'light');
+    localStorage.setItem('darkMode', this.isDarkMode ? 'true' : 'false');
     this.updateTheme();
+    this.darkModeService.setDarkMode(this.isDarkMode); // Propaga el cambio al servicio
   }
+
 
   onMenuOpenChange(menuOpen: boolean) {
     this.menuOpen = menuOpen; // Actualizamos el estado de menuOpen

@@ -6,6 +6,7 @@ import {Shift, defaultShift} from '../../../models/shift';
 import {MapsComponent} from '../maps/maps.component';
 import {LoaderService} from "../../../services/loader/loader.service";
 import {finalize} from "rxjs";
+import {DarkModeService} from "../../../services/dark-mode/dark-mode.service";
 
 @Component({
   selector: 'app-home',
@@ -17,30 +18,43 @@ import {finalize} from "rxjs";
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent {
-  isShiftActive: boolean = false; // Indicates whether the shift is currently active
-  isThereShift: number = 0;
+  isShiftActive: boolean = false;
+  isThereShift: boolean = false;
+  mapCenter = {lat: 0, lng: 0}; // Coordenadas iniciales
+  mapZoom = 17;
+  mapRadius = 50;
+  mapKey: string = 'initial-map';
+  loadingMap: boolean = false;
+  mapOptions: google.maps.MapOptions = {
+    styles: [], // Inicialmente sin estilos
+    disableDefaultUI: false,
+  };
   shifts: { success: boolean; shift: Shift | null } = {
     success: false,
     shift: {...defaultShift}
   };
 
-  loadingMap: boolean = false; // Indicates whether the map is loading
 
-  // Variables passed to the map component
-  mapCenter = {lat: 0, lng: 0}; // Default location
-  mapZoom = 17; // Default zoom level
-  mapRadius = 50; // Default circle radius
-  mapKey: string = 'initial-map';// Unique key to identify the map instance
+  constructor(
+    private shiftsService: ShiftsService,
+    private sanitizer: DomSanitizer,
+    private loaderService: LoaderService
+  ) {
+  }
+
+  /**
+   * Lifecycle hook - Initialize the component
+   */
+  ngOnInit() {
+    this.getShiftsToday();
 
 
-  constructor(private shiftsService: ShiftsService, private sanitizer: DomSanitizer, private loaderService: LoaderService) {
   }
 
   refreshMap(): void {
     this.mapKey = `map-${Date.now()}`; // Generate a new unique key
     console.log('Map key:', this.mapKey);
   }
-
 
   /**
    * Calls the service to retrieve the current shift
@@ -61,7 +75,7 @@ export class HomeComponent {
             lat: Number(data.shift.location_lat),
             lng: Number(data.shift.location_lng)
           };
-
+          this.isThereShift = true;
           // (Optional) Adjust zoom or radius if needed
           this.mapZoom = 17; // Default or set as needed
           this.mapRadius = 50; // Adjust the radius if required
@@ -85,13 +99,5 @@ export class HomeComponent {
   toggleShift(): void {
     this.isShiftActive = !this.isShiftActive;
     console.log(this.isShiftActive ? 'Shift started' : 'Shift ended');
-  }
-
-  /**
-   * Lifecycle hook - Initialize the component
-   */
-  ngOnInit() {
-    console.log('Home component initialized');
-    this.getShiftsToday(); // Load the shift's data on initialization
   }
 }

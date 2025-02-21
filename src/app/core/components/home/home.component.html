@@ -1,4 +1,4 @@
-<div *ngIf="isThereShift == 2" class="min-h-screen bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-gray-200">
+<div *ngIf="isThereShift" class="min-h-screen bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-gray-200">
   <!-- Map Section -->
   <div class="h-96 bg-gray-200 dark:bg-gray-600 rounded-b-md shadow mb-4">
     <app-maps
@@ -6,10 +6,9 @@
       [key]="mapKey"
       [center]="mapCenter"
       [zoom]="mapZoom"
-      [radius]="mapRadius">
+      [radius]="mapRadius"
+      [options]="mapOptions">
     </app-maps>
-
-
   </div>
 
   <!-- Loading message when map URL is not ready -->
@@ -53,7 +52,7 @@
 
 
 <div class="min-h-screen bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-gray-200 flex items-center justify-center"
-     *ngIf="!shifts?.shift">
+     *ngIf="!isThereShift">
   <div class="text-center p-6 bg-white dark:bg-gray-700 rounded-lg shadow-md max-w-md">
     <!-- Icon or Illustration -->
     <div class="mb-4">
