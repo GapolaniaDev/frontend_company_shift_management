@@ -3,6 +3,7 @@ import {CommonModule} from '@angular/common';
 import {RouterLink, RouterOutlet, Router} from "@angular/router";
 import {LoginService} from "../session/services/login.service";
 import {MenuComponent} from "../core/components/menu/menu.component";
+import {LoaderComponent} from "../core/components/loader/loader.component";
 
 @Component({
   selector: 'app-main-layout',
@@ -11,7 +12,8 @@ import {MenuComponent} from "../core/components/menu/menu.component";
     RouterLink,
     RouterOutlet,
     CommonModule,
-    MenuComponent
+    MenuComponent,
+    LoaderComponent
   ],
   templateUrl: './main-layout.component.html',
   styleUrl: './main-layout.component.css'

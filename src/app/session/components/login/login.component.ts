@@ -34,7 +34,7 @@ export class LoginComponent implements OnInit {
     if (this.loginForm.valid) {
       this.loginService.login(this.loginForm.value).subscribe(success => {
         if (success) {
-          this.router.navigate(['/dashboard']);
+          this.router.navigate(['/home']);
 
         } else {
           this.loginError = 'Login failed. Please check your email and password.';
