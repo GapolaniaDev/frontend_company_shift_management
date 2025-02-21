@@ -43,7 +43,7 @@ export class MainLayoutComponent implements OnInit {
     this.isDarkMode = !this.isDarkMode;
     localStorage.setItem('darkMode', this.isDarkMode ? 'true' : 'false');
     this.updateTheme();
-    this.darkModeService.setDarkMode(this.isDarkMode); // Propaga el cambio al servicio
+    this.darkModeService.setDarkMode(this.isDarkMode);
   }
 
 

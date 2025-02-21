@@ -1,11 +1,13 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import {Injectable} from '@angular/core';
+import {BehaviorSubject} from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class DarkModeService {
-  private isDarkModeSubject = new BehaviorSubject<boolean>(false); // Default to light mode
+  private isDarkModeSubject = new BehaviorSubject<boolean>(
+    localStorage.getItem('darkMode') === 'true'
+  ); // Default to light mode
   isDarkMode$ = this.isDarkModeSubject.asObservable();
 
   // Update the dark mode value

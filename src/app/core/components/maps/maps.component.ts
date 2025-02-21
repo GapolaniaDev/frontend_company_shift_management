@@ -26,16 +26,23 @@ export class MapsComponent implements OnChanges {
   constructor(private darkModeService: DarkModeService) {
   }
 
-  // Lifecycle hook triggered when component initializes
   ngOnInit() {
     this.getUserLocation();
+    this.applyInitialDarkMode();
     this.darkModeService.isDarkMode$.subscribe((isDarkMode) => {
       this.updateMapStyles(isDarkMode);
     });
   }
 
+  /**
+   * Checks the initial dark mode state and applies corresponding styles.
+   */
+  private applyInitialDarkMode(): void {
+    const isDarkMode = this.darkModeService.getDarkMode(); // Get the current state
+    this.updateMapStyles(isDarkMode);
+  }
+
   private updateMapStyles(isDarkMode: boolean): void {
-    // Estilos del modo oscuro obtenidos de la documentación oficial de Google Maps
     const darkMapStyles: google.maps.MapTypeStyle[] = [
       {elementType: "geometry", stylers: [{color: "#242f3e"}]},
       {elementType: "labels.text.stroke", stylers: [{color: "#242f3e"}]},
@@ -116,11 +123,10 @@ export class MapsComponent implements OnChanges {
         stylers: [{color: "#17263c"}],
       },
     ];
-
-    // Actualiza las opciones del mapa con los nuevos estilos
+    console.log('Dark mode:', isDarkMode);
     this.options = {
       ...this.options,
-      styles: isDarkMode ? darkMapStyles : [], // Aplica modo oscuro o normal
+      styles: isDarkMode ? darkMapStyles : [],
     };
   }
 
