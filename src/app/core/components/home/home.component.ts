@@ -6,7 +6,6 @@ import {Shift, defaultShift} from '../../../models/shift';
 import {MapsComponent} from '../maps/maps.component';
 import {LoaderService} from "../../../services/loader/loader.service";
 import {finalize} from "rxjs";
-import {DarkModeService} from "../../../services/dark-mode/dark-mode.service";
 
 @Component({
   selector: 'app-home',

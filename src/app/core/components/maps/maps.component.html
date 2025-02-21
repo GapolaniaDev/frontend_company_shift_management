@@ -5,6 +5,17 @@
   [center]="center"
   [zoom]="zoom"
   [options]="options">
-  <map-marker [position]="center" [options]="markerOptions"></map-marker>
+
+  <!-- Marcador central original -->
+  <map-marker [position]="center" [options]="markerOptions" [icon]="IAmIcon"></map-marker>
+  <!-- Círculo alrededor del centro -->
   <map-circle [center]="center" [radius]="radius" [options]="circleOptions"></map-circle>
+
+  <!-- Segundo marcador: Ícono de edificio/lugar -->
+  <map-marker
+    [position]="buildingPosition"
+    [icon]="buildingIcon">
+  </map-marker>
+
+
 </google-map>

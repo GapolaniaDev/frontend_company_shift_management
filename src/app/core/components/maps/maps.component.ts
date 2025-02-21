@@ -37,6 +37,32 @@ export class MapsComponent implements OnChanges {
     zIndex: 1
   };
 
+// Posición ajustada para marcador de persona caminando (200 metros al norte)
+  walkerPosition: google.maps.LatLngLiteral = {
+    lat: -34.87593031496524, // Desplaza ligeramente al norte
+    lng: 138.67989780886415, // Desplaza al este
+  };
+
+  // Posición ajustada para marcador de edificio/lugar (150 metros al sur)
+  buildingPosition: google.maps.LatLngLiteral = {
+    lat: -34.876062290352834, // Desplaza ligeramente al sur
+    lng: 138.68022962909936, // Desplaza al oeste
+  };
+
+  // Ícono de marcador para persona caminando
+  IAmIcon = {
+    url: 'https://cdn-icons-png.flaticon.com/512/25/25694.png', // Ícono de persona caminando
+    scaledSize: new google.maps.Size(40, 40), // Tamaño ajustado
+  };
+
+
+  // Ícono de marcador para edificio/lugar
+  buildingIcon = {
+    url: 'https://cdn-icons-png.flaticon.com/512/235/235861.png', // Ícono de edificio
+    scaledSize: new google.maps.Size(40, 40), // Tamaño ajustado
+  };
+
+
   constructor(private darkModeService: DarkModeService) {
   }
 
