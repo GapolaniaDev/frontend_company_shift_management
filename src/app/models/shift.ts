@@ -16,6 +16,10 @@ export interface Shift {
   date_finish_employee: string | null;
   location_lat: number | 0;
   location_lng: number | 0;
+  clock_on_lat: number | 0;
+  clock_on_lng: number | 0;
+  clock_off_lat: number | 0;
+  clock_off_lng: number | 0;
 }
 
 // Constante para un objeto Shift por defecto
@@ -35,5 +39,10 @@ export const defaultShift: Shift = {
   date_start_employee: null,
   date_finish_employee: null,
   location_lat: 0,
-  location_lng: 0
+  location_lng: 0,
+  clock_on_lat: 0,
+  clock_on_lng: 0,
+  clock_off_lat: 0,
+  clock_off_lng: 0
+
 };

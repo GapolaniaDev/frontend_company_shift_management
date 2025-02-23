@@ -1,6 +1,5 @@
 import {Component} from '@angular/core';
-import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
-import {JsonPipe, NgClass, NgIf, CommonModule} from '@angular/common';
+import { NgClass, NgIf, CommonModule} from '@angular/common';
 import {ShiftsService} from '../../../services/shifts/shifts.service';
 import {Shift, defaultShift} from '../../../models/shift';
 import {MapsComponent} from '../maps/maps.component';
@@ -11,7 +10,7 @@ import {finalize} from "rxjs";
   selector: 'app-home',
   standalone: true,
   imports: [
-    NgClass, JsonPipe, NgIf, CommonModule, MapsComponent
+    NgClass, NgIf, CommonModule, MapsComponent
   ],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
@@ -19,7 +18,10 @@ import {finalize} from "rxjs";
 export class HomeComponent {
   isShiftActive: boolean = false;
   isThereShift: boolean = false;
-  mapCenter = {lat: 0, lng: 0}; // Coordenadas iniciales
+  buildingPosition = {lat: 0, lng: 0};
+  clockOnPosition = {lat: 0, lng: 0};
+  clockOffPosition = {lat: 0, lng: 0};
+
   mapZoom = 17;
   mapRadius = 50;
   mapKey: string = 'initial-map';
@@ -36,7 +38,6 @@ export class HomeComponent {
 
   constructor(
     private shiftsService: ShiftsService,
-    private sanitizer: DomSanitizer,
     private loaderService: LoaderService
   ) {
   }
@@ -46,8 +47,6 @@ export class HomeComponent {
    */
   ngOnInit() {
     this.getShiftsToday();
-
-
   }
 
   refreshMap(): void {
@@ -67,15 +66,20 @@ export class HomeComponent {
     ).subscribe(
       (data: { success: boolean; shift: Shift | null }) => {
         this.shifts = data;
-
         if (data.success && data.shift?.location_lat && data.shift?.location_lng) {
-          // Update the map's center to the shift's location
-          this.mapCenter = {
+          this.buildingPosition = {
             lat: Number(data.shift.location_lat),
             lng: Number(data.shift.location_lng)
           };
+          this.clockOnPosition = {
+            lat: Number(data.shift.clock_on_lat),
+            lng: Number(data.shift.clock_on_lng)
+          };
+          this.clockOffPosition = {
+            lat: Number(data.shift.clock_off_lat),
+            lng: Number(data.shift.clock_off_lng)
+          };
           this.isThereShift = true;
-          // (Optional) Adjust zoom or radius if needed
           this.mapZoom = 17; // Default or set as needed
           this.mapRadius = 50; // Adjust the radius if required
           this.refreshMap();

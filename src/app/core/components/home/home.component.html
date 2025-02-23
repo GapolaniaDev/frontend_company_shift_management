@@ -4,7 +4,9 @@
     class="absolute inset-0 w-full h-full"
     *ngIf="mapKey"
     [key]="mapKey"
-    [center]="mapCenter"
+    [buildingPosition]="buildingPosition"
+    [clockOnPosition]="clockOnPosition"
+    [clockOffPosition]="clockOffPosition"
     [zoom]="mapZoom"
     [radius]="mapRadius"
     [options]="mapOptions">

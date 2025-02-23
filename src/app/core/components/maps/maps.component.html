@@ -6,16 +6,34 @@
   [zoom]="zoom"
   [options]="options">
 
-  <!-- Marcador central original -->
-  <map-marker [position]="center" [options]="markerOptions" [icon]="IAmIcon"></map-marker>
-  <!-- Círculo alrededor del centro -->
-  <map-circle [center]="center" [radius]="radius" [options]="circleOptions"></map-circle>
-
-  <!-- Segundo marcador: Ícono de edificio/lugar -->
+  <!-- Position Actual -->
   <map-marker
-    [position]="buildingPosition"
-    [icon]="buildingIcon">
+    [position]="center"
+    [options]="markerOptions"
+    [icon]="ICON_USER_LOCATION">
   </map-marker>
 
+  <!-- Position Work place -->
+  <map-marker
+    [position]="buildingPosition"
+    [icon]="BUILDING_ICON"
+  >
+  </map-marker>
+  <map-circle [center]="buildingPosition" [radius]="radius" [options]="circleOptions"></map-circle>
+
+  <!-- ClockON -->
+  <map-marker
+    *ngIf="isPositionValid(clockOnPosition)"
+    [position]="clockOnPosition"
+    [icon]="ICON_CLOCK_ON">
+  </map-marker>
+
+  <!-- ClockOff -->
+  <map-marker
+    *ngIf="isPositionValid(clockOffPosition)"
+    [position]="clockOffPosition"
+    [icon]="ICON_CLOCK_OFF">
+  </map-marker>
 
 </google-map>
+
