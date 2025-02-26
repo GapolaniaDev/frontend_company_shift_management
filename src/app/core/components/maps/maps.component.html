@@ -6,29 +6,28 @@
   [zoom]="zoom"
   [options]="options">
 
-  <!-- Position Actual -->
+  <!-- Usuario Actual -->
   <map-marker
     [position]="center"
     [options]="markerOptions"
     [icon]="ICON_USER_LOCATION">
   </map-marker>
 
-  <!-- Position Work place -->
+  <!-- Edificio -->
   <map-marker
     [position]="buildingPosition"
-    [icon]="BUILDING_ICON"
-  >
+    [icon]="BUILDING_ICON">
   </map-marker>
   <map-circle [center]="buildingPosition" [radius]="radius" [options]="circleOptions"></map-circle>
 
-  <!-- ClockON -->
+  <!-- Clock On -->
   <map-marker
     *ngIf="isPositionValid(clockOnPosition)"
     [position]="clockOnPosition"
     [icon]="ICON_CLOCK_ON">
   </map-marker>
 
-  <!-- ClockOff -->
+  <!-- Clock Off -->
   <map-marker
     *ngIf="isPositionValid(clockOffPosition)"
     [position]="clockOffPosition"
@@ -36,4 +35,3 @@
   </map-marker>
 
 </google-map>
-

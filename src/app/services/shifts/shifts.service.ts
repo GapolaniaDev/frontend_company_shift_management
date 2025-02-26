@@ -16,4 +16,5 @@ export class ShiftsService {
   getShiftsToday(): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/shifts/today`);
   }
+
 }

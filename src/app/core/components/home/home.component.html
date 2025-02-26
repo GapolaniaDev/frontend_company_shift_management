@@ -1,94 +1,12 @@
-<div class="relative h-screen">
-  <div *ngIf="isThereShift" class="relative h-screen">
-    <!-- Map Section -->
-    <app-maps
-      class="absolute inset-0 w-full h-full"
-      *ngIf="mapKey"
-      [key]="mapKey"
-      [buildingPosition]="buildingPosition"
-      [clockOnPosition]="clockOnPosition"
-      [clockOffPosition]="clockOffPosition"
-      [zoom]="mapZoom"
-      [radius]="mapRadius"
-      [options]="mapOptions"
-      (positionChanged)="updateUserPosition($event)">
-    </app-maps>
-
-    <app-clock
-      [clockHours]="clockHours"
-      [clockMinutes]="clockMinutes"
-      [clockSeconds]="clockSeconds"
-      [period]="period"
-      [currentDate]="currentDate"
-      [isShiftActive]="isShiftActive"
-    ></app-clock>
-  </div>
-
-  <button (click)="getShiftsToday()"
+<div *ngIf="isThereShift" class="relative h-screen">
+  <app-maps class="absolute inset-0 w-full h-full"></app-maps>
+  <app-clock [isShiftActive]="isShiftActive"></app-clock>
+  <button (click)="refreshShifts()"
           aria-label="Reload"
           title="Reload Page"
           class="absolute top-20 right-4 bg-white p-3 rounded-md z-10 text-lg shadow-md">
     <ng-icon [name]="'heroArrowPathSolid'" class="text-gray-800 w-8 h-8"></ng-icon>
   </button>
-
-  <div
-    class="absolute bottom-8 left-1/2 transform -translate-x-1/2 w-11/12 max-w-2xl bg-black bg-opacity-70 rounded-lg p-6 text-white z-20">
-    <button
-      [ngClass]="{
-        'bg-green-500 hover:bg-green-600': !isShiftActive,
-        'bg-red-500 hover:bg-red-600': isShiftActive
-      }"
-      class="start-shift-btn w-full text-white py-3 rounded-md text-lg mb-6 transition"
-      (click)="toggleShift()" [disabled]="!isInsideBuildingZone"
-    >
-      {{ isShiftActive ? 'End Shift' : 'Start Shift' }}
-    </button>
-
-    <div class="grid grid-cols-2 gap-4">
-      <div>
-        <h2 class="text-gray-300 font-semibold mb-2">Shift Details:</h2>
-        <p><span class="text-gray-400">Date:</span> {{ shifts.shift?.date_start | date: 'fullDate' }}</p>
-        <p><span class="text-gray-400">Time:</span> {{ shifts.shift?.date_start | date: 'shortTime' }}
-          - {{ shifts.shift?.date_end | date: 'shortTime' }}</p>
-        <p><span class="text-gray-400">Total Hours:</span> {{ shifts.shift?.total_hours }} hours</p>
-      </div>
-      <div>
-        <p><span class="text-gray-400">Weekday:</span> {{ shifts.shift?.weekday_code }}</p>
-        <p><span class="text-gray-400">Comments:</span> {{ shifts.shift?.comments || 'No comments' }}</p>
-      </div>
-    </div>
-  </div>
+  <app-shift-details></app-shift-details>
 </div>
-
-<div class="min-h-screen bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-gray-200 flex items-center justify-center"
-     *ngIf="!isThereShift">
-  <div class="text-center p-6 bg-white dark:bg-gray-700 rounded-lg shadow-md max-w-md">
-    <div class="mb-4">
-      <svg
-        class="mx-auto h-20 w-20 text-gray-400 dark:text-gray-500"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2"
-        viewBox="0 0 24 24"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          d="M9 19V6a2 2 0 012-2 2 2 0 012 2v13m-9 0h16m-8-8h8m-8 4h6"
-        ></path>
-      </svg>
-    </div>
-
-    <h1 class="text-xl font-bold text-gray-900 dark:text-gray-100 mb-2">
-      No shift assigned
-    </h1>
-    <p class="text-gray-600 dark:text-gray-300 mb-4">
-      You currently have no shift scheduled for today. Please check your schedule for updates.
-    </p>
-    <div class="w-1/2 mx-auto border-b-2 border-gray-200 dark:border-gray-600 my-4"></div>
-    <p class="text-sm text-gray-500 dark:text-gray-400 italic">
-      "Take this moment to relax, recharge, and get ready for your next task!" 💪
-    </p>
-  </div>
-</div>
+<app-no-shift-details *ngIf="!isThereShift"></app-no-shift-details>
