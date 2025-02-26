@@ -20,8 +20,8 @@ import { ICON_CLOCK_ON, ICON_CLOCK_OFF, ICON_USER_LOCATION, BUILDING_ICON } from
 })
 export class MapsComponent implements OnInit, OnDestroy {
   center: google.maps.LatLngLiteral = { lat: 0, lng: 0 };
-  zoom: number = 15; // Default zoom level
-  radius: number = 100; // Default radius in meters
+  zoom: number = 18;
+  radius: number = 100;
   buildingPosition: google.maps.LatLngLiteral = { lat: 0, lng: 0 };
   clockOnPosition: google.maps.LatLngLiteral = { lat: 0, lng: 0 };
   clockOffPosition: google.maps.LatLngLiteral = { lat: 0, lng: 0 };
@@ -51,7 +51,6 @@ export class MapsComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    // Subscripciones al servicio ShiftStateService
     this.subscriptions.add(
       this.shiftStateService.buildingPosition$.subscribe(position => {
         this.buildingPosition = position;

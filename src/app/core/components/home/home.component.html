@@ -1,6 +1,6 @@
 <div *ngIf="isThereShift" class="relative h-screen">
   <app-maps class="absolute inset-0 w-full h-full"></app-maps>
-  <app-clock [isShiftActive]="isShiftActive"></app-clock>
+  <app-clock></app-clock>
   <button (click)="refreshShifts()"
           aria-label="Reload"
           title="Reload Page"
