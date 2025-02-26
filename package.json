@@ -27,6 +27,8 @@
     "@angular/platform-browser": "^18.2.0",
     "@angular/platform-browser-dynamic": "^18.2.0",
     "@angular/router": "^18.2.0",
+    "@ng-icons/core": "^30.3.0",
+    "@ng-icons/heroicons": "^30.3.0",
     "autoprefixer": "^10.4.20",
     "ngx-cookie-service": "^18.0.0",
     "postcss": "^8.4.41",

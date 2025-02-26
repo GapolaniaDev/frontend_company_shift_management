@@ -21,7 +21,8 @@ import {GoogleMapsModule} from '@angular/google-maps';
     SessionModule,
     FormsModule,
     ReactiveFormsModule,
-    GoogleMapsModule,
+    GoogleMapsModule
+
   ],
   providers: [
     LoginService,

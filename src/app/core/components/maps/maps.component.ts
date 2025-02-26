@@ -1,4 +1,4 @@
-import {Component, Input, OnChanges, SimpleChanges, ViewChild} from '@angular/core';
+import {Component, Input, Output, EventEmitter, OnChanges, SimpleChanges, ViewChild} from '@angular/core';
 import {GoogleMap, MapCircle, MapMarker} from "@angular/google-maps";
 import {DarkModeService} from "../../../services/dark-mode/dark-mode.service";
 import {NgIf} from "@angular/common";
@@ -22,6 +22,7 @@ export class MapsComponent implements OnChanges {
 
   // Input properties to receive map data from parent component
   @Input() center!: google.maps.LatLngLiteral; // Coordinates of the map center
+  @Output() positionChanged = new EventEmitter<google.maps.LatLngLiteral>();
   @Input() zoom!: number; // Zoom level
   @Input() radius!: number; // Radius for the circle
   @Input() key!: string;
@@ -54,7 +55,6 @@ export class MapsComponent implements OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['center']) {
-      console.log('Center changed:', changes['center'].currentValue);
       this.updateCircleColor();
     }
   }
@@ -69,7 +69,7 @@ export class MapsComponent implements OnChanges {
   }
 
   isPositionValid(position: google.maps.LatLngLiteral): boolean {
-    return this.mapService.isPositionValid(position); // Reutiliza el servicio
+    return this.mapService.isPositionValid(position);
   }
 
   private applyInitialDarkMode(): void {
@@ -98,6 +98,7 @@ export class MapsComponent implements OnChanges {
       fillColor: distance <= this.radius ? 'green' : 'red',
       strokeColor: distance <= this.radius ? '#006400' : '#8B0000',
     };
+    this.positionChanged.emit(this.center);
   }
 
   startLocationTracking(): void {
@@ -107,7 +108,8 @@ export class MapsComponent implements OnChanges {
           const {latitude, longitude} = position.coords;
           // Actualizar el centro del mapa con las nuevas coordenadas
           this.center = {lat: latitude, lng: longitude};
-          console.log('Nueva ubicación rastreada:', this.center);
+          this.positionChanged.emit(this.center);
+          this.updateCircleColor();
         },
         (error) => {
           switch (error.code) {
@@ -131,21 +133,6 @@ export class MapsComponent implements OnChanges {
     }
   }
 
-  /**
-   * Detener el rastreo de la ubicación
-   */
-  stopLocationTracking(): void {
-    if (this.trackerId !== null) {
-      navigator.geolocation.clearWatch(this.trackerId); // Detener el rastreador
-      console.log('Rastreo de ubicación detenido.');
-      this.trackerId = null;
-    }
-  }
-
-
-  /**
-   * Retrieves the user's current location using Geolocation API
-   */
   getUserLocation(): void {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
@@ -156,9 +143,6 @@ export class MapsComponent implements OnChanges {
             lng: position.coords.longitude
           };
           this.updateCircleColor();
-
-          console.log('User location:', this.center);
-          console.log('Building Position', this.buildingPosition);
         },
         (error) => {
           // Handle errors

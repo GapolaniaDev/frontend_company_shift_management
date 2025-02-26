@@ -1,38 +1,49 @@
-<div *ngIf="isThereShift" class="relative h-screen">
-  <!-- Map Section -->
-  <app-maps
-    class="absolute inset-0 w-full h-full"
-    *ngIf="mapKey"
-    [key]="mapKey"
-    [buildingPosition]="buildingPosition"
-    [clockOnPosition]="clockOnPosition"
-    [clockOffPosition]="clockOffPosition"
-    [zoom]="mapZoom"
-    [radius]="mapRadius"
-    [options]="mapOptions">
-  </app-maps>
+<div class="relative h-screen">
+  <div *ngIf="isThereShift" class="relative h-screen">
+    <!-- Map Section -->
+    <app-maps
+      class="absolute inset-0 w-full h-full"
+      *ngIf="mapKey"
+      [key]="mapKey"
+      [buildingPosition]="buildingPosition"
+      [clockOnPosition]="clockOnPosition"
+      [clockOffPosition]="clockOffPosition"
+      [zoom]="mapZoom"
+      [radius]="mapRadius"
+      [options]="mapOptions"
+      (positionChanged)="updateUserPosition($event)">
+    </app-maps>
 
-  <!-- Fullscreen Button -->
-  <button class="absolute top-20 right-4 bg-white p-2 rounded-md z-10 shadow-md">
-    <i class="fas fa-expand"></i>
+    <app-clock
+      [clockHours]="clockHours"
+      [clockMinutes]="clockMinutes"
+      [clockSeconds]="clockSeconds"
+      [period]="period"
+      [currentDate]="currentDate"
+      [isShiftActive]="isShiftActive"
+    ></app-clock>
+  </div>
+
+  <button (click)="getShiftsToday()"
+          aria-label="Reload"
+          title="Reload Page"
+          class="absolute top-20 right-4 bg-white p-3 rounded-md z-10 text-lg shadow-md">
+    <ng-icon [name]="'heroArrowPathSolid'" class="text-gray-800 w-8 h-8"></ng-icon>
   </button>
 
-  <!-- Shift Details Section -->
   <div
     class="absolute bottom-8 left-1/2 transform -translate-x-1/2 w-11/12 max-w-2xl bg-black bg-opacity-70 rounded-lg p-6 text-white z-20">
-
-    <!-- Start Shift Button -->
     <button
       [ngClass]="{
         'bg-green-500 hover:bg-green-600': !isShiftActive,
         'bg-red-500 hover:bg-red-600': isShiftActive
       }"
-      class="w-full text-white py-3 rounded-md text-lg mb-6 transition"
-      (click)="toggleShift()">
+      class="start-shift-btn w-full text-white py-3 rounded-md text-lg mb-6 transition"
+      (click)="toggleShift()" [disabled]="!isInsideBuildingZone"
+    >
       {{ isShiftActive ? 'End Shift' : 'Start Shift' }}
     </button>
 
-    <!-- Shift Information -->
     <div class="grid grid-cols-2 gap-4">
       <div>
         <h2 class="text-gray-300 font-semibold mb-2">Shift Details:</h2>
@@ -52,7 +63,6 @@
 <div class="min-h-screen bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-gray-200 flex items-center justify-center"
      *ngIf="!isThereShift">
   <div class="text-center p-6 bg-white dark:bg-gray-700 rounded-lg shadow-md max-w-md">
-    <!-- Icon or Illustration -->
     <div class="mb-4">
       <svg
         class="mx-auto h-20 w-20 text-gray-400 dark:text-gray-500"
@@ -70,18 +80,13 @@
       </svg>
     </div>
 
-    <!-- Main Message -->
     <h1 class="text-xl font-bold text-gray-900 dark:text-gray-100 mb-2">
       No shift assigned
     </h1>
     <p class="text-gray-600 dark:text-gray-300 mb-4">
       You currently have no shift scheduled for today. Please check your schedule for updates.
     </p>
-
-    <!-- Decorative separator -->
     <div class="w-1/2 mx-auto border-b-2 border-gray-200 dark:border-gray-600 my-4"></div>
-
-    <!-- Motivational or friendly message -->
     <p class="text-sm text-gray-500 dark:text-gray-400 italic">
       "Take this moment to relax, recharge, and get ready for your next task!" 💪
     </p>

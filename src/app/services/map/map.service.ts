@@ -93,16 +93,23 @@ export class MapService {
   }
 
   calculateDistance(lat1: number, lng1: number, lat2: number, lng2: number): number {
-    const R = 6371e3;
-    const rad = (x: number) => (x * Math.PI) / 180;
+    const R = 6371e3; // Radio de la Tierra en metros
+    const φ1 = lat1 * Math.PI / 180;
+    const φ2 = lat2 * Math.PI / 180;
+    const Δφ = (lat2 - lat1) * Math.PI / 180;
+    const Δλ = (lng2 - lng1) * Math.PI / 180;
 
-    const dLat = rad(lat2 - lat1);
-    const dLng = rad(lng2 - lng1);
+    const a = Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
+      Math.cos(φ1) * Math.cos(φ2) *
+      Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
-    const a =
-      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-      Math.cos(rad(lat1)) * Math.cos(rad(lat2)) * Math.sin(dLng / 2) * Math.sin(dLng / 2);
-
-    return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a)); // Distancia en metros
+    return R * c; // Distancia en metros
   }
+
+  isWithinRadius(position: google.maps.LatLngLiteral, buildingPosition: google.maps.LatLngLiteral, radius: number): boolean {
+    const distance = this.calculateDistance(position.lat, position.lng, buildingPosition.lat, buildingPosition.lng);
+    return distance <= radius;
+  }
+
 }

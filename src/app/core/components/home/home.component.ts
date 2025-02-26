@@ -1,16 +1,21 @@
 import {Component} from '@angular/core';
-import { NgClass, NgIf, CommonModule} from '@angular/common';
+import {NgClass, NgIf, CommonModule} from '@angular/common';
 import {ShiftsService} from '../../../services/shifts/shifts.service';
 import {Shift, defaultShift} from '../../../models/shift';
 import {MapsComponent} from '../maps/maps.component';
 import {LoaderService} from "../../../services/loader/loader.service";
 import {finalize} from "rxjs";
+import {SharedNgIconsModule} from "../../../shared/ng-icons.module";
+import {MapService} from "../../../services/map/map.service";
+import {ClockService} from "../../../services/clock/clock.service";
+import {ClockComponent} from "../clock/clock/clock.component";
+
 
 @Component({
   selector: 'app-home',
   standalone: true,
   imports: [
-    NgClass, NgIf, CommonModule, MapsComponent
+    NgClass, NgIf, CommonModule, MapsComponent, SharedNgIconsModule, ClockComponent
   ],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
@@ -22,12 +27,21 @@ export class HomeComponent {
   clockOnPosition = {lat: 0, lng: 0};
   clockOffPosition = {lat: 0, lng: 0};
 
+  timerInterval: any = null;
+  clockHours: string = '00';
+  clockMinutes: string = '00';
+  clockSeconds: string = '00';
+  startTime: number | null = null;
+  period: string = '';
+  currentDate: string = '';
+
+
   mapZoom = 17;
   mapRadius = 50;
   mapKey: string = 'initial-map';
   loadingMap: boolean = false;
   mapOptions: google.maps.MapOptions = {
-    styles: [], // Inicialmente sin estilos
+    styles: [],
     disableDefaultUI: false,
   };
   shifts: { success: boolean; shift: Shift | null } = {
@@ -35,28 +49,54 @@ export class HomeComponent {
     shift: {...defaultShift}
   };
 
+  isInsideBuildingZone: boolean = false;
+  currentPosition: google.maps.LatLngLiteral = {lat: 0, lng: 0};
+
+
+  protected readonly expandIcon = 'heroArrowsPointingOutSolid';
+
 
   constructor(
+    private clockService: ClockService,
     private shiftsService: ShiftsService,
-    private loaderService: LoaderService
+    private loaderService: LoaderService,
+    private mapService: MapService
   ) {
   }
 
-  /**
-   * Lifecycle hook - Initialize the component
-   */
-  ngOnInit() {
+  ngOnInit(): void {
     this.getShiftsToday();
+    this.startClock();
+  }
+
+  ngOnDestroy(): void {
+    this.stopClock();
+  }
+
+  startClock(): void {
+    this.clockService.startClock(this.isShiftActive, this.startTime, (time) => {
+      this.clockHours = time.hours;
+      this.clockMinutes = time.minutes;
+      this.clockSeconds = time.seconds;
+      if (time.period) this.period = time.period;
+      if (time.currentDate) this.currentDate = time.currentDate;
+    });
+  }
+
+  stopClock(): void {
+    this.clockService.stopClock();
+  }
+
+  updateUserPosition(position: google.maps.LatLngLiteral): void {
+    this.currentPosition = position;
+    this.isInsideBuildingZone = this.mapService.isWithinRadius(position, this.buildingPosition, this.mapRadius);
   }
 
   refreshMap(): void {
-    this.mapKey = `map-${Date.now()}`; // Generate a new unique key
-    console.log('Map key:', this.mapKey);
+    this.mapKey = `map-${Date.now()}`;
+    this.updateUserPosition(this.currentPosition);
   }
 
-  /**
-   * Calls the service to retrieve the current shift
-   */
   getShiftsToday(): void {
     this.loaderService.show();
     this.shiftsService.getShiftsToday().pipe(
@@ -89,18 +129,18 @@ export class HomeComponent {
       },
       error => {
         console.error('Error fetching shifts:', error);
-        // Reset values in case of error
         this.shifts = {success: false, shift: {...defaultShift}};
         this.loadingMap = true; // Indicates the issues in loading the map
       }
     );
   }
 
-  /**
-   * Toggles the shift's status and updates the state and the button's color.
-   */
   toggleShift(): void {
     this.isShiftActive = !this.isShiftActive;
-    console.log(this.isShiftActive ? 'Shift started' : 'Shift ended');
+    if (this.isShiftActive) {
+      this.startClock();
+    } else {
+      this.stopClock();
+    }
   }
 }
