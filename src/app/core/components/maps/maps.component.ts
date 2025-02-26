@@ -1,10 +1,10 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { GoogleMap, MapCircle, MapMarker } from "@angular/google-maps";
-import { NgIf } from "@angular/common";
-import { MapService } from "../../../services/map/map.service";
-import { ShiftStateService } from "../../../services/shift-state/shift-state.service";
-import { Subscription } from 'rxjs';
-import { ICON_CLOCK_ON, ICON_CLOCK_OFF, ICON_USER_LOCATION, BUILDING_ICON } from "../menu/constants/map.constants";
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {GoogleMap, MapCircle, MapMarker} from "@angular/google-maps";
+import {NgIf} from "@angular/common";
+import {MapService} from "../../../services/map/map.service";
+import {ShiftStateService} from "../../../services/shift-state/shift-state.service";
+import {Subscription} from 'rxjs';
+import {ICON_CLOCK_ON, ICON_CLOCK_OFF, ICON_USER_LOCATION, BUILDING_ICON} from "../menu/constants/map.constants";
 
 @Component({
   selector: 'app-maps',
@@ -19,14 +19,14 @@ import { ICON_CLOCK_ON, ICON_CLOCK_OFF, ICON_USER_LOCATION, BUILDING_ICON } from
   styleUrls: ['./maps.component.css']
 })
 export class MapsComponent implements OnInit, OnDestroy {
-  center: google.maps.LatLngLiteral = { lat: 0, lng: 0 };
+  center: google.maps.LatLngLiteral = {lat: 0, lng: 0};
   zoom: number = 18;
-  radius: number = 100;
-  buildingPosition: google.maps.LatLngLiteral = { lat: 0, lng: 0 };
-  clockOnPosition: google.maps.LatLngLiteral = { lat: 0, lng: 0 };
-  clockOffPosition: google.maps.LatLngLiteral = { lat: 0, lng: 0 };
+  radius: number = 100; // Radio en metros para calcular si está dentro de la zona
+  buildingPosition: google.maps.LatLngLiteral = {lat: 0, lng: 0};
+  clockOnPosition: google.maps.LatLngLiteral = {lat: 0, lng: 0};
+  clockOffPosition: google.maps.LatLngLiteral = {lat: 0, lng: 0};
   options: google.maps.MapOptions = {};
-  markerOptions: google.maps.MarkerOptions = { draggable: false };
+  markerOptions: google.maps.MarkerOptions = {draggable: false};
   circleOptions: google.maps.CircleOptions = {
     fillColor: 'green',
     fillOpacity: 0.5,
@@ -48,7 +48,8 @@ export class MapsComponent implements OnInit, OnDestroy {
   constructor(
     private shiftStateService: ShiftStateService,
     private mapService: MapService
-  ) {}
+  ) {
+  }
 
   ngOnInit(): void {
     this.subscriptions.add(
@@ -69,7 +70,7 @@ export class MapsComponent implements OnInit, OnDestroy {
       })
     );
 
-    this.getUserLocation();
+    this.getUserLocation(); // Obtenemos la ubicación y verificamos la validez
   }
 
   ngOnDestroy(): void {
@@ -79,28 +80,28 @@ export class MapsComponent implements OnInit, OnDestroy {
   getUserLocation(): void {
     if ('geolocation' in navigator) {
       navigator.geolocation.watchPosition(position => {
-        const { latitude, longitude } = position.coords;
-        this.center = { lat: latitude, lng: longitude };
-        this.updateCircleColor();
+        const {latitude, longitude} = position.coords;
+        this.center = {lat: latitude, lng: longitude};
+        if (this.mapService.isPositionValid(this.center)) {
+          const isWithinZone = this.mapService.isWithinRadius(this.center, this.buildingPosition, this.radius);
+          this.shiftStateService.setInsideBuildingZoneStatus(isWithinZone);
+          this.updateCircleColor(isWithinZone);
+        } else {
+          this.shiftStateService.setInsideBuildingZoneStatus(false);
+        }
       });
     }
   }
 
-  isPositionValid(position: google.maps.LatLngLiteral): boolean {
+  public isPositionValid(position: google.maps.LatLngLiteral): boolean {
     return this.mapService.isPositionValid(position);
   }
 
-  updateCircleColor(): void {
-    const distance = this.mapService.calculateDistance(
-      this.center.lat,
-      this.center.lng,
-      this.buildingPosition.lat,
-      this.buildingPosition.lng
-    );
+  updateCircleColor(isWithinZone: boolean): void {
     this.circleOptions = {
       ...this.circleOptions,
-      fillColor: distance <= this.radius ? 'green' : 'red',
-      strokeColor: distance <= this.radius ? '#006400' : '#8B0000',
+      fillColor: isWithinZone ? 'green' : 'red',
+      strokeColor: isWithinZone ? '#006400' : '#8B0000',
     };
   }
 }

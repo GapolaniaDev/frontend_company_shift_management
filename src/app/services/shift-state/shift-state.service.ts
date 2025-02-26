@@ -1,8 +1,8 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { ShiftsService } from '../shifts/shifts.service';
-import { Shift, defaultShift } from '../../models/shift';
-import { finalize } from 'rxjs/operators';
+import {Injectable} from '@angular/core';
+import {BehaviorSubject, Observable} from 'rxjs';
+import {ShiftsService} from '../shifts/shifts.service';
+import {Shift, defaultShift} from '../../models/shift';
+import {finalize} from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -10,13 +10,14 @@ import { finalize } from 'rxjs/operators';
 export class ShiftStateService {
   private isShiftActiveSubject = new BehaviorSubject<boolean>(false);
   private isThereShiftSubject = new BehaviorSubject<boolean>(false);
-  private buildingPositionSubject = new BehaviorSubject<google.maps.LatLngLiteral>({ lat: 0, lng: 0 });
-  private clockOnPositionSubject = new BehaviorSubject<google.maps.LatLngLiteral>({ lat: 0, lng: 0 });
-  private clockOffPositionSubject = new BehaviorSubject<google.maps.LatLngLiteral>({ lat: 0, lng: 0 });
+  private buildingPositionSubject = new BehaviorSubject<google.maps.LatLngLiteral>({lat: 0, lng: 0});
+  private clockOnPositionSubject = new BehaviorSubject<google.maps.LatLngLiteral>({lat: 0, lng: 0});
+  private clockOffPositionSubject = new BehaviorSubject<google.maps.LatLngLiteral>({lat: 0, lng: 0});
   private shiftsSubject = new BehaviorSubject<{ success: boolean; shift: Shift | null }>({
     success: false,
-    shift: { ...defaultShift },
+    shift: {...defaultShift},
   });
+  private isInsideBuildingZoneSubject = new BehaviorSubject<boolean>(false);
 
   isShiftActive$: Observable<boolean> = this.isShiftActiveSubject.asObservable();
   isThereShift$: Observable<boolean> = this.isThereShiftSubject.asObservable();
@@ -24,8 +25,10 @@ export class ShiftStateService {
   clockOnPosition$: Observable<google.maps.LatLngLiteral> = this.clockOnPositionSubject.asObservable();
   clockOffPosition$: Observable<google.maps.LatLngLiteral> = this.clockOffPositionSubject.asObservable();
   shifts$: Observable<{ success: boolean; shift: Shift | null }> = this.shiftsSubject.asObservable();
+  isInsideBuildingZone$: Observable<boolean> = this.isInsideBuildingZoneSubject.asObservable();
 
-  constructor(private shiftsService: ShiftsService) {}
+  constructor(private shiftsService: ShiftsService) {
+  }
 
   fetchShiftsToday(showLoader: () => void, hideLoader: () => void): void {
     showLoader();
@@ -85,4 +88,9 @@ export class ShiftStateService {
   private setShifts(shifts: { success: boolean; shift: Shift | null }): void {
     this.shiftsSubject.next(shifts);
   }
+
+  public setInsideBuildingZoneStatus(isInside: boolean): void {
+    this.isInsideBuildingZoneSubject.next(isInside);
+  }
+
 }

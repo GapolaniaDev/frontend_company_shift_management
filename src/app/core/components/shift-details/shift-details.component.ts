@@ -1,5 +1,5 @@
 import {Component, OnDestroy} from '@angular/core';
-import {DatePipe, NgClass, NgIf} from "@angular/common";
+import {DatePipe, NgClass} from "@angular/common";
 import {ShiftStateService} from "../../../services/shift-state/shift-state.service";
 import {Shift} from '../../../models/shift';
 import {Subscription} from 'rxjs';
@@ -8,7 +8,6 @@ import {Subscription} from 'rxjs';
   selector: 'app-shift-details',
   standalone: true,
   imports: [
-    NgIf,
     DatePipe,
     NgClass
   ],
@@ -30,6 +29,13 @@ export class ShiftDetailsComponent implements OnDestroy {
     this.subscriptions.add(
       this.shiftStateService.isShiftActive$.subscribe(isActive => (this.isShiftActive = isActive))
     );
+
+    this.subscriptions.add(
+      this.shiftStateService.isInsideBuildingZone$.subscribe(
+        (isInside) => (this.isInsideBuildingZone = isInside)
+      )
+    );
+
   }
 
   toggleShift(): void {
