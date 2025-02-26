@@ -8,6 +8,8 @@ import {ClockComponent} from "../clock/clock.component";
 import {ShiftDetailsComponent} from "../shift-details/shift-details.component";
 import {NoShiftDetailsComponent} from "../no-shift-details/no-shift-details.component";
 import {SharedNgIconsModule} from "../../../shared/ng-icons.module";
+import {ConfirmationModalComponent} from "../confirmation-modal/confirmation-modal.component";
+import {ConfirmationModalService} from "../../../services/confirmation-modal/confirmation-modal.service";
 
 @Component({
   selector: 'app-home',
@@ -22,6 +24,7 @@ import {SharedNgIconsModule} from "../../../shared/ng-icons.module";
     ShiftDetailsComponent,
     NoShiftDetailsComponent,
     SharedNgIconsModule,
+    ConfirmationModalComponent,
   ],
 })
 export class HomeComponent implements OnInit, OnDestroy {
@@ -29,8 +32,25 @@ export class HomeComponent implements OnInit, OnDestroy {
   isThereShift = false;
   private subscriptions: Subscription[] = [];
 
-  constructor(private shiftState: ShiftStateService, private loaderService: LoaderService) {
+  constructor(
+    private shiftState: ShiftStateService,
+    private loaderService: LoaderService,
+    private confirmationModal: ConfirmationModalService
+  ) {
   }
+
+  confirmAction(): void {
+    this.confirmationModal.open(
+      'Are you sure you want to perform this action?',
+      () => {
+        console.log('Action confirmed');
+      },
+      () => {
+        console.log('Action cancelled');
+      }
+    );
+  }
+
 
   ngOnInit(): void {
     this.subscriptions.push(

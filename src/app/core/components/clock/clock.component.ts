@@ -14,13 +14,20 @@ import { Subscription } from 'rxjs';
 })
 export class ClockComponent implements OnInit, OnDestroy {
   isShiftActive = false;
+  isClockReady = false; // Bandera para mostrar el reloj solo cuando esté listo
 
-  clockData: { hours: string; minutes: string; seconds: string; period?: string; currentDate?: string } = {
+  clockData: {
+    hours: string;
+    minutes: string;
+    seconds: string;
+    period?: string;
+    currentDate?: string;
+  } = {
     hours: '00',
     minutes: '00',
     seconds: '00',
-    period: '',
-    currentDate: ''
+    period: '',           // Periodo inicial vacío
+    currentDate: ''       // Fecha inicial vacía
   };
 
   private subscriptions: Subscription[] = [];
@@ -35,9 +42,15 @@ export class ClockComponent implements OnInit, OnDestroy {
       this.shiftStateService.isShiftActive$.subscribe((isActive) => {
         console.log('isShiftActive', isActive);
         this.isShiftActive = isActive;
-        this.clockService.startClock(isActive, null, (time) => {
-          this.clockData = time;
-        });
+
+        if (isActive) {
+          this.clockService.startClock(isActive, null, (time) => {
+            this.clockData = time;  // Actualización de los datos del reloj
+            this.isClockReady = true;
+          });
+        } else {
+          this.isClockReady = false;
+        }
       })
     );
   }
