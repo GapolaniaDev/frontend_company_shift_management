@@ -40,9 +40,7 @@ export class ClockComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.subscriptions.push(
       this.shiftStateService.isShiftActive$.subscribe((isActive) => {
-        console.log('isShiftActive', isActive);
         this.isShiftActive = isActive;
-
         if (isActive) {
           this.clockService.startClock(isActive, null, (time) => {
             this.clockData = time;  // Actualización de los datos del reloj

@@ -9,7 +9,7 @@ import {ShiftDetailsComponent} from "../shift-details/shift-details.component";
 import {NoShiftDetailsComponent} from "../no-shift-details/no-shift-details.component";
 import {SharedNgIconsModule} from "../../../shared/ng-icons.module";
 import {ConfirmationModalComponent} from "../confirmation-modal/confirmation-modal.component";
-import {ConfirmationModalService} from "../../../services/confirmation-modal/confirmation-modal.service";
+import {GeolocationService} from "../../../services/geolocation/geolocation.service";
 
 @Component({
   selector: 'app-home',
@@ -24,7 +24,8 @@ import {ConfirmationModalService} from "../../../services/confirmation-modal/con
     ShiftDetailsComponent,
     NoShiftDetailsComponent,
     SharedNgIconsModule,
-    ConfirmationModalComponent,
+    ConfirmationModalComponent
+
   ],
 })
 export class HomeComponent implements OnInit, OnDestroy {
@@ -33,36 +34,23 @@ export class HomeComponent implements OnInit, OnDestroy {
   private subscriptions: Subscription[] = [];
 
   constructor(
-    private shiftState: ShiftStateService,
+    private shiftStateService: ShiftStateService,
     private loaderService: LoaderService,
-    private confirmationModal: ConfirmationModalService
+    private geolocationService:GeolocationService,
   ) {
-  }
-
-  confirmAction(): void {
-    this.confirmationModal.open(
-      'Are you sure you want to perform this action?',
-      () => {
-        console.log('Action confirmed');
-      },
-      () => {
-        console.log('Action cancelled');
-      }
-    );
   }
 
 
   ngOnInit(): void {
     this.subscriptions.push(
-      this.shiftState.isShiftActive$.subscribe((isShiftActive) => (this.isShiftActive = isShiftActive)),
-      this.shiftState.isThereShift$.subscribe((isThereShift) => (this.isThereShift = isThereShift))
+      this.shiftStateService.isShiftActive$.subscribe((isShiftActive) => (this.isShiftActive = isShiftActive)),
+      this.shiftStateService.isThereShift$.subscribe((isThereShift) => (this.isThereShift = isThereShift))
     );
-
     this.refreshShifts();
   }
 
   refreshShifts(): void {
-    this.shiftState.fetchShiftsToday(
+    this.shiftStateService.fetchShiftsToday(
       () => this.loaderService.show(),
       () => this.loaderService.hide()
     );

@@ -2,9 +2,10 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {GoogleMap, MapCircle, MapMarker} from "@angular/google-maps";
 import {NgIf} from "@angular/common";
 import {MapService} from "../../../services/map/map.service";
-import {ShiftStateService} from "../../../services/shift-state/shift-state.service";
 import {Subscription} from 'rxjs';
 import {ICON_CLOCK_ON, ICON_CLOCK_OFF, ICON_USER_LOCATION, BUILDING_ICON} from "../menu/constants/map.constants";
+import {MapDataService} from "../../../services/map-data/map-data.service";
+import {ShiftStateService} from "../../../services/shift-state/shift-state.service";
 
 @Component({
   selector: 'app-maps',
@@ -21,7 +22,7 @@ import {ICON_CLOCK_ON, ICON_CLOCK_OFF, ICON_USER_LOCATION, BUILDING_ICON} from "
 export class MapsComponent implements OnInit, OnDestroy {
   center: google.maps.LatLngLiteral = {lat: 0, lng: 0};
   zoom: number = 18;
-  radius: number = 100; // Radio en metros para calcular si está dentro de la zona
+  radius: number = 100;
   buildingPosition: google.maps.LatLngLiteral = {lat: 0, lng: 0};
   clockOnPosition: google.maps.LatLngLiteral = {lat: 0, lng: 0};
   clockOffPosition: google.maps.LatLngLiteral = {lat: 0, lng: 0};
@@ -46,54 +47,27 @@ export class MapsComponent implements OnInit, OnDestroy {
   private subscriptions: Subscription = new Subscription();
 
   constructor(
-    private shiftStateService: ShiftStateService,
-    private mapService: MapService
+    private mapService: MapService,
+    private mapDataService: MapDataService,
+    private shiftStateService: ShiftStateService
   ) {
   }
 
   ngOnInit(): void {
     this.subscriptions.add(
-      this.shiftStateService.buildingPosition$.subscribe(position => {
-        this.buildingPosition = position;
+      this.mapDataService.getMapData(this.radius).subscribe(({center, buildingPosition, isWithinZone}) => {
+        this.center = center;
+        this.buildingPosition = buildingPosition;
+        this.updateCircleColor(isWithinZone);
       })
     );
-
-    this.subscriptions.add(
-      this.shiftStateService.clockOnPosition$.subscribe(position => {
-        this.clockOnPosition = position;
-      })
-    );
-
-    this.subscriptions.add(
-      this.shiftStateService.clockOffPosition$.subscribe(position => {
-        this.clockOffPosition = position;
-      })
-    );
-
-    this.getUserLocation(); // Obtenemos la ubicación y verificamos la validez
   }
 
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
   }
 
-  getUserLocation(): void {
-    if ('geolocation' in navigator) {
-      navigator.geolocation.watchPosition(position => {
-        const {latitude, longitude} = position.coords;
-        this.center = {lat: latitude, lng: longitude};
-        if (this.mapService.isPositionValid(this.center)) {
-          const isWithinZone = this.mapService.isWithinRadius(this.center, this.buildingPosition, this.radius);
-          this.shiftStateService.setInsideBuildingZoneStatus(isWithinZone);
-          this.updateCircleColor(isWithinZone);
-        } else {
-          this.shiftStateService.setInsideBuildingZoneStatus(false);
-        }
-      });
-    }
-  }
-
-  public isPositionValid(position: google.maps.LatLngLiteral): boolean {
+  isPositionValid(position: google.maps.LatLngLiteral): boolean {
     return this.mapService.isPositionValid(position);
   }
 

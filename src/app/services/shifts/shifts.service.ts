@@ -17,4 +17,11 @@ export class ShiftsService {
     return this.http.get<any>(`${this.apiUrl}/shifts/today`);
   }
 
+  updateClockPosition(shiftId: number, lat: number, lng: number, type: 'clock_on' | 'clock_off'): Observable<any> {
+    const url = `${this.apiUrl}/shifts/${shiftId}/update-clock`;
+    const body = {lat, lng, type};
+    return this.http.put<any>(url, body);
+  }
+
+
 }

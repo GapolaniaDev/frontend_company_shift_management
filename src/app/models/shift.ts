@@ -20,9 +20,12 @@ export interface Shift {
   clock_on_lng: number | 0;
   clock_off_lat: number | 0;
   clock_off_lng: number | 0;
+  clock_on_time: string | null;
+  clock_off_time: string | null;
+  radius: number | null;
+  zoom: number | null;
 }
 
-// Constante para un objeto Shift por defecto
 export const defaultShift: Shift = {
   id: 0,
   shift_type_id: null,
@@ -43,6 +46,9 @@ export const defaultShift: Shift = {
   clock_on_lat: 0,
   clock_on_lng: 0,
   clock_off_lat: 0,
-  clock_off_lng: 0
-
+  clock_off_lng: 0,
+  clock_on_time: null,
+  clock_off_time: null,
+  radius: 0,
+  zoom: 0
 };

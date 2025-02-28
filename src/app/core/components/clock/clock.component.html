@@ -1,6 +1,6 @@
 <div
   *ngIf="isShiftActive && isClockReady"
-  class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center bg-black/70 p-6 rounded-lg z-[9999]">
+  class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center bg-black/70 p-6 rounded-lg z-[5]">
   <div class="mb-6">
     <ng-icon [name]="'heroClockSolid'" class="text-white text-4xl w-32 h-32 animate-pulse"></ng-icon>
   </div>
@@ -22,6 +22,6 @@
 
 
 <div *ngIf="isShiftActive && !isClockReady" class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center bg-black/70 p-6 rounded-lg z-[9999]">
-  <div>Cargando reloj...</div>
+  <div>Loading clock...</div>
 </div>
 
