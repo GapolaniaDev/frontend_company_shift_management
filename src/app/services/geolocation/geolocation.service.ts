@@ -17,6 +17,7 @@ export class GeolocationService {
       navigator.geolocation.watchPosition(position => {
         const {latitude, longitude} = position.coords;
         const currentPosition: google.maps.LatLngLiteral = {lat: latitude, lng: longitude};
+        console.log('currentPosition',currentPosition);
         this.userLocationSubject.next(currentPosition);
       });
     } else {

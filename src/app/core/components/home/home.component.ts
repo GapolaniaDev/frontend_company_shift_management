@@ -32,6 +32,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   isShiftActive = false;
   isThereShift = false;
   private subscriptions: Subscription[] = [];
+  userGeo: google.maps.LatLngLiteral = {lat: 0, lng: 0};
 
   constructor(
     private shiftStateService: ShiftStateService,
@@ -44,7 +45,8 @@ export class HomeComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.subscriptions.push(
       this.shiftStateService.isShiftActive$.subscribe((isShiftActive) => (this.isShiftActive = isShiftActive)),
-      this.shiftStateService.isThereShift$.subscribe((isThereShift) => (this.isThereShift = isThereShift))
+      this.shiftStateService.isThereShift$.subscribe((isThereShift) => (this.isThereShift = isThereShift)),
+      this.geolocationService.userLocation$.subscribe((coords) => {this.userGeo = coords})
     );
     this.refreshShifts();
   }

@@ -64,6 +64,11 @@
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "ssl": false,
+            "sslKey": "key.pem",
+            "sslCert": "cert.pem"
+          },
           "configurations": {
             "production": {
               "buildTarget": "frontend_company_shift_management:build:production"
