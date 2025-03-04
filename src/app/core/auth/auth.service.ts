@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Observable, catchError, map, tap, throwError } from 'rxjs';
 import { ApiService } from '../api.service';
-import {
-  AuthResponse,
-  LoginRequest,
-  RegisterRequest,
-  User
+import { 
+  AuthResponse, 
+  LoginRequest, 
+  RegisterRequest, 
+  User 
 } from '../../models/user.model';
 
 @Injectable({
@@ -60,7 +60,6 @@ export class AuthService {
   getCurrentUser(): Observable<User> {
     if (this.currentUser) {
       return new Observable<User>(observer => {
-        // @ts-ignore
         observer.next(this.currentUser);
         observer.complete();
       });
