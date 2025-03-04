@@ -1,0 +1,196 @@
+<div class="container mx-auto p-4">
+  <h1 class="text-2xl font-bold mb-6">{{ isEditMode ? 'Edit' : 'Create' }} Shift</h1>
+  
+  <!-- Error message -->
+  <div *ngIf="error" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+    <span>{{ error }}</span>
+  </div>
+  
+  <!-- Success message -->
+  <div *ngIf="success" class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
+    <span>{{ success }}</span>
+  </div>
+  
+  <!-- Loading indicator -->
+  <div *ngIf="loading" class="flex justify-center mb-4">
+    <div class="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-blue-500"></div>
+  </div>
+  
+  <div *ngIf="!loading" class="bg-white dark:bg-gray-800 shadow rounded-lg p-6">
+    <form [formGroup]="shiftForm" (ngSubmit)="onSubmit()" class="space-y-6">
+      <!-- Employee Selection -->
+      <div>
+        <label for="employee" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+          Employee <span class="text-red-600">*</span>
+        </label>
+        <select 
+          id="employee" 
+          formControlName="employee_id"
+          class="mt-1 block w-full p-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+          [ngClass]="{'border-red-500': shiftForm.get('employee_id')?.invalid && shiftForm.get('employee_id')?.touched}"
+        >
+          <option [ngValue]="">Select Employee</option>
+          <option *ngFor="let employee of employees" [ngValue]="employee.id">
+            {{ employee.first_name }} {{ employee.last_name }}
+          </option>
+        </select>
+        <p *ngIf="shiftForm.get('employee_id')?.invalid && shiftForm.get('employee_id')?.touched" class="mt-1 text-sm text-red-600">
+          Employee is required
+        </p>
+      </div>
+      
+      <!-- Shift Type Selection -->
+      <div>
+        <label for="shift_type" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+          Shift Type <span class="text-red-600">*</span>
+        </label>
+        <select 
+          id="shift_type" 
+          formControlName="shift_type_id"
+          class="mt-1 block w-full p-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+          [ngClass]="{'border-red-500': shiftForm.get('shift_type_id')?.invalid && shiftForm.get('shift_type_id')?.touched}"
+        >
+          <option [ngValue]="">Select Shift Type</option>
+          <option *ngFor="let type of shiftTypes" [ngValue]="type.id">
+            {{ type.name }}
+          </option>
+        </select>
+        <p *ngIf="shiftForm.get('shift_type_id')?.invalid && shiftForm.get('shift_type_id')?.touched" class="mt-1 text-sm text-red-600">
+          Shift type is required
+        </p>
+      </div>
+      
+      <!-- Dates -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label for="date_start" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+            Start Date & Time <span class="text-red-600">*</span>
+          </label>
+          <input 
+            type="datetime-local" 
+            id="date_start" 
+            formControlName="date_start"
+            class="mt-1 block w-full p-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+            [ngClass]="{'border-red-500': shiftForm.get('date_start')?.invalid && shiftForm.get('date_start')?.touched}"
+          >
+          <p *ngIf="shiftForm.get('date_start')?.invalid && shiftForm.get('date_start')?.touched" class="mt-1 text-sm text-red-600">
+            Start date is required
+          </p>
+        </div>
+        <div>
+          <label for="date_end" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+            End Date & Time <span class="text-red-600">*</span>
+          </label>
+          <input 
+            type="datetime-local" 
+            id="date_end" 
+            formControlName="date_end"
+            class="mt-1 block w-full p-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+            [ngClass]="{'border-red-500': shiftForm.get('date_end')?.invalid && shiftForm.get('date_end')?.touched}"
+          >
+          <p *ngIf="shiftForm.get('date_end')?.invalid && shiftForm.get('date_end')?.touched" class="mt-1 text-sm text-red-600">
+            End date is required
+          </p>
+        </div>
+      </div>
+      
+      <!-- Location -->
+      <div>
+        <label for="location" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+          Location
+        </label>
+        <input 
+          type="text" 
+          id="location" 
+          formControlName="location"
+          class="mt-1 block w-full p-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+        >
+      </div>
+      
+      <!-- Geolocation (could be extended with a map picker) -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label for="location_lat" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+            Latitude
+          </label>
+          <input 
+            type="number" 
+            id="location_lat" 
+            formControlName="location_lat"
+            step="any"
+            class="mt-1 block w-full p-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+          >
+        </div>
+        <div>
+          <label for="location_lng" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+            Longitude
+          </label>
+          <input 
+            type="number" 
+            id="location_lng" 
+            formControlName="location_lng"
+            step="any"
+            class="mt-1 block w-full p-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+          >
+        </div>
+      </div>
+      
+      <!-- Geofence settings -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label for="radius" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+            Radius (meters)
+          </label>
+          <input 
+            type="number" 
+            id="radius" 
+            formControlName="radius"
+            class="mt-1 block w-full p-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+          >
+        </div>
+        <div>
+          <label for="zoom" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+            Map Zoom Level
+          </label>
+          <input 
+            type="number" 
+            id="zoom" 
+            formControlName="zoom"
+            class="mt-1 block w-full p-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+          >
+        </div>
+      </div>
+      
+      <!-- Form Actions -->
+      <div class="flex justify-end space-x-3">
+        <button 
+          type="button" 
+          (click)="resetForm()"
+          class="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+        >
+          Reset
+        </button>
+        <a 
+          routerLink="/shifts" 
+          class="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+        >
+          Cancel
+        </a>
+        <button 
+          type="submit" 
+          [disabled]="shiftForm.invalid || submitting"
+          class="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          <span *ngIf="!submitting">{{ isEditMode ? 'Update' : 'Create' }} Shift</span>
+          <span *ngIf="submitting" class="flex items-center">
+            <svg class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            Processing...
+          </span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
