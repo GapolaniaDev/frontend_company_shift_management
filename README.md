@@ -1,27 +1,100 @@
-# FrontendCompanyShiftManagement
+# Shift Management System - Frontend
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.2.1.
+## Project Purpose
+This Angular-based frontend application serves as the user interface for a comprehensive shift management system. It allows employees to clock in/out, view their schedules, track work hours, and provides administrators with tools to manage shifts, employees, and payment periods. The application uses geolocation services to verify employee clock-in/out locations.
 
-## Development server
+## Prerequisites
+Before you begin, ensure you have met the following requirements:
+- Node.js (v18 or later)
+- npm (comes with Node.js)
+- Angular CLI (v18.x)
+- A modern web browser with geolocation support
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+## Installation
+Follow these steps to install and run the project locally:
 
-## Code scaffolding
+1. Clone the repository:
+   ```bash
+   git clone <repository-url>
+   cd shift_management_docker/frontend
+   ```
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
 
-## Build
+3. Configure environment:
+   - Update the `src/environments/environment.ts` file with your backend API URL
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+4. Start the development server:
+   ```bash
+   ng serve
+   ```
 
-## Running unit tests
+5. Navigate to `http://localhost:4200` in your browser
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+### Using Docker
 
-## Running end-to-end tests
+1. Build the Docker image:
+   ```bash
+   docker build -t shift-management-frontend .
+   ```
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+2. Run the container:
+   ```bash
+   docker run -p 4200:4200 shift-management-frontend
+   ```
 
-## Further help
+## System Usage
+The application includes the following features:
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+- **Authentication**: User login, registration, and password reset functionality
+- **Home Dashboard**: Main view showing current shift status and clock-in/out options
+- **Geolocation**: Tracking of employee locations during clock-in/out operations
+- **Shift Management**: View and manage employee shifts
+- **Employee Management**: Add, edit, and delete employee records
+- **Schedule View**: Calendar-based view of all scheduled shifts
+- **Payment Periods**: Track and manage payment periods
+- **Profile Management**: User profile settings and preferences
+- **Dark Mode**: Toggle between light and dark themes
+
+## Tools and Dependencies
+
+### Core Technologies
+- Angular 18.2.0
+- TypeScript 5.5.2
+- RxJS 7.8.0
+- TailwindCSS 3.4.10
+
+### UI Components
+- Angular Google Maps
+- ng-icons (Heroicons)
+
+### Authentication
+- ngx-cookie-service for token management
+
+### Development Tools
+- Angular CLI
+- Karma for testing
+- Jasmine for unit tests
+
+## Future Features
+Potential future enhancements include:
+- Mobile application support
+- Advanced reporting features
+- Shift swap functionality
+- Integration with payroll systems
+- Push notifications for shift reminders
+
+## Contributions
+Contributions to the project are welcome. Please follow these steps:
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## License
+This project is licensed under the **MIT** License. See the [LICENSE](LICENSE) file for details.
