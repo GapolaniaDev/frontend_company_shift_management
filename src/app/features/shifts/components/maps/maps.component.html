@@ -1,0 +1,37 @@
+<google-map
+  class="w-full h-full"
+  height="100%"
+  width="100%"
+  [center]="center"
+  [zoom]="zoom"
+  [options]="options">
+
+  <!-- Usuario Actual -->
+  <map-marker
+    [position]="center"
+    [options]="markerOptions"
+    [icon]="ICON_USER_LOCATION">
+  </map-marker>
+
+  <!-- Edificio -->
+  <map-marker
+    [position]="buildingPosition"
+    [icon]="BUILDING_ICON">
+  </map-marker>
+  <map-circle [center]="buildingPosition" [radius]="radius" [options]="circleOptions"></map-circle>
+
+  <!-- Clock On -->
+  <map-marker
+    *ngIf="isPositionValid(clockOnPosition)"
+    [position]="clockOnPosition"
+    [icon]="ICON_CLOCK_ON">
+  </map-marker>
+
+  <!-- Clock Off -->
+  <map-marker
+    *ngIf="isPositionValid(clockOffPosition)"
+    [position]="clockOffPosition"
+    [icon]="ICON_CLOCK_OFF">
+  </map-marker>
+
+</google-map>

@@ -3,9 +3,9 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
-import { Shift, ShiftResponse } from '../../../models/shift.model';
-import { ShiftService } from '../../../services/shifts/shift.service';
-import { ConfirmationModalService } from '../../../services/confirmation-modal/confirmation-modal.service';
+import { Shift, ShiftResponse } from '../../models/shift.model';
+import { ShiftService } from '../../services/shift.service';
+import { ConfirmationModalService } from '../../../../shared/services/confirmation-modal/confirmation-modal.service';
 
 @Component({
   selector: 'app-shift-list',
