@@ -34,27 +34,11 @@
         </div>
       </div>
 
-      <div class="flex items-center justify-between">
-        <!-- <div class="flex items-center">
-           <input id="remember-me" formControlName="rememberMe" type="checkbox"
-                  class="h-4 w-4 text-[#1F8C45] focus:ring-[#1F8C45] border-gray-300 rounded">
-           <label for="remember-me" class="ml-2 block text-sm text-gray-900">
-             Remember me
-           </label>
-         </div> -->
-
-        <!--<div class="text-sm">
-          <a routerLink="/forgot-password" class="font-medium text-[#54B5BF] hover:text-[#1F8C45]">
-            Forgot your password?
-          </a>
-        </div>-->
-      </div>
-
       <div>
-        <button type="submit"
+        <!-- Botón con bloqueo y spinner -->
+        <button type="submit" [disabled]="isLoading"
                 class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-[#1D5A73] hover:bg-[#54B5BF] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#1F8C45]">
           <span class="absolute left-0 inset-y-0 flex items-center pl-3">
-            <!-- Icono de candado -->
             <svg class="h-5 w-5 text-[#F2E422] group-hover:text-[#F2E422]" xmlns="http://www.w3.org/2000/svg"
                  viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
               <path fill-rule="evenodd"
@@ -62,18 +46,12 @@
                     clip-rule="evenodd"/>
             </svg>
           </span>
-          Sign in
+          <span *ngIf="!isLoading">Sign in</span>
+          <span *ngIf="isLoading" class="loader"></span>
         </button>
       </div>
     </form>
     <div *ngIf="loginError" class="text-red-500 text-center">{{ loginError }}</div>
-    <!--<div class="text-center">
-      <p class="mt-2 text-sm text-gray-600">
-        Don't have an account?
-        <a routerLink="/register" class="font-medium text-[#54B5BF] hover:text-[#1F8C45]">
-          Sign up here
-        </a>
-      </p>
-    </div>-->
+
   </div>
 </div>

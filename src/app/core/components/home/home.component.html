@@ -1,57 +1,14 @@
-<div class="min-h-screen bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-gray-200">
-  <!-- Map Section -->
-  <div class="h-64 bg-gray-200 dark:bg-gray-600 rounded-b-md shadow mb-4">
-    <iframe
-      src="https://maps.google.com/maps?q=New%20York&t=&z=13&ie=UTF8&iwloc=&output=embed"
-      frameborder="0"
-      class="w-full h-full rounded-t-md"
-      title="Location Map"
-    ></iframe>
-  </div>
-
-  <!-- Main Content -->
-  <div class="p-6">
-    <div class="max-w-xl mx-auto bg-white dark:bg-gray-700 rounded-lg shadow-md p-6">
-      <h1 class="text-2xl font-bold text-center text-gray-900 dark:text-gray-100 mb-4">
-        Clock In / Clock Out
-      </h1>
-
-      <!-- Shift Button -->
-      <div class="text-center mb-4">
-        <button
-          [ngClass]="{
-            'bg-green-500 hover:bg-green-600 dark:bg-green-700 dark:hover:bg-green-600': !isShiftActive,
-            'bg-red-500 hover:bg-red-600 dark:bg-red-700 dark:hover:bg-red-600': isShiftActive
-          }"
-          class="px-8 py-2 text-white rounded-lg shadow"
-          (click)="toggleShift()"
-        >
-          {{ isShiftActive ? 'End Shift' : 'Start Shift' }}
-        </button>
-      </div>
-
-      <!-- Break Button -->
-      <div class="text-center mb-8">
-        <button
-          class="px-8 py-2 text-white bg-blue-500 rounded-lg shadow hover:bg-blue-600 dark:bg-blue-700 dark:hover:bg-blue-600"
-        >
-          Start Break
-        </button>
-      </div>
-
-      <!-- Footer Buttons -->
-      <div class="flex justify-between">
-        <button
-          class="flex-grow mr-4 px-6 py-2 text-white bg-gray-500 rounded-lg shadow hover:bg-gray-600 dark:bg-gray-600 dark:hover:bg-gray-500"
-        >
-          My Request
-        </button>
-        <button
-          class="flex-grow px-6 py-2 text-white bg-gray-700 rounded-lg shadow hover:bg-gray-800 dark:bg-gray-800 dark:hover:bg-gray-700"
-        >
-          My Timesheet
-        </button>
-      </div>
-    </div>
-  </div>
+<div *ngIf="isThereShift" class="relative h-screen">
+  <app-maps class="absolute inset-0 w-full h-full"></app-maps>
+  <app-clock></app-clock>
+  <app-confirmation-modal></app-confirmation-modal>
+  <button (click)="refreshShifts()"
+          aria-label="Reload"
+          title="Reload Page"
+          class="absolute top-20 right-4 bg-white p-3 rounded-md z-10 text-lg shadow-md">
+    <ng-icon [name]="'heroArrowPathSolid'" class="text-gray-800 w-8 h-8"></ng-icon>
+    {{ this.userGeo | json }}
+  </button>
+  <app-shift-details></app-shift-details>
 </div>
+<app-no-shift-details *ngIf="!isThereShift"></app-no-shift-details>

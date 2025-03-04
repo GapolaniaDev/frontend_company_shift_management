@@ -1,8 +1,12 @@
 # Usar Node.js 20 como imagen base
-FROM --platform=linux/arm64 node:20
+FROM --platform=linux/arm64 node:18
 
 # Establecer el directorio de trabajo
 WORKDIR /app
+
+# Instala Angular CLI globalmente
+RUN npm install -g @angular/cli
+
 
 # Copiar package.json y package-lock.json
 COPY package*.json ./

@@ -1,0 +1,11 @@
+button ng-icon:hover {
+  color: #1f8c45;
+  transform: scale(1.2);
+  transition: transform 0.2s, color 0.2s;
+}
+
+button.start-shift-btn:disabled {
+  background-color: #d3d3d3;
+  cursor: not-allowed;
+  opacity: 0.5;
+}
