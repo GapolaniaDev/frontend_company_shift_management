@@ -95,6 +95,7 @@ export class ShiftStateService {
 
             this.zoomSubject.next(shift!.zoom);
             this.radiusSubject.next(shift!.radius);
+            this.isShiftActiveSubject.next(shift?.clock_off_lat != null);
 
             combineLatest([
               this.geolocationService.userLocation$,
