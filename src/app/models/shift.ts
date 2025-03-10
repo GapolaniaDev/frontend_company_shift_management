@@ -52,3 +52,34 @@ export const defaultShift: Shift = {
   radius: 0,
   zoom: 0
 };
+
+export function mapToShift(data: any): Shift {
+  return {
+    ...defaultShift,
+    id: data.id || defaultShift.id,
+    shift_type_id: data.shift_type_id || defaultShift.shift_type_id,
+    employee_id: data.employee_id || defaultShift.employee_id,
+    date_start: data.date_start || defaultShift.date_start,
+    date_end: data.date_end || defaultShift.date_end,
+    total_hours: data.total_hours || defaultShift.total_hours,
+    weekday_code: data.weekday_code || defaultShift.weekday_code,
+    comments: data.comments || defaultShift.comments,
+    replacement_id: data.replacement_id || defaultShift.replacement_id,
+    created_at: data.created_at || defaultShift.created_at,
+    updated_at: data.updated_at || defaultShift.updated_at,
+    status: data.status || defaultShift.status,
+    date_start_employee: data.date_start_employee || defaultShift.date_start_employee,
+    date_finish_employee: data.date_finish_employee || defaultShift.date_finish_employee,
+    location_lat: data.location_lat !== null ? Number(data.location_lat) : defaultShift.location_lat,
+    location_lng: data.location_lng !== null ? Number(data.location_lng) : defaultShift.location_lng,
+    clock_on_lat: data.clock_on_lat !== null ? Number(data.clock_on_lat) : defaultShift.clock_on_lat,
+    clock_on_lng: data.clock_on_lng !== null ? Number(data.clock_on_lng) : defaultShift.clock_on_lng,
+    clock_off_lat: data.clock_off_lat !== null ? Number(data.clock_off_lat) : defaultShift.clock_off_lat,
+    clock_off_lng: data.clock_off_lng !== null ? Number(data.clock_off_lng) : defaultShift.clock_off_lng,
+    clock_on_time: data.clock_on_time || defaultShift.clock_on_time,
+    clock_off_time: data.clock_off_time || defaultShift.clock_off_time,
+    radius: data.radius !== null ? Number(data.radius) : defaultShift.radius,
+    zoom: data.zoom !== null ? Number(data.zoom) : defaultShift.zoom,
+  };
+}
+
