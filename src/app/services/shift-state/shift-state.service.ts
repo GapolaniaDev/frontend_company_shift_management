@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {ShiftsService} from '../shifts/shifts.service';
-import {Shift, defaultShift} from '../../models/shift';
+import {Shift, defaultShift, mapToShift} from '../../models/shift';
 import {finalize} from 'rxjs/operators';
 import {GeoUtilsService} from "../geo-utils/geo-utils.service";
 import {GeolocationService} from "../geolocation/geolocation.service";
@@ -63,39 +63,45 @@ export class ShiftStateService {
       .getShiftsToday()
       .pipe(finalize(hideLoader))
       .subscribe(
-        (data: { success: boolean; shift: Shift | null }) => {
-          this.setShifts(data);
-
+        (data: { success: boolean; data: any | null }) => {
+          const shift = data.success && data.data ? mapToShift(data.data) : null;
+          this.setShifts({success: data.success, shift});
+          console.log(data.success,
+            shift?.location_lat,
+            shift?.location_lng,
+            shift?.radius,
+            shift?.zoom)
           if (
             data.success &&
-            data.shift?.location_lat &&
-            data.shift?.location_lng &&
-            data.shift?.radius &&
-            data.shift?.zoom
+            shift?.location_lat &&
+            shift?.location_lng &&
+            shift?.radius &&
+            shift?.zoom
           ) {
 
             this.setBuildingPosition({
-              lat: Number(data.shift.location_lat),
-              lng: Number(data.shift.location_lng),
+              lat: Number(shift.location_lat),
+              lng: Number(shift.location_lng),
             });
             this.setClockOnPosition({
-              lat: Number(data.shift.clock_on_lat),
-              lng: Number(data.shift.clock_on_lng),
+              lat: Number(shift.clock_on_lat),
+              lng: Number(shift.clock_on_lng),
             });
             this.setClockOffPosition({
-              lat: Number(data.shift.clock_off_lat),
-              lng: Number(data.shift.clock_off_lng),
+              lat: Number(shift.clock_off_lat),
+              lng: Number(shift.clock_off_lng),
             });
 
-            this.zoomSubject.next(data.shift!.zoom);
-            this.radiusSubject.next(data.shift!.radius);
+
+            this.zoomSubject.next(shift!.zoom);
+            this.radiusSubject.next(shift!.radius);
 
             combineLatest([
               this.geolocationService.userLocation$,
               this.buildingPosition$
             ]).subscribe(([userPosition, buildingPosition]) => {
               if (userPosition && buildingPosition) {
-                this.updateZoneStatus(userPosition, buildingPosition, data.shift!.radius!);
+                this.updateZoneStatus(userPosition, buildingPosition, shift!.radius!);
               }
             });
 
