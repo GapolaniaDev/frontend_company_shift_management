@@ -1,12 +1,13 @@
-import {Component, OnDestroy} from '@angular/core';
-import {DatePipe, NgClass} from "@angular/common";
-import {ShiftStateService} from "../../../services/shift-state/shift-state.service";
-import {Shift} from '../../../models/shift';
-import {Subscription} from 'rxjs';
-import {ConfirmationModalService} from "../../../services/confirmation-modal/confirmation-modal.service";
-import {ShiftsService} from "../../../services/shifts/shifts.service";
-import {LoaderService} from "../../../services/loader/loader.service";
-import {GeolocationService} from "../../../services/geolocation/geolocation.service";
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { DatePipe, NgClass } from "@angular/common";
+import { ShiftStateService } from "../../../services/shift-state/shift-state.service";
+import { Shift, ShiftState } from '../../../models/shift';
+import { Subscription } from 'rxjs';
+import { ConfirmationModalService } from "../../../services/confirmation-modal/confirmation-modal.service";
+import { ShiftsService } from "../../../services/shifts/shifts.service";
+import { LoaderService } from "../../../services/loader/loader.service";
+import { GeolocationService } from "../../../services/geolocation/geolocation.service";
+import { TimezoneService } from "../../../services/timezone/timezone.service";
 
 @Component({
   selector: 'app-shift-details',
@@ -18,11 +19,12 @@ import {GeolocationService} from "../../../services/geolocation/geolocation.serv
   templateUrl: './shift-details.component.html',
   styleUrl: './shift-details.component.css'
 })
-export class ShiftDetailsComponent implements OnDestroy {
+export class ShiftDetailsComponent implements OnInit, OnDestroy {
   shifts: { success: boolean; shift: Shift | null } = {success: false, shift: null};
   isShiftActive: boolean = false;
   isInsideBuildingZone: boolean = false;
   userLocation: google.maps.LatLngLiteral = {lat: 0, lng: 0};
+  timezone: string = 'UTC';
 
   private subscriptions: Subscription = new Subscription();
 
@@ -32,31 +34,50 @@ export class ShiftDetailsComponent implements OnDestroy {
     private shiftsService: ShiftsService,
     private loaderService: LoaderService,
     private geolocationService: GeolocationService,
+    private timezoneService: TimezoneService
   ) {
+    // Subscribe to timezone changes
+    this.subscriptions.add(
+      this.timezoneService.timezone$.subscribe(timezone => {
+        this.timezone = timezone;
+        console.log(`Timezone in ShiftDetailsComponent: ${timezone}`);
+      })
+    );
+  }
+  
+  ngOnInit(): void {
+    // Get shift data
     this.subscriptions.add(
       this.shiftStateService.shifts$.subscribe(shifts => {
         this.shifts = shifts;
       })
     );
 
+    // Get shift state
     this.subscriptions.add(
       this.shiftStateService.isShiftActive$.subscribe(isActive => {
         this.isShiftActive = isActive;
       })
     );
 
+    // Get building zone status
     this.subscriptions.add(
       this.shiftStateService.isInsideBuildingZone$.subscribe(isInside => {
         this.isInsideBuildingZone = isInside;
       })
     );
 
-    this.geolocationService.userLocation$.subscribe((coords) => {
-      this.userLocation = coords;
-    });
-
+    // Get user location
+    this.subscriptions.add(
+      this.geolocationService.userLocation$.subscribe((coords) => {
+        this.userLocation = coords;
+      })
+    );
   }
 
+  /**
+   * Toggle shift state (clock on/off)
+   */
   toggleShift(): void {
     const actionType = this.isShiftActive ? 'clock_off' : 'clock_on';
     const confirmationText = `Are you sure you want to ${actionType.replace('_', ' ')}?`;
@@ -67,41 +88,73 @@ export class ShiftDetailsComponent implements OnDestroy {
     );
   }
 
+  /**
+   * Handle shift action (clock on/off) after confirmation
+   * @param actionType The type of action (clock_on or clock_off)
+   */
   private handleShiftAction(actionType: 'clock_on' | 'clock_off'): void {
     this.loaderService.show();
+    
+    // Check if geolocation is supported
     if (!navigator.geolocation) {
       console.error('Geolocation is not supported by this browser.');
+      this.loaderService.hide();
       return;
     }
+    
+    // Get current shift
     const shift = this.shiftStateService.getCurrentShift().shift;
     if (!shift?.id) {
       console.error('Shift ID not found.');
+      this.loaderService.hide();
       return;
     }
-    this.shiftsService.updateClockPosition(shift.id, this.userLocation.lat, this.userLocation.lng, actionType).subscribe({
+    
+    // Update clock position with user location
+    // TimezoneService is used inside ShiftsService automatically
+    this.shiftsService.updateClockPosition(
+      shift.id, 
+      this.userLocation.lat, 
+      this.userLocation.lng, 
+      actionType
+    ).subscribe({
       next: (response: any) => {
-        console.log('next');
         if (response.success) {
-          console.log(response.message);
+          console.log('Clock update response:', response);
+          
+          // Actualizar el estado del turno según el tipo de acción
+          if (actionType === 'clock_on') {
+            this.shiftStateService.setShiftState(ShiftState.STARTED);
+          } else {
+            this.shiftStateService.setShiftState(ShiftState.FINISHED);
+          }
+          
+          // Actualizar la información del turno para obtener los nuevos tiempos
+          this.shiftStateService.fetchShiftsToday(
+            () => console.log('Refreshing shift data after clock action...'),
+            () => console.log('Shift data refreshed after clock action')
+          );
+          
+          // Para compatibilidad con código existente
           this.shiftStateService.setShiftActive(actionType === 'clock_on');
         }
       },
       error: (error) => {
-        console.log('error');
         if (error.status === 403) {
           console.error('Error: Unauthorized.');
         } else if (error.status === 422) {
           console.error('Error:', error.error.error);
+        } else {
+          console.error('Error updating clock:', error);
         }
         this.loaderService.hide();
       },
       complete: () => {
         this.loaderService.hide();
-        console.log('Request completed');
+        console.log('Clock update request completed');
       }
     });
   }
-
 
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
