@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { DatePipe, NgClass } from "@angular/common";
+import { DatePipe, NgClass, NgIf } from "@angular/common";
 import { ShiftStateService } from "../../../services/shift-state/shift-state.service";
 import { Shift, ShiftState } from '../../../models/shift';
 import { Subscription } from 'rxjs';
@@ -9,12 +9,16 @@ import { LoaderService } from "../../../services/loader/loader.service";
 import { GeolocationService } from "../../../services/geolocation/geolocation.service";
 import { TimezoneService } from "../../../services/timezone/timezone.service";
 
+// Make ShiftState enum available for the template
+const ShiftStateEnum = ShiftState;
+
 @Component({
   selector: 'app-shift-details',
   standalone: true,
   imports: [
     DatePipe,
-    NgClass
+    NgClass,
+    NgIf
   ],
   templateUrl: './shift-details.component.html',
   styleUrl: './shift-details.component.css'
@@ -25,6 +29,8 @@ export class ShiftDetailsComponent implements OnInit, OnDestroy {
   isInsideBuildingZone: boolean = false;
   userLocation: google.maps.LatLngLiteral = {lat: 0, lng: 0};
   timezone: string = 'UTC';
+  shiftState: ShiftState = ShiftState.NOT_STARTED;
+  ShiftState = ShiftStateEnum; // Make ShiftState enum available in the template
 
   private subscriptions: Subscription = new Subscription();
 
@@ -53,10 +59,18 @@ export class ShiftDetailsComponent implements OnInit, OnDestroy {
       })
     );
 
-    // Get shift state
+    // Get shift state (active/inactive)
     this.subscriptions.add(
       this.shiftStateService.isShiftActive$.subscribe(isActive => {
         this.isShiftActive = isActive;
+      })
+    );
+    
+    // Get shift state enum value (NOT_STARTED, STARTED, FINISHED)
+    this.subscriptions.add(
+      this.shiftStateService.shiftState$.subscribe(state => {
+        this.shiftState = state;
+        console.log('ShiftDetails - Current shift state:', state);
       })
     );
 

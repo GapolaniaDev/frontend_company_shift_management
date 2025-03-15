@@ -1,6 +1,7 @@
 <div
   class="absolute bottom-8 left-1/2 transform -translate-x-1/2 w-11/12 max-w-2xl bg-black bg-opacity-70 rounded-lg p-6 text-white z-20">
-  <button
+  <!-- Only show the action button if shift is not in FINISHED state -->
+  <button *ngIf="shiftState !== ShiftState.FINISHED"
     [ngClass]="{
         'bg-green-500 hover:bg-green-600': !isShiftActive,
         'bg-red-500 hover:bg-red-600': isShiftActive
