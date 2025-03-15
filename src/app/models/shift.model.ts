@@ -1,3 +1,9 @@
+export enum ShiftState {
+  NOT_STARTED = 0,
+  STARTED = 1,
+  FINISHED = 2
+}
+
 export interface Shift {
   id: number;
   shift_type_id: number;
@@ -15,12 +21,15 @@ export interface Shift {
   zoom?: number;
   clock_on_time?: string;
   clock_off_time?: string;
+  local_clock_on_time?: string; // Hora local de inicio del turno
+  local_clock_off_time?: string; // Hora local de fin del turno
   clock_on_lat?: number;
   clock_on_lng?: number;
   clock_off_lat?: number;
   clock_off_lng?: number;
   created_at: string;
   updated_at: string;
+  state?: ShiftState;
   employee?: any; // Can be expanded to Employee interface
   shift_type?: any; // Can be expanded to ShiftType interface
   replacement?: any; // Can be expanded to Employee interface
@@ -62,10 +71,12 @@ export interface ShiftUpdateRequest {
   location_lng?: number;
   radius?: number;
   zoom?: number;
+  state?: ShiftState;
 }
 
 export interface ClockUpdateRequest {
   lat: number;
   lng: number;
   type: 'clock_on' | 'clock_off';
+  state?: ShiftState;
 }

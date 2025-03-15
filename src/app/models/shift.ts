@@ -1,4 +1,10 @@
 // shift.model.ts
+export enum ShiftState {
+  NOT_STARTED = 0,
+  STARTED = 1,
+  FINISHED = 2
+}
+
 export interface Shift {
   id: number;
   shift_type_id: number | null;
@@ -22,8 +28,11 @@ export interface Shift {
   clock_off_lng: number | 0;
   clock_on_time: string | null;
   clock_off_time: string | null;
+  local_clock_on_time: string | null; // Hora local de inicio del turno
+  local_clock_off_time: string | null; // Hora local de fin del turno (para simetría)
   radius: number | null;
   zoom: number | null;
+  state: ShiftState;
 }
 
 export const defaultShift: Shift = {
@@ -49,8 +58,11 @@ export const defaultShift: Shift = {
   clock_off_lng: 0,
   clock_on_time: null,
   clock_off_time: null,
+  local_clock_on_time: null,
+  local_clock_off_time: null,
   radius: 0,
-  zoom: 0
+  zoom: 0,
+  state: ShiftState.NOT_STARTED
 };
 
 export function mapToShift(data: any): Shift {
@@ -78,8 +90,11 @@ export function mapToShift(data: any): Shift {
     clock_off_lng: data.clock_off_lng !== null ? Number(data.clock_off_lng) : defaultShift.clock_off_lng,
     clock_on_time: data.clock_on_time || defaultShift.clock_on_time,
     clock_off_time: data.clock_off_time || defaultShift.clock_off_time,
+    local_clock_on_time: data.local_clock_on_time || defaultShift.local_clock_on_time,
+    local_clock_off_time: data.local_clock_off_time || defaultShift.local_clock_off_time,
     radius: data.radius !== null ? Number(data.radius) : defaultShift.radius,
     zoom: data.zoom !== null ? Number(data.zoom) : defaultShift.zoom,
+    state: data.state !== undefined && data.state !== null ? Number(data.state) : defaultShift.state,
   };
 }
 
