@@ -8,6 +8,7 @@ import {ForgotPasswordComponent} from "./session/components/forgot-password/forg
 import {PagesNotFoundComponent} from "./core/components/pages-not-found/pages-not-found.component";
 import {TermsConditionsComponent} from "./session/components/terms-conditions/terms-conditions.component";
 import {ScheduleComponent} from "./core/components/schedule/schedule.component";
+import {ShiftHistoryComponent} from "./core/components/shift-history/shift-history.component";
 
 import {EmployeesComponent} from "./core/components/employees/employees.component";
 import {ShiftSettingsComponent} from "./core/components/shift-settings/shift-settings.component";
@@ -44,6 +45,7 @@ export const routes: Routes = [
       {path: 'shift-types', component: ShiftTypesComponent, canActivate: [AuthGuard]},
       {path: 'payment-periods', component: PaymentPeriodsComponent, canActivate: [AuthGuard]},
       {path: 'profile', component: ProfileComponent, canActivate: [AuthGuard]},
+      {path: 'shift-history', component: ShiftHistoryComponent, canActivate: [AuthGuard]},
       {path: '**', component: PagesNotFoundComponent}
     ]
   },

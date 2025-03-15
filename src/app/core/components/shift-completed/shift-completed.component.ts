@@ -1,11 +1,12 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {DatePipe, NgIf} from '@angular/common';
+import {Router} from '@angular/router';
 import {Shift} from '../../../models/shift';
 
 @Component({
   selector: 'app-shift-completed',
   standalone: true,
-  imports: [],
+  imports: [NgIf, DatePipe],
   templateUrl: './shift-completed.component.html',
   styleUrl: './shift-completed.component.css'
 })
@@ -16,7 +17,12 @@ export class ShiftCompletedComponent implements OnInit {
   // Calculated and formatted fields
   formattedStartDateTime: string = '';
   formattedEndDateTime: string = '';
+  startTime: string = '';
+  endTime: string = '';
+  formattedDate: string = '';
   totalHours: string = '';
+
+  constructor(private router: Router) {}
 
   ngOnInit(): void {
     if (this.completedShift) {
@@ -38,9 +44,21 @@ export class ShiftCompletedComponent implements OnInit {
       const startDate = new Date(start);
       const endDate = new Date(end);
 
-      // Format start and end times as "Sunday 16 March 00:30"
-      this.formattedStartDateTime = this.formatDateTime(startDate);
-      this.formattedEndDateTime = this.formatDateTime(endDate);
+      // Format start and end times for different display purposes
+      this.formattedStartDateTime = this.formatDateTime(startDate); // Full date with time
+      this.formattedEndDateTime = this.formatDateTime(endDate);     // Full date with time
+      
+      // Just the time portion for the summary cards
+      this.startTime = startDate.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
+      this.endTime = endDate.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
+      
+      // Date only for the date card
+      this.formattedDate = startDate.toLocaleDateString('en-US', { 
+        weekday: 'long', 
+        year: 'numeric', 
+        month: 'long', 
+        day: 'numeric' 
+      });
 
       // Calculate total hours worked
       const diffMs = endDate.getTime() - startDate.getTime(); // Difference in milliseconds
@@ -48,6 +66,9 @@ export class ShiftCompletedComponent implements OnInit {
       this.totalHours = diffHours.toFixed(2); // Format to two decimal places
     } else {
       this.totalHours = '0'; // Default to 0 hours if start or end times are missing
+      this.startTime = 'N/A';
+      this.endTime = 'N/A';
+      this.formattedDate = 'Not available';
     }
   }
 
@@ -67,4 +88,17 @@ export class ShiftCompletedComponent implements OnInit {
     return date.toLocaleDateString('en-US', options); // Format the date in English
   }
 
+  /**
+   * Navigate to shift history view
+   */
+  viewShiftHistory(): void {
+    this.router.navigate(['/shift-history']);
+  }
+  
+  /**
+   * Close the shift completed screen
+   */
+  closeScreen(): void {
+    this.close.emit();
+  }
 }
