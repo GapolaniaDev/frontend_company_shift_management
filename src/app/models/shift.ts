@@ -11,7 +11,7 @@ export interface Shift {
   employee_id: number | null;
   date_start: string | null;
   date_end: string | null;
-  total_hours: string | null;
+  total_hours: string | number | null;
   weekday_code: string | null;
   comments: string | null;
   replacement_id: number | null;

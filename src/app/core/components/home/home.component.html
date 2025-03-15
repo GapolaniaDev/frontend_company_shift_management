@@ -1,4 +1,5 @@
-<div *ngIf="isThereShift" class="relative h-screen">
+<!-- Main shift view when there's an active shift with state NOT_STARTED or STARTED -->
+<div *ngIf="isThereShift && shiftState !== ShiftState.FINISHED" class="relative h-screen">
   <app-maps class="absolute inset-0 w-full h-full"></app-maps>
   <app-clock></app-clock>
   <app-confirmation-modal></app-confirmation-modal>
@@ -10,4 +11,13 @@
   </button>
   <app-shift-details></app-shift-details>
 </div>
+
+<!-- Shift completed view - shown when shift state is FINISHED -->
+<app-shift-completed
+  *ngIf="isThereShift && shiftState === ShiftState.FINISHED"
+  [completedShift]="getCurrentShift()"
+  (close)="closeCompletedView()">
+</app-shift-completed>
+
+<!-- No shift view - shown when there's no active shift -->
 <app-no-shift-details *ngIf="!isThereShift"></app-no-shift-details>
