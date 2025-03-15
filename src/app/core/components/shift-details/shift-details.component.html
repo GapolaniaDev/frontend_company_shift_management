@@ -18,6 +18,7 @@
       <p><span class="text-gray-400">Time:</span> {{ shifts.shift?.date_start | date: 'shortTime' }}
         - {{ shifts.shift?.date_end | date: 'shortTime' }}</p>
       <p><span class="text-gray-400">Total Hours:</span> {{ shifts.shift?.total_hours }} hours</p>
+      <p><span class="text-gray-400">Timezone:</span> {{ timezone }}</p>
     </div>
     <div>
       <p><span class="text-gray-400">Weekday:</span> {{ shifts.shift?.weekday_code }}</p>
