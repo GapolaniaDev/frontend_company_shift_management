@@ -1,0 +1,42 @@
+/* Calendar Day Styles */
+.calendar-day:hover {
+    background-color: #F9FAFB;
+}
+
+.dark .calendar-day:hover {
+    background-color: #374151;
+}
+
+/* Shift Type Styles */
+.shift-morning {
+    background-color: #FFEDD5;
+    border-left: 4px solid #F97316;
+}
+
+.dark .shift-morning {
+    background-color: rgba(255, 237, 213, 0.15);
+    border-left: 4px solid #F97316;
+    color: #FFEDD5;
+}
+
+.shift-afternoon {
+    background-color: #DBEAFE;
+    border-left: 4px solid #3B82F6;
+}
+
+.dark .shift-afternoon {
+    background-color: rgba(219, 234, 254, 0.15);
+    border-left: 4px solid #3B82F6;
+    color: #DBEAFE;
+}
+
+.shift-night {
+    background-color: #E0E7FF;
+    border-left: 4px solid #4F46E5;
+}
+
+.dark .shift-night {
+    background-color: rgba(224, 231, 255, 0.15);
+    border-left: 4px solid #4F46E5;
+    color: #E0E7FF;
+}

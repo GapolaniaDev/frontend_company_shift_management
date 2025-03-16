@@ -1,16 +1,251 @@
-<div class="bg-gray-100 min-h-screen">
-  <!-- Navegación superior -->
-  <app-navigation-bar></app-navigation-bar>
+<div class="min-h-screen flex flex-col bg-gray-50 pt-20 dark:bg-gray-900 text-gray-800 dark:text-gray-200">
+  <!-- Loading Overlay -->
+  <div *ngIf="calendarService.getCurrentState().isLoading" 
+       class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-xl">
+      <div class="flex items-center space-x-3">
+        <svg class="animate-spin h-8 w-8 text-indigo-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+        <span class="text-lg font-medium text-gray-900 dark:text-white">Loading...</span>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Error Modal -->
+  <div *ngIf="calendarService.getCurrentState().error" 
+       class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-xl max-w-md w-full">
+      <div class="flex flex-col items-center space-y-4">
+        <div class="rounded-full bg-red-100 p-3">
+          <svg class="h-6 w-6 text-red-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+          </svg>
+        </div>
+        <h3 class="text-lg font-medium text-gray-900 dark:text-white">Error</h3>
+        <p class="text-center text-gray-600 dark:text-gray-300">{{ calendarService.getCurrentState().error }}</p>
+        <button 
+          (click)="calendarService.setError(null)"
+          class="mt-4 inline-flex justify-center w-full px-4 py-2 text-sm font-medium text-white bg-red-600 border border-transparent rounded-md shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+  <!-- Main Content -->
+  <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
+    <!-- Controls -->
+    <div class="mb-6 flex flex-col sm:flex-row justify-between items-start sm:items-center space-y-4 sm:space-y-0">
+      <div>
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-white">
+          Shift Calendar
+        </h2>
+        <p class="text-gray-500 dark:text-gray-400">
+          Manage your team's sche dule efficiently
+        </p>
+      </div>
+      <div class="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-3">
+        <div class="relative">
+          <select
+            (change)="changeDepartment($event)"
+            class="appearance-none bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-md py-2 pl-3 pr-10 text-sm font-medium text-gray-700 dark:text-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+            <option *ngFor="let department of calendarService.getDepartments()" [value]="department.id">
+              {{ department.name }}
+            </option>
+          </select>
+          <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700 dark:text-gray-300">
+            <ng-icon name="heroChevronDown" class="text-xs"></ng-icon>
+          </div>
+        </div>
+        <div class="flex space-x-2">
+          <button
+            (click)="calendarService.navigateToPrevious()"
+            class="inline-flex items-center px-3 py-2 border border-gray-300 dark:border-gray-700 shadow-sm text-sm font-medium rounded-md text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+            <ng-icon name="heroChevronLeft" class="mr-1"></ng-icon>
+            Previous
+          </button>
+          <button
+            (click)="calendarService.navigateToToday()"
+            class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+            Today
+          </button>
+          <button
+            (click)="calendarService.navigateToNext()"
+            class="inline-flex items-center px-3 py-2 border border-gray-300 dark:border-gray-700 shadow-sm text-sm font-medium rounded-md text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+            Next
+            <ng-icon name="heroChevronRight" class="ml-1"></ng-icon>
+          </button>
+        </div>
+        <button
+          (click)="addShift()"
+          class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+          <ng-icon name="heroPlus" class="mr-2"></ng-icon>
+          Add Shift
+        </button>
+      </div>
+    </div>
 
-  <!-- Barra de búsqueda -->
-  <app-search-bar></app-search-bar>
+    <!-- Month and Year -->
+    <div class="flex justify-between items-center mb-6">
+      <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+        {{ calendarService.formatMonthYear(calendarService.getCurrentState().currentDate) }}
+      </h3>
+      <div class="flex space-x-2">
+        <button
+          [class.bg-white]="calendarService.getCurrentState().view === 'month'"
+          [class.dark:bg-gray-800]="calendarService.getCurrentState().view === 'month'"
+          [class.border-gray-300]="calendarService.getCurrentState().view === 'month'"
+          [class.dark:border-gray-700]="calendarService.getCurrentState().view === 'month'"
+          [class.text-gray-700]="calendarService.getCurrentState().view === 'month'"
+          [class.dark:text-gray-300]="calendarService.getCurrentState().view === 'month'"
+          [class.hover:bg-gray-50]="calendarService.getCurrentState().view !== 'month'"
+          [class.dark:hover:bg-gray-700]="calendarService.getCurrentState().view !== 'month'"
+          [class.text-gray-500]="calendarService.getCurrentState().view !== 'month'"
+          [class.dark:text-gray-400]="calendarService.getCurrentState().view !== 'month'"
+          (click)="changeView('month')"
+          class="inline-flex items-center px-3 py-1 text-sm font-medium rounded-md border">
+          Month
+        </button>
+        <button
+          [class.bg-white]="calendarService.getCurrentState().view === 'week'"
+          [class.dark:bg-gray-800]="calendarService.getCurrentState().view === 'week'"
+          [class.border-gray-300]="calendarService.getCurrentState().view === 'week'"
+          [class.dark:border-gray-700]="calendarService.getCurrentState().view === 'week'"
+          [class.text-gray-700]="calendarService.getCurrentState().view === 'week'"
+          [class.dark:text-gray-300]="calendarService.getCurrentState().view === 'week'"
+          [class.hover:bg-gray-50]="calendarService.getCurrentState().view !== 'week'"
+          [class.dark:hover:bg-gray-700]="calendarService.getCurrentState().view !== 'week'"
+          [class.text-gray-500]="calendarService.getCurrentState().view !== 'week'"
+          [class.dark:text-gray-400]="calendarService.getCurrentState().view !== 'week'"
+          (click)="changeView('week')"
+          class="inline-flex items-center px-3 py-1 text-sm font-medium rounded-md border">
+          Week
+        </button>
+        <button
+          [class.bg-white]="calendarService.getCurrentState().view === 'day'"
+          [class.dark:bg-gray-800]="calendarService.getCurrentState().view === 'day'"
+          [class.border-gray-300]="calendarService.getCurrentState().view === 'day'"
+          [class.dark:border-gray-700]="calendarService.getCurrentState().view === 'day'"
+          [class.text-gray-700]="calendarService.getCurrentState().view === 'day'"
+          [class.dark:text-gray-300]="calendarService.getCurrentState().view === 'day'"
+          [class.hover:bg-gray-50]="calendarService.getCurrentState().view !== 'day'"
+          [class.dark:hover:bg-gray-700]="calendarService.getCurrentState().view !== 'day'"
+          [class.text-gray-500]="calendarService.getCurrentState().view !== 'day'"
+          [class.dark:text-gray-400]="calendarService.getCurrentState().view !== 'day'"
+          (click)="changeView('day')"
+          class="inline-flex items-center px-3 py-1 text-sm font-medium rounded-md border">
+          Day
+        </button>
+      </div>
+    </div>
 
-  <!-- Encabezado del calendario -->
-  <app-calendar-header></app-calendar-header>
+    <!-- Calendar Legend -->
+    <div class="flex flex-wrap gap-4 mb-4">
+      <div *ngFor="let type of shiftTypes" class="flex items-center">
+        <div class="w-3 h-3 rounded-full" [style.background-color]="type.color"></div>
+        <span class="ml-2 text-sm text-gray-600 dark:text-gray-400">
+          {{ type.name }}
+        </span>
+      </div>
+    </div>
 
-  <!-- Lista de empleados -->
-  <app-employee-list></app-employee-list>
+    <!-- Calendar -->
+    <div class="bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden">
+      <!-- Days of Week -->
+      <div class="grid grid-cols-7 gap-px bg-gray-200 dark:bg-gray-700">
+        <div *ngFor="let day of daysOfWeek" class="bg-white dark:bg-gray-800 py-2 text-center text-sm font-semibold text-gray-900 dark:text-gray-100">
+          {{ day }}
+        </div>
+      </div>
 
-  <!-- Barra de estado -->
-  <app-status-bar></app-status-bar>
+      <!-- Calendar Grid -->
+      <div
+        [ngClass]="getCalendarGridClass()"
+        class="grid gap-px bg-gray-200 dark:bg-gray-700">
+        <!-- Calendar Days -->
+        <div
+          *ngFor="let day of calendarService.getCurrentState().calendar"
+          (click)="selectDay(day)"
+          [class.bg-gray-100]="day.isToday && day.isCurrentMonth"
+          [class.dark:bg-gray-700]="day.isToday && day.isCurrentMonth"
+          [class.text-gray-400]="!day.isCurrentMonth"
+          [class.dark:text-gray-500]="!day.isCurrentMonth"
+          [class.cursor-pointer]="day.isCurrentMonth"
+          class="calendar-day bg-white dark:bg-gray-800 p-2 h-32 sm:h-40">
+          <div class="flex justify-between items-center">
+            <div class="text-sm" [class.font-bold]="day.isToday">
+              {{ day.date.getDate() }}
+            </div>
+            <ng-icon
+              *ngIf="day.isCurrentMonth"
+              name="heroPlus"
+              class="h-4 w-4 text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 cursor-pointer"
+              (click)="openShiftForm(null, day.date); $event.stopPropagation();">
+            </ng-icon>
+          </div>
+
+          <!-- Shifts for this day -->
+          <div *ngFor="let shift of day.shifts"
+               [ngClass]="getShiftClass(shift.shift_type_id)"
+               class="mt-1 p-1 rounded text-xs cursor-pointer hover:opacity-80"
+               (click)="openShiftForm(shift, day.date); $event.stopPropagation();">
+            <div class="font-medium">
+              {{ shift.employee.first_name }} {{ shift.employee.last_name }}
+            </div>
+            <div class="text-gray-500 dark:text-gray-400">
+              {{ formatTime(shift.date_start) }}-{{ formatTime(shift.date_end) }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Team Members -->
+    <div class="mt-8">
+      <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+        Team Members
+      </h3>
+      <div class="bg-white dark:bg-gray-800 shadow rounded-lg overflow-hidden">
+        <ul class="divide-y divide-gray-200 dark:divide-gray-700">
+          <li *ngFor="let employee of calendarService.getEmployees()" class="px-6 py-4 flex items-center justify-between">
+            <div class="flex items-center">
+              <img
+                [src]="employee.photo"
+                [alt]="'Profile picture of ' + employee.name"
+                class="h-10 w-10 rounded-full object-cover bg-gray-200"
+                width="40"
+                height="40"
+              />
+              <div class="ml-3">
+                <p class="text-sm font-medium text-gray-900 dark:text-white">
+                  {{ employee.name }}
+                </p>
+                <p class="text-sm text-gray-500 dark:text-gray-400">
+                  {{ employee.department }}
+                </p>
+              </div>
+            </div>
+            <div class="flex items-center">
+              <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
+                Active
+              </span>
+              <button class="ml-4 text-gray-400 hover:text-gray-500 dark:hover:text-gray-300">
+                <ng-icon name="heroEllipsisVertical"></ng-icon>
+              </button>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </main>
 </div>
+
+<!-- Shift Form Modal -->
+<app-shift-form
+  *ngIf="showShiftForm"
+  [shift]="selectedShift"
+  [date]="selectedDate"
+  (save)="saveShift($event)"
+  (close)="closeShiftForm()">
+</app-shift-form>
