@@ -3,7 +3,6 @@ import {HomeComponent} from './core/components/home/home.component';
 import {LoginComponent} from './session/components/login/login.component';
 import {RegisterComponent} from './session/components/register/register.component';
 import {MainLayoutComponent} from "./main-layout/main-layout.component";
-import {DashboardComponent} from "./core/components/dashboard/dashboard.component";
 import {ForgotPasswordComponent} from "./session/components/forgot-password/forgot-password.component";
 import {PagesNotFoundComponent} from "./core/components/pages-not-found/pages-not-found.component";
 import {TermsConditionsComponent} from "./session/components/terms-conditions/terms-conditions.component";
@@ -38,7 +37,6 @@ export const routes: Routes = [
   {
     path: '', component: MainLayoutComponent, children: [
       {path: 'home', component: HomeComponent, canActivate: [AuthGuard]},
-      {path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard]},
       {path: 'schedule', component: ScheduleComponent, canActivate: [AuthGuard]},
       {path: 'employees', component: EmployeesComponent, canActivate: [AuthGuard]},
       {path: 'shift-settings', component: ShiftSettingsComponent, canActivate: [AuthGuard]},
