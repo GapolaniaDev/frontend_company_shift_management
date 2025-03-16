@@ -15,14 +15,14 @@ import {ShiftSettingsComponent} from "./core/components/shift-settings/shift-set
 import {ShiftTypesComponent} from "./core/components/shift-types/shift-types.component";
 import {PaymentPeriodsComponent} from "./core/components/payment-periods/payment-periods.component";
 import {ProfileComponent} from "./core/components/profile/profile.component";
-import {AuthGuard} from "./guard/auth.guard";
+import {AuthGuard, LoginGuard} from "./guard/auth.guard";
 import {PublicHomeComponent} from "./core/components/public-home/public-home.component";
 import {PublicHomeLayoutComponent} from "./core/layouts/public-home-layout/public-home-layout.component";
 
 export const routes: Routes = [
 
-  {path: 'login', component: LoginComponent},
-  {path: 'register', component: RegisterComponent},
+  {path: 'login', component: LoginComponent, canActivate: [LoginGuard]},
+  {path: 'register', component: RegisterComponent, canActivate: [LoginGuard]},
   {path: 'forgot-password', component: ForgotPasswordComponent},
   {path: 'terms-conditions', component: TermsConditionsComponent},
 
