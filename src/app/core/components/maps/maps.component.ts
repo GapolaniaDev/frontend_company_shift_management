@@ -6,6 +6,7 @@ import {Subscription} from 'rxjs';
 import {ICON_CLOCK_ON, ICON_CLOCK_OFF, ICON_USER_LOCATION, BUILDING_ICON} from "../menu/constants/map.constants";
 import {MapDataService} from "../../../services/map-data/map-data.service";
 import {ShiftStateService} from "../../../services/shift-state/shift-state.service";
+import {DarkModeService} from "../../../services/dark-mode/dark-mode.service";
 
 @Component({
   selector: 'app-maps',
@@ -49,11 +50,23 @@ export class MapsComponent implements OnInit, OnDestroy {
   constructor(
     private mapService: MapService,
     private mapDataService: MapDataService,
-    private shiftStateService: ShiftStateService
+    private shiftStateService: ShiftStateService,
+    private darkModeService: DarkModeService
   ) {
   }
 
   ngOnInit(): void {
+    // Apply theme based on dark mode status
+    this.applyThemeToMap();
+    
+    // Listen for dark mode changes
+    this.subscriptions.add(
+      this.darkModeService.isDarkMode$.subscribe(isDarkMode => {
+        this.applyThemeToMap();
+      })
+    );
+    
+    // Get map data
     this.subscriptions.add(
       this.mapDataService.getMapData(this.radius).subscribe(({center, buildingPosition, isWithinZone}) => {
         this.center = center;
@@ -61,6 +74,14 @@ export class MapsComponent implements OnInit, OnDestroy {
         this.updateCircleColor(isWithinZone);
       })
     );
+  }
+  
+  /**
+   * Apply the current theme to the map
+   */
+  private applyThemeToMap(): void {
+    const isDarkMode = this.darkModeService.getDarkMode();
+    this.options = this.mapService.getMapOptions(isDarkMode);
   }
 
   ngOnDestroy(): void {

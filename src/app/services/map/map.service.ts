@@ -91,6 +91,20 @@ export class MapService {
       },
     ];
   }
+  
+  getLightMapStyles(): google.maps.MapTypeStyle[] {
+    return []; // Default Google Maps style
+  }
+  
+  getMapOptions(isDarkMode: boolean): google.maps.MapOptions {
+    return {
+      styles: isDarkMode ? this.getDarkMapStyles() : this.getLightMapStyles(),
+      disableDefaultUI: false,
+      zoomControl: true,
+      streetViewControl: false,
+      fullscreenControl: false
+    };
+  }
 
   calculateDistance(lat1: number, lng1: number, lat2: number, lng2: number): number {
     const R = 6371e3; // Radio de la Tierra en metros
