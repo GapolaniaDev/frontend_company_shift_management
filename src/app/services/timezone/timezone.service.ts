@@ -5,11 +5,11 @@ import { BehaviorSubject, Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class TimezoneService {
-  private static readonly DEFAULT_TIMEZONE = 'UTC';
-  
+  private static readonly DEFAULT_TIMEZONE = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
   // BehaviorSubject to handle the timezone reactively
   private timezoneSubject = new BehaviorSubject<string>(TimezoneService.DEFAULT_TIMEZONE);
-  
+
   // Observable to subscribe to timezone changes
   public timezone$: Observable<string> = this.timezoneSubject.asObservable();
 
@@ -23,9 +23,10 @@ export class TimezoneService {
    * Uses Intl.DateTimeFormat to get the user's timezone, with UTC as fallback
    */
   private initializeTimezone(): void {
+    console.log('initializing timezone', TimezoneService.DEFAULT_TIMEZONE);
     try {
       const browserTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-      
+
       if (browserTimezone && browserTimezone.trim() !== '') {
         this.timezoneSubject.next(browserTimezone);
         console.log('Timezone initialized:', browserTimezone);

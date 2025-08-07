@@ -22,9 +22,9 @@ interface DayInfo {
   selector: 'app-shift-history',
   standalone: true,
   imports: [
-    CommonModule, 
-    SharedNgIconsModule, 
-    DatePipe, 
+    CommonModule,
+    SharedNgIconsModule,
+    DatePipe,
     AsyncPipe,
     LoaderComponent
   ],
@@ -39,23 +39,23 @@ export class ShiftHistoryComponent implements OnInit, OnDestroy {
   shiftHistory: Shift[] | null = null;
   dateSummary: DateSummary[] | null = null;
   error: string | null = null;
-  
+
   // Navigation limits
   isAtPastLimit = false;
   isAtFutureLimit = false;
-  
+
   // Days for display
   days: DayInfo[] = [];
-  
+
   // Destroy subject for subscription cleanup
   private destroy$ = new Subject<void>();
-  
+
   constructor(
     private router: Router,
     private shiftHistoryService: ShiftHistoryService,
     private loaderService: LoaderService
   ) {}
-  
+
   ngOnInit(): void {
     // Subscribe to the shift history state
     this.shiftHistoryService.state$
@@ -67,26 +67,32 @@ export class ShiftHistoryComponent implements OnInit, OnDestroy {
         this.shiftHistory = state.shiftHistory;
         this.dateSummary = state.dateSummary;
         this.error = state.error;
-        
+
         // Update navigation limits
         this.isAtPastLimit = this.shiftHistoryService.isAtPastLimit(this.selectedDate);
         this.isAtFutureLimit = this.shiftHistoryService.isAtFutureLimit(this.selectedDate);
-        
+
         // If loading, show loader
         if (this.loading) {
           this.loaderService.show();
         } else {
           this.loaderService.hide();
         }
-        
+
         // Generate days from date summary
         this.generateDays();
       });
-    
+
     // Initial load with today's date
     this.loadData(this.shiftHistoryService.formatDateToYYYYMMDD(new Date()));
   }
-  
+
+  getDuration(minutes: any): string {
+    const h = Math.floor(minutes / 60);
+    const m = minutes % 60;
+    return `${h}H ${m}M `;
+  }
+
   /**
    * Load data for a specific date
    */
@@ -101,26 +107,26 @@ export class ShiftHistoryComponent implements OnInit, OnDestroy {
         }
       });
   }
-  
+
   /**
    * Generate days array from date summary
    */
   generateDays(): void {
     // Clear previous days
     this.days = [];
-    
+
     // If date summary is null, the service will generate it
     if (!this.dateSummary) {
       this.shiftHistoryService.updateDateSummaryIfNeeded();
       return; // Will be called again after state update
     }
-    
+
     const today = this.shiftHistoryService.formatDateToYYYYMMDD(new Date());
-    
+
     // Map date summary to day info
     this.dateSummary.forEach(summary => {
       const date = new Date(summary.date);
-      
+
       this.days.push({
         date: summary.date,
         dayName: date.toLocaleDateString('en-US', { weekday: 'long' }),
@@ -131,7 +137,7 @@ export class ShiftHistoryComponent implements OnInit, OnDestroy {
       });
     });
   }
-  
+
   /**
    * Select a specific day
    */
@@ -139,17 +145,17 @@ export class ShiftHistoryComponent implements OnInit, OnDestroy {
     if (this.loading || day.date === this.selectedDate) {
       return; // Don't reload if already loading or already selected
     }
-    
+
     // Update the selected day and load data
     this.loadData(day.date);
   }
-  
+
   /**
    * Navigate to the next day
    */
   nextDay(): void {
     if (this.loading || this.isAtFutureLimit) return;
-    
+
     this.shiftHistoryService.navigateToNextDay()
       .pipe(takeUntil(this.destroy$))
       .subscribe({
@@ -159,13 +165,13 @@ export class ShiftHistoryComponent implements OnInit, OnDestroy {
         }
       });
   }
-  
+
   /**
    * Navigate to the previous day
    */
   previousDay(): void {
     if (this.loading || this.isAtPastLimit) return;
-    
+
     this.shiftHistoryService.navigateToPreviousDay()
       .pipe(takeUntil(this.destroy$))
       .subscribe({
@@ -175,44 +181,44 @@ export class ShiftHistoryComponent implements OnInit, OnDestroy {
         }
       });
   }
-  
+
   /**
    * Format a date for display in the UI
    */
   formatDate(dateString: string): string {
     if (!dateString) return '';
     const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', { 
-      weekday: 'long', 
-      year: 'numeric', 
-      month: 'long', 
-      day: 'numeric' 
+    return date.toLocaleDateString('en-US', {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
     });
   }
-  
+
   /**
    * Format time for display in the UI
    */
   formatTime(dateString: string): string {
     if (!dateString) return '';
     const date = new Date(dateString);
-    return date.toLocaleTimeString('en-US', { 
-      hour: '2-digit', 
+    return date.toLocaleTimeString('en-US', {
+      hour: '2-digit',
       minute: '2-digit',
-      hour12: true 
+      hour12: true
     });
   }
-  
+
   /**
    * Get start and end time from a shift
    */
   getShiftTimes(shift: Shift): string {
     let startTime = shift.date_start ? this.formatTime(shift.date_start) : '';
     let endTime = shift.date_end ? this.formatTime(shift.date_end) : '';
-    
+
     return `${startTime} - ${endTime}`;
   }
-  
+
   /**
    * Calculate total hours for a shift
    */
@@ -224,16 +230,16 @@ export class ShiftHistoryComponent implements OnInit, OnDestroy {
       const diffHours = diffMs / (1000 * 60 * 60);
       return diffHours.toFixed(1);
     }
-    
+
     return shift.total_hours?.toString() || '0';
   }
-  
+
   /**
    * Get text description for shift state
    */
   getShiftStateText(state?: ShiftState): string {
     if (state === undefined || state === null) return 'UNKNOWN';
-    
+
     switch (state) {
       case ShiftState.NOT_STARTED:
         return 'NOT STARTED';
@@ -245,14 +251,14 @@ export class ShiftHistoryComponent implements OnInit, OnDestroy {
         return 'UNKNOWN';
     }
   }
-  
+
   /**
    * Navigate back to the previous screen
    */
   goBack(): void {
     this.router.navigate(['/home']);
   }
-  
+
   ngOnDestroy(): void {
     // Cleanup subscriptions
     this.destroy$.next();

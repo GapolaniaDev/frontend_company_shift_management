@@ -9,6 +9,17 @@ import {
   heroMoonSolid,
 } from '@ng-icons/heroicons/solid';
 
+import {
+  heroChevronLeft,
+  heroChevronRight,
+  heroPlus,
+  heroCalendarDays,
+  heroUserCircle,
+  heroChevronDown,
+  heroEllipsisVertical,
+  heroXMark
+} from '@ng-icons/heroicons/outline';
+
 @NgModule({
   imports: [
     NgIconsModule.withIcons({
@@ -17,7 +28,16 @@ import {
       heroSunSolid,
       heroCalendarDaysSolid,
       heroClockSolid,
-      heroMoonSolid
+      heroMoonSolid,
+      // Outline icons
+      heroChevronLeft,
+      heroChevronRight,
+      heroPlus,
+      heroCalendarDays,
+      heroUserCircle,
+      heroChevronDown,
+      heroEllipsisVertical,
+      heroXMark
     })
   ],
   exports: [NgIconsModule]

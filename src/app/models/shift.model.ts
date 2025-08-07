@@ -11,6 +11,7 @@ export interface Shift {
   date_start: string;
   date_end: string;
   total_hours?: number;
+  total_minutes?: number;
   weekday_code?: string;
   comments?: string;
   replacement_id?: number;
