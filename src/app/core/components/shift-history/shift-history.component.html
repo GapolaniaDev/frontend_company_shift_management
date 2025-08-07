@@ -1,0 +1,237 @@
+<div class="container mx-auto pb-8 px-4 pt-20">
+  <!-- Date Navigation -->
+  <div class="bg-[#192b47] text-white py-6 rounded-2xl shadow-lg mb-5">
+    <!-- Month/Year display -->
+    <div class="px-6 mb-4 flex justify-between items-center">
+      <button
+        [disabled]="loading || isAtPastLimit"
+        [ngClass]="{'opacity-50 cursor-not-allowed': loading || isAtPastLimit, 'text-white/70 hover:text-white cursor-pointer': !loading && !isAtPastLimit}"
+        (click)="previousDay()">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd"
+                d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
+                clip-rule="evenodd"/>
+        </svg>
+      </button>
+      <div class="text-lg font-bold tracking-wide">{{ selectedDate | date:'MMMM yyyy' }}</div>
+      <button
+        [disabled]="loading || isAtFutureLimit"
+        [ngClass]="{'opacity-50 cursor-not-allowed': loading || isAtFutureLimit, 'text-white/70 hover:text-white cursor-pointer': !loading && !isAtFutureLimit}"
+        (click)="nextDay()">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd"
+                d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                clip-rule="evenodd"/>
+        </svg>
+      </button>
+    </div>
+
+    <div class="flex justify-center items-center">
+      <div class="flex space-x-3 overflow-x-auto px-4 py-2">
+        <!-- Date summary with days -->
+        <ng-container *ngFor="let day of days">
+          <div
+            [ngClass]="{
+              'bg-blue-500 text-white shadow-md transform scale-105': day.isSelected,
+              'bg-[#25365c] text-white/90 hover:bg-[#2b4070]': !day.isSelected
+            }"
+            [class.pointer-events-none]="loading"
+            (click)="selectDay(day)"
+            class="text-center px-5 py-4 rounded-xl cursor-pointer transition-all duration-200 flex flex-col items-center min-w-[70px]">
+            <span
+              class="text-xs uppercase tracking-wider font-medium mb-1 opacity-80">{{ day.dayName.substring(0, 3) }}</span>
+            <span class="text-xl font-bold mb-1">{{ day.dayNumber }}</span>
+            <div class="h-1.5 w-1.5 rounded-full"
+                 [ngClass]="{
+                  'bg-green-400': day.hasShift,
+                  'bg-transparent': !day.hasShift,
+                  'animate-pulse': day.isToday
+                }">
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+
+    <div class="flex justify-center items-center mt-5 pb-1">
+      <div class="text-xl font-bold tracking-wide text-center">
+        {{ selectedDate | date:'EEEE, MMMM d' }}
+      </div>
+    </div>
+  </div>
+
+  <!-- Current Shift Details Card (if exists for selected date) -->
+  <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg mb-6 overflow-hidden min-h-[200px]">
+    <ng-container *ngIf="currentShift; else noCurrentShift">
+      <!-- Card Header with gradient -->
+      <div class="bg-gradient-to-r from-blue-600 to-indigo-700 py-4 px-6">
+        <div class="flex justify-between items-center">
+          <div class="text-white">
+            <h3 class="text-xl font-bold tracking-tight">Current Shift</h3>
+            <p class="text-blue-100 text-sm">{{ formatDate(currentShift.date_start) }}</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <!-- Shift status indicator -->
+            <div class="px-2 py-1 text-xs font-bold rounded-md"
+                 [ngClass]="{
+                   'bg-yellow-400 text-yellow-900': currentShift.state === 0,
+                   'bg-green-400 text-green-900': currentShift.state === 1,
+                   'bg-blue-400 text-blue-900': currentShift.state === 2
+                 }">
+              {{ getShiftStateText(currentShift.state) }}
+            </div>
+            <div class="bg-blue-500 text-white py-1 px-3 rounded-full font-bold text-sm">
+              {{ getDuration(currentShift.total_minutes) }}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card Body -->
+      <div class="p-6">
+        <div class="flex items-center mb-4">
+          <div class="h-12 w-12 bg-slate-200 rounded-full flex items-center justify-center mr-4">
+            <span class="text-blue-600 font-bold text-lg">{{ currentShift.employee?.name?.charAt(0) || 'E' }}</span>
+          </div>
+          <div>
+            <div class="text-lg font-bold text-slate-800 dark:text-white">
+              {{ currentShift.employee?.name || 'Employee' }}
+            </div>
+            <div class="text-slate-500 dark:text-slate-300 text-sm">
+              Employee
+            </div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+          <div class="bg-slate-50 dark:bg-slate-700 p-4 rounded-lg">
+            <div class="flex items-center text-slate-500 dark:text-slate-400 mb-1 text-sm font-medium">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24"
+                   stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+              TIME
+            </div>
+            <div class="text-base font-bold text-slate-800 dark:text-white flex items-center">
+              <span
+                class="text-blue-600 dark:text-blue-400">{{ formatTime((currentShift.clock_on_time) ? currentShift.clock_on_time : currentShift.date_start) }}
+                </span>
+              <span class="mx-2 text-slate-400">—</span>
+              <span
+                class="text-blue-600 dark:text-blue-400">{{ formatTime((currentShift.clock_off_time) ? currentShift.clock_off_time : currentShift.date_end) }}</span>
+            </div>
+          </div>
+
+          <div *ngIf="currentShift.location" class="bg-slate-50 dark:bg-slate-700 p-4 rounded-lg">
+            <div class="flex items-center text-slate-500 dark:text-slate-400 mb-1 text-sm font-medium">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24"
+                   stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+              </svg>
+              LOCATION
+            </div>
+            <div class="text-slate-800 dark:text-white">
+              {{ currentShift.location }}
+            </div>
+          </div>
+        </div>
+
+        <!-- Comments Section -->
+        <div class="border-t border-slate-200 dark:border-slate-700 pt-4">
+          <div class="text-slate-600 dark:text-slate-300 font-semibold mb-2">Comments</div>
+          <div class="text-slate-700 dark:text-slate-400 text-sm p-3 bg-slate-50 dark:bg-slate-800 rounded-lg">
+            {{ currentShift.comments || 'No comments available.' }}
+          </div>
+        </div>
+      </div>
+    </ng-container>
+
+    <!-- No Shift Card for selected date -->
+    <ng-template #noCurrentShift>
+      <div class="bg-white dark:bg-gray-800 p-8 text-center min-h-[200px] flex flex-col justify-center items-center">
+        <div
+          class="w-20 h-20 mx-auto bg-slate-100 dark:bg-slate-700 rounded-full flex items-center justify-center mb-4">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-slate-400" fill="none" viewBox="0 0 24 24"
+               stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+        </div>
+        <h3 class="text-xl font-bold text-slate-700 dark:text-slate-200 mb-2">No Shift Found</h3>
+        <p class="text-slate-500 dark:text-slate-400">No hay turno actual asignado para esta fecha.</p>
+      </div>
+    </ng-template>
+  </div>
+
+  <!-- Shift History Section -->
+  <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden mt-4">
+    <div class="bg-gradient-to-r from-slate-700 to-slate-800 py-4 px-6">
+      <h2 class="text-lg font-bold text-white">
+        Shift History
+      </h2>
+    </div>
+
+    <ng-container *ngIf="shiftHistory && shiftHistory.length > 0; else noShiftHistory">
+      <div class="divide-y divide-slate-100 dark:divide-slate-700">
+        <!-- Repeat for each historical shift -->
+        <ng-container *ngFor="let shift of shiftHistory">
+          <div class="p-4 hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors">
+            <div class="flex justify-between items-center">
+              <div>
+                <div class="text-slate-800 dark:text-slate-200 font-bold">
+                  {{ shift.employee?.name || 'Employee' }}
+                </div>
+                <div class="text-slate-500 dark:text-slate-400 text-sm">
+                  {{ formatDate(shift.date_start) }}
+                </div>
+              </div>
+              <div class="flex items-center">
+                <div
+                  class="bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 text-sm font-medium py-1 px-3 rounded-full">
+                  {{ formatTime((shift.clock_on_time) ? shift.clock_on_time : shift.date_start) }}
+                  - {{ formatTime((shift.clock_off_time) ? shift.clock_off_time : shift.date_end) }}
+                </div>
+                <div
+                  class="bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 text-sm font-medium py-1 px-3 rounded-full">
+                  {{ getDuration(shift.total_minutes) }}
+                </div>
+                <!-- Shift status indicator -->
+                <div class="ml-2 px-2 py-1 text-xs font-bold rounded-md"
+                     [ngClass]="{
+                       'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300': shift.state === 0,
+                       'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300': shift.state === 1,
+                       'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300': shift.state === 2
+                     }">
+                  {{ getShiftStateText(shift.state) }}
+                </div>
+                <button class="ml-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path
+                      d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z"/>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </ng-container>
+
+    <ng-template #noShiftHistory>
+      <div class="p-8 text-center">
+        <div
+          class="w-16 h-16 mx-auto bg-slate-100 dark:bg-slate-700 rounded-full flex items-center justify-center mb-4">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-slate-400" fill="none" viewBox="0 0 24 24"
+               stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+          </svg>
+        </div>
+        <h3 class="text-lg font-bold text-slate-700 dark:text-slate-200 mb-2">No Shift History</h3>
+        <p class="text-slate-500 dark:text-slate-400">No hay turnos registrados para esta lista.</p>
+      </div>
+    </ng-template>
+  </div>
+</div>
