@@ -1,7 +1,7 @@
 <div class="min-h-screen flex flex-col bg-gray-50 pt-20 dark:bg-gray-900 text-gray-800 dark:text-gray-200">
   <!-- Loading Overlay -->
-  <div *ngIf="calendarService.getCurrentState().isLoading" 
-       class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+  <div *ngIf="calendarService.getCurrentState().isLoading"
+       class="fixed inset-0 bg-black bg-opacity-20 flex items-center justify-center z-50">
     <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-xl">
       <div class="flex items-center space-x-3">
         <svg class="animate-spin h-8 w-8 text-indigo-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -12,10 +12,10 @@
       </div>
     </div>
   </div>
-  
+
   <!-- Error Modal -->
-  <div *ngIf="calendarService.getCurrentState().error" 
-       class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+  <div *ngIf="calendarService.getCurrentState().error"
+       class="fixed inset-0 bg-black bg-opacity-20 flex items-center justify-center z-50">
     <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-xl max-w-md w-full">
       <div class="flex flex-col items-center space-y-4">
         <div class="rounded-full bg-red-100 p-3">
@@ -25,7 +25,7 @@
         </div>
         <h3 class="text-lg font-medium text-gray-900 dark:text-white">Error</h3>
         <p class="text-center text-gray-600 dark:text-gray-300">{{ calendarService.getCurrentState().error }}</p>
-        <button 
+        <button
           (click)="calendarService.setError(null)"
           class="mt-4 inline-flex justify-center w-full px-4 py-2 text-sm font-medium text-white bg-red-600 border border-transparent rounded-md shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
           Close
@@ -42,7 +42,7 @@
           Shift Calendar
         </h2>
         <p class="text-gray-500 dark:text-gray-400">
-          Manage your team's sche dule efficiently
+          Manage your team's schedule efficiently
         </p>
       </div>
       <div class="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-3">
