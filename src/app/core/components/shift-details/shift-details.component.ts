@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { DatePipe, NgClass, NgIf } from "@angular/common";
+import {DatePipe, JsonPipe, NgClass, NgIf} from "@angular/common";
 import { ShiftStateService } from "../../../services/shift-state/shift-state.service";
 import { Shift, ShiftState } from '../../../models/shift';
 import { Subscription } from 'rxjs';
@@ -18,7 +18,8 @@ const ShiftStateEnum = ShiftState;
   imports: [
     DatePipe,
     NgClass,
-    NgIf
+    NgIf,
+    JsonPipe
   ],
   templateUrl: './shift-details.component.html',
   styleUrl: './shift-details.component.css'
@@ -50,7 +51,7 @@ export class ShiftDetailsComponent implements OnInit, OnDestroy {
       })
     );
   }
-  
+
   ngOnInit(): void {
     // Get shift data
     this.subscriptions.add(
@@ -65,7 +66,7 @@ export class ShiftDetailsComponent implements OnInit, OnDestroy {
         this.isShiftActive = isActive;
       })
     );
-    
+
     // Get shift state enum value (NOT_STARTED, STARTED, FINISHED)
     this.subscriptions.add(
       this.shiftStateService.shiftState$.subscribe(state => {
@@ -108,14 +109,14 @@ export class ShiftDetailsComponent implements OnInit, OnDestroy {
    */
   private handleShiftAction(actionType: 'clock_on' | 'clock_off'): void {
     this.loaderService.show();
-    
+
     // Check if geolocation is supported
     if (!navigator.geolocation) {
       console.error('Geolocation is not supported by this browser.');
       this.loaderService.hide();
       return;
     }
-    
+
     // Get current shift
     const shift = this.shiftStateService.getCurrentShift().shift;
     if (!shift?.id) {
@@ -123,32 +124,32 @@ export class ShiftDetailsComponent implements OnInit, OnDestroy {
       this.loaderService.hide();
       return;
     }
-    
+
     // Update clock position with user location
     // TimezoneService is used inside ShiftsService automatically
     this.shiftsService.updateClockPosition(
-      shift.id, 
-      this.userLocation.lat, 
-      this.userLocation.lng, 
+      shift.id,
+      this.userLocation.lat,
+      this.userLocation.lng,
       actionType
     ).subscribe({
       next: (response: any) => {
         if (response.success) {
           console.log('Clock update response:', response);
-          
+
           // Actualizar el estado del turno según el tipo de acción
           if (actionType === 'clock_on') {
             this.shiftStateService.setShiftState(ShiftState.STARTED);
           } else {
             this.shiftStateService.setShiftState(ShiftState.FINISHED);
           }
-          
+
           // Actualizar la información del turno para obtener los nuevos tiempos
           this.shiftStateService.fetchShiftsToday(
             () => console.log('Refreshing shift data after clock action...'),
             () => console.log('Shift data refreshed after clock action')
           );
-          
+
           // Para compatibilidad con código existente
           this.shiftStateService.setShiftActive(actionType === 'clock_on');
         }
@@ -168,6 +169,41 @@ export class ShiftDetailsComponent implements OnInit, OnDestroy {
         console.log('Clock update request completed');
       }
     });
+  }
+
+  /**
+   * Get formatted time string for display
+   * Backend sends UTC dates with Z suffix, but specifies target timezone separately
+   */
+  getFormattedTime(dateString: string, timezoneString: string): string {
+    if (!dateString) return '';
+
+    try {
+      // Backend format: "2025-08-07T14:30:00.000000Z" (UTC) with timezone "Australia/Adelaide"
+      // We need to convert from UTC to the specified timezone
+
+      // Parse the UTC date string (the Z indicates it's UTC)
+      const utcDate = new Date(dateString);
+
+      // Log for debugging
+      console.log(`Converting UTC date: ${dateString} to timezone: ${timezoneString}`);
+      console.log(`UTC Date object: ${utcDate}`);
+
+      // Format the time in the specified timezone
+      const formattedTime = utcDate.toLocaleTimeString('en-US', {
+        timeZone: timezoneString || 'Australia/Adelaide',
+        hour: 'numeric',
+        minute: '2-digit',
+        hour12: true
+      });
+
+      console.log(`Formatted time: ${formattedTime}`);
+      return formattedTime;
+
+    } catch (error) {
+      console.error('Error formatting time:', error, { dateString, timezoneString });
+      return dateString;
+    }
   }
 
   ngOnDestroy(): void {
