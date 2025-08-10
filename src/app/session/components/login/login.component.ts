@@ -58,4 +58,58 @@ export class LoginComponent implements OnInit {
     }
   }
 
+  onGoogleLogin(): void {
+    this.isLoading = true;
+    this.loginError = '';
+
+    this.loginService.googleLogin().subscribe({
+      next: (response) => {
+        if (response && response.token) {
+          this.router.navigate(['/home']);
+        } else {
+          this.loginError = 'Google login failed. Please try again.';
+        }
+        this.isLoading = false;
+      },
+      error: (error) => {
+        console.error('Google login error:', error);
+        if (error.status === 0) {
+          this.loginError = 'Unable to connect to the server. Please check your internet connection.';
+        } else if (error.status >= 500) {
+          this.loginError = 'An internal server error occurred. Please try again later.';
+        } else {
+          this.loginError = error.error?.message || 'Google login failed. Please try again.';
+        }
+        this.isLoading = false;
+      }
+    });
+  }
+
+  onFacebookLogin(): void {
+    this.isLoading = true;
+    this.loginError = '';
+
+    this.loginService.facebookLogin().subscribe({
+      next: (response) => {
+        if (response && response.token) {
+          this.router.navigate(['/home']);
+        } else {
+          this.loginError = 'Facebook login failed. Please try again.';
+        }
+        this.isLoading = false;
+      },
+      error: (error) => {
+        console.error('Facebook login error:', error);
+        if (error.status === 0) {
+          this.loginError = 'Unable to connect to the server. Please check your internet connection.';
+        } else if (error.status >= 500) {
+          this.loginError = 'An internal server error occurred. Please try again later.';
+        } else {
+          this.loginError = error.error?.message || 'Facebook login failed. Please try again.';
+        }
+        this.isLoading = false;
+      }
+    });
+  }
+
 }
