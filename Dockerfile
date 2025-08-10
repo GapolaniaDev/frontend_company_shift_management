@@ -1,27 +1,21 @@
-# Usar Node.js 20 como imagen base
-FROM --platform=linux/arm64 node:18
+# Angular dev: usa Node 20 (alpine = más liviano)
+FROM node:20-alpine
 
-# Establecer el directorio de trabajo
 WORKDIR /app
 
-# Instala Angular CLI globalmente
-RUN npm install -g @angular/cli
+# Evita prompts de analytics y mejora file-watching en Docker
+ENV NG_CLI_ANALYTICS=ci
+ENV CHOKIDAR_USEPOLLING=true
 
-
-# Copiar package.json y package-lock.json
+# Instala deps
 COPY package*.json ./
+RUN npm ci
 
-# Instalar todas las dependencias, incluyendo las opcionales
-RUN npm install
-
-# Copiar el resto del código fuente
+# Copia el código
 COPY . .
 
-# Exponer puerto 4200
+# Expone el puerto del dev server
 EXPOSE 4200
 
-# Asegurar que Angular se sirva en todas las IPs
-ENV HOST 0.0.0.0
-
-# Comando por defecto para correr Angular
-CMD ["tail", "-f", "/dev/null"]
+# Ejecuta Angular CLI sirviendo en 0.0.0.0
+CMD ["npx", "ng", "serve", "--host", "0.0.0.0", "--port", "4200", "--poll", "2000"]
