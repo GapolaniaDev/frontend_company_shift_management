@@ -33,6 +33,9 @@ export class ShiftListComponent implements OnInit, OnDestroy {
   // For cleanup
   private destroy$ = new Subject<void>();
 
+  // Expose Math to template
+  Math = Math;
+
   constructor(
     private shiftService: ShiftService,
     private confirmationModalService: ConfirmationModalService
