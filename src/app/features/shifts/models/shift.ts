@@ -12,7 +12,9 @@ export interface Shift {
   employee_id: number | null;
   employee?: any;
   date_start: string | null;
+  date_start_timezone: string | null;
   date_end: string | null;
+  date_end_timezone: string | null;
   total_hours: string | number | null;
   weekday_code: string | null;
   comments: string | null;
@@ -44,7 +46,9 @@ export const defaultShift: Shift = {
   shift_type: null,
   employee_id: null,
   date_start: null,
+  date_start_timezone: null,
   date_end: null,
+  date_end_timezone: null,
   total_hours: null,
   weekday_code: null,
   comments: null,
@@ -76,7 +80,9 @@ export function mapToShift(data: any): Shift {
     shift_type_id: data.shift_type_id || defaultShift.shift_type_id,
     employee_id: data.employee_id || defaultShift.employee_id,
     date_start: data.date_start || defaultShift.date_start,
+    date_start_timezone: data.date_start_timezone || defaultShift.date_start_timezone,
     date_end: data.date_end || defaultShift.date_end,
+    date_end_timezone: data.date_end_timezone || defaultShift.date_end_timezone,
     total_hours: data.total_hours || defaultShift.total_hours,
     weekday_code: data.weekday_code || defaultShift.weekday_code,
     comments: data.comments || defaultShift.comments,

@@ -45,4 +45,34 @@ export class LoginService {
     localStorage.removeItem(this.tokenKey);
   }
 
+  googleLogin(): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/auth/google`, {}).pipe(
+      map(response => {
+        if (response && response.token) {
+          localStorage.setItem(this.tokenKey, response.token);
+        }
+        return response;
+      }),
+      catchError(error => {
+        console.error('Error with Google login', error);
+        throw error;
+      })
+    );
+  }
+
+  facebookLogin(): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/auth/facebook`, {}).pipe(
+      map(response => {
+        if (response && response.token) {
+          localStorage.setItem(this.tokenKey, response.token);
+        }
+        return response;
+      }),
+      catchError(error => {
+        console.error('Error with Facebook login', error);
+        throw error;
+      })
+    );
+  }
+
 }

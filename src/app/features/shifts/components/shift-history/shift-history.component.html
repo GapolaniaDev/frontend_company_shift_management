@@ -8,7 +8,9 @@
         [ngClass]="{'opacity-50 cursor-not-allowed': loading || isAtPastLimit, 'text-white/70 hover:text-white cursor-pointer': !loading && !isAtPastLimit}"
         (click)="previousDay()">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-          <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
+          <path fill-rule="evenodd"
+                d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
+                clip-rule="evenodd"/>
         </svg>
       </button>
       <div class="text-lg font-bold tracking-wide">{{ selectedDate | date:'MMMM yyyy' }}</div>
@@ -17,7 +19,9 @@
         [ngClass]="{'opacity-50 cursor-not-allowed': loading || isAtFutureLimit, 'text-white/70 hover:text-white cursor-pointer': !loading && !isAtFutureLimit}"
         (click)="nextDay()">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-          <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+          <path fill-rule="evenodd"
+                d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                clip-rule="evenodd"/>
         </svg>
       </button>
     </div>
@@ -34,10 +38,11 @@
             [class.pointer-events-none]="loading"
             (click)="selectDay(day)"
             class="text-center px-5 py-4 rounded-xl cursor-pointer transition-all duration-200 flex flex-col items-center min-w-[70px]">
-            <span class="text-xs uppercase tracking-wider font-medium mb-1 opacity-80">{{ day.dayName.substring(0,3) }}</span>
+            <span
+              class="text-xs uppercase tracking-wider font-medium mb-1 opacity-80">{{ day.dayName.substring(0, 3) }}</span>
             <span class="text-xl font-bold mb-1">{{ day.dayNumber }}</span>
             <div class="h-1.5 w-1.5 rounded-full"
-                [ngClass]="{
+                 [ngClass]="{
                   'bg-green-400': day.hasShift,
                   'bg-transparent': !day.hasShift,
                   'animate-pulse': day.isToday
@@ -76,7 +81,7 @@
               {{ getShiftStateText(currentShift.state) }}
             </div>
             <div class="bg-blue-500 text-white py-1 px-3 rounded-full font-bold text-sm">
-              {{ calculateTotalHours(currentShift) }}H
+              {{ getDuration(currentShift.total_minutes) }}
             </div>
           </div>
         </div>
@@ -101,8 +106,10 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
           <div class="bg-slate-50 dark:bg-slate-700 p-4 rounded-lg">
             <div class="flex items-center text-slate-500 dark:text-slate-400 mb-1 text-sm font-medium">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24"
+                   stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
               </svg>
               TIME
             </div>
@@ -115,9 +122,12 @@
 
           <div *ngIf="currentShift.location" class="bg-slate-50 dark:bg-slate-700 p-4 rounded-lg">
             <div class="flex items-center text-slate-500 dark:text-slate-400 mb-1 text-sm font-medium">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24"
+                   stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
               </svg>
               LOCATION
             </div>
@@ -140,9 +150,11 @@
     <!-- No Shift Card for selected date -->
     <ng-template #noCurrentShift>
       <div class="bg-white dark:bg-gray-800 p-8 text-center min-h-[200px] flex flex-col justify-center items-center">
-        <div class="w-20 h-20 mx-auto bg-slate-100 dark:bg-slate-700 rounded-full flex items-center justify-center mb-4">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        <div
+          class="w-20 h-20 mx-auto bg-slate-100 dark:bg-slate-700 rounded-full flex items-center justify-center mb-4">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-slate-400" fill="none" viewBox="0 0 24 24"
+               stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
           </svg>
         </div>
         <h3 class="text-xl font-bold text-slate-700 dark:text-slate-200 mb-2">No Shift Found</h3>
@@ -188,7 +200,8 @@
                 </div>
                 <button class="ml-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
                   <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                    <path d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z" />
+                    <path
+                      d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z"/>
                   </svg>
                 </button>
               </div>
@@ -200,9 +213,11 @@
 
     <ng-template #noShiftHistory>
       <div class="p-8 text-center">
-        <div class="w-16 h-16 mx-auto bg-slate-100 dark:bg-slate-700 rounded-full flex items-center justify-center mb-4">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+        <div
+          class="w-16 h-16 mx-auto bg-slate-100 dark:bg-slate-700 rounded-full flex items-center justify-center mb-4">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-slate-400" fill="none" viewBox="0 0 24 24"
+               stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
           </svg>
         </div>
         <h3 class="text-lg font-bold text-slate-700 dark:text-slate-200 mb-2">No Shift History</h3>

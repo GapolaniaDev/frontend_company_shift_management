@@ -2,12 +2,12 @@
   class="absolute bottom-8 left-1/2 transform -translate-x-1/2 w-11/12 max-w-2xl bg-black bg-opacity-70 rounded-lg p-6 text-white z-20">
   <!-- Only show the action button if shift is not in FINISHED state -->
   <button *ngIf="shiftState !== ShiftState.FINISHED"
-    [ngClass]="{
+          [ngClass]="{
         'bg-green-500 hover:bg-green-600': !isShiftActive,
         'bg-red-500 hover:bg-red-600': isShiftActive
       }"
-    class="start-shift-btn w-full text-white py-3 rounded-md text-lg mb-6 transition"
-    (click)="toggleShift()" [disabled]="!isInsideBuildingZone"
+          class="start-shift-btn w-full text-white py-3 rounded-md text-lg mb-6 transition"
+          (click)="toggleShift()" [disabled]="!isInsideBuildingZone"
   >
     {{ isShiftActive ? 'End Shift' : 'Start Shift' }}
   </button>
@@ -16,8 +16,9 @@
     <div>
       <h2 class="text-gray-300 font-semibold mb-2">Shift Details:</h2>
       <p><span class="text-gray-400">Date:</span> {{ shifts.shift?.date_start | date: 'fullDate' }}</p>
-      <p><span class="text-gray-400">Time:</span> {{ shifts.shift?.date_start | date: 'shortTime' }}
-        - {{ shifts.shift?.date_end | date: 'shortTime' }}</p>
+      <p><span
+        class="text-gray-400">Time:</span> {{ shifts.shift?.date_start | date:'shortTime' }}
+        -- {{ shifts.shift?.date_end | date:'shortTime' }}</p>
       <p><span class="text-gray-400">Total Hours:</span> {{ shifts.shift?.total_hours }} hours</p>
       <p><span class="text-gray-400">Timezone:</span> {{ timezone }}</p>
     </div>
