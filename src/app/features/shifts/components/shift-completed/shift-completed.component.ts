@@ -6,7 +6,7 @@ import {Shift} from "@features/shifts/models/shift";
 @Component({
   selector: 'app-shift-completed',
   standalone: true,
-  imports: [NgIf, DatePipe],
+  imports: [],
   templateUrl: './shift-completed.component.html',
   styleUrl: './shift-completed.component.css'
 })
@@ -15,12 +15,12 @@ export class ShiftCompletedComponent implements OnInit {
   @Output() close = new EventEmitter<void>();
 
   // Calculated and formatted fields
-  formattedStartDateTime: string = '
-  formattedEndDateTime: string = '
-  startTime: string = '
-  endTime: string = '
-  formattedDate: string = '
-  totalHours: string = '
+  formattedStartDateTime: string = '';
+  formattedEndDateTime: string = '';
+  startTime: string = '';
+  endTime: string = '';
+  formattedDate: string = '';
+  totalHours: string = '';
 
   constructor(private router: Router) {}
 
@@ -47,17 +47,17 @@ export class ShiftCompletedComponent implements OnInit {
       // Format start and end times for different display purposes
       this.formattedStartDateTime = this.formatDateTime(startDate); // Full date with time
       this.formattedEndDateTime = this.formatDateTime(endDate);     // Full date with time
-      
+
       // Just the time portion for the summary cards
       this.startTime = startDate.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
       this.endTime = endDate.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
-      
+
       // Date only for the date card
-      this.formattedDate = startDate.toLocaleDateString('en-US', { 
-        weekday: 'long', 
-        year: 'numeric', 
-        month: 'long', 
-        day: 'numeric' 
+      this.formattedDate = startDate.toLocaleDateString('en-US', {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
       });
 
       // Calculate total hours worked
@@ -94,7 +94,7 @@ export class ShiftCompletedComponent implements OnInit {
   viewShiftHistory(): void {
     this.router.navigate(['/shift-history']);
   }
-  
+
   /**
    * Close the shift completed screen
    */

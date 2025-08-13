@@ -1,20 +1,21 @@
-import { Injectable } from '@angular/core'
-import { Observable } from 'rxjs'
-import { ApiService } from '@core/services/api.service'
-import { 
-  AssignSupervisorRequest, 
-  Employee, 
-  EmployeeCreateRequest, 
-  EmployeeResponse, 
-  EmployeeUpdateRequest 
-} from '../../models/employee.model
+import {Injectable} from '@angular/core'
+import {Observable} from 'rxjs'
+import {ApiService} from '@core/services/api.service'
+import {
+  AssignSupervisorRequest,
+  Employee,
+  EmployeeCreateRequest,
+  EmployeeResponse,
+  EmployeeUpdateRequest
+} from "@features/employees";
 
 @Injectable({
   providedIn: 'root'
 })
 export class EmployeeService {
 
-  constructor(private apiService: ApiService) { }
+  constructor(private apiService: ApiService) {
+  }
 
   /**
    * Get all employees with optional filters
@@ -113,7 +114,7 @@ export class EmployeeService {
    * @returns Observable of the assignment response
    */
   assignSupervisor(employeeId: number, supervisorId: number): Observable<any> {
-    const data: AssignSupervisorRequest = { supervisor_id: supervisorId };
+    const data: AssignSupervisorRequest = {supervisor_id: supervisorId};
     return this.apiService.post<any>(`employees/${employeeId}/assign-supervisor`, data);
   }
 }

@@ -1,4 +1,4 @@
-import { Shift } from './shift
+import {Shift} from "@features/shifts";
 
 export interface DateSummary {
   date: string;

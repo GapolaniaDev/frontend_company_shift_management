@@ -7,7 +7,6 @@ import {MenuComponent} from "../../components/menu/menu.component";
   selector: 'app-public-home-layout',
   standalone: true,
   imports: [
-    RouterLink,
     RouterOutlet
   ],
   templateUrl: './public-home-layout.component.html',

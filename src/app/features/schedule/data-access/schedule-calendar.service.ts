@@ -1,11 +1,11 @@
-import { Injectable } from '@angular/core'
-import { BehaviorSubject, Observable, catchError, switchMap, tap, of } from 'rxjs'
-import { Shift } from "@features/shifts/models/shift";
-import { ShiftService } from '../../data-access/shift.service'
-import { HttpClient, HttpParams } from '@angular/common/http'
-import { environment } from '../../../../environments/environment
+import {Injectable} from '@angular/core'
+import {BehaviorSubject, Observable, catchError, switchMap, tap, of} from 'rxjs'
+import {Shift} from "@features/shifts/models/shift";
+import {ShiftService} from "@core/services/shifts/shift.service";
+import {HttpClient, HttpParams} from '@angular/common/http'
+import {environment} from '../../../../environments/environment'
 
-export type CalendarViewType = 'month' | 'week' | 'day
+export type CalendarViewType = 'month' | 'week' | 'day'
 
 export interface Department {
   id: number;
@@ -41,11 +41,11 @@ export interface ScheduleState {
 })
 export class ScheduleCalendarService {
   private departments: Department[] = [
-    { id: 1, name: 'All Departments' },
-    { id: 2, name: 'IT Department' },
-    { id: 3, name: 'Customer Service' },
-    { id: 4, name: 'Sales' },
-    { id: 5, name: 'Operations' }
+    {id: 1, name: 'All Departments'},
+    {id: 2, name: 'IT Department'},
+    {id: 3, name: 'Customer Service'},
+    {id: 4, name: 'Sales'},
+    {id: 5, name: 'Operations'}
   ];
 
   // Mock employees data
@@ -77,200 +77,7 @@ export class ScheduleCalendarService {
   ];
 
   // Mock shifts data
-  private mockShifts: Shift[] = [
-    // Morning shifts
-    {
-      id: 1,
-      employee_id: 1,
-      shift_type_id: 1,
-      date_start: '2023-08-02T06:00:00.000Z',
-      date_end: '2023-08-02T14:00:00.000Z',
-      created_at: '2023-07-01T00:00:00.000Z',
-      updated_at: '2023-07-01T00:00:00.000Z',
-      employee: { first_name: 'John', last_name: 'Smith', ...this.employees[0] },
-      shift_type: { id: 1, name: 'Morning Shift', color: '#FFEDD5', border_color: '#F97316' }
-    },
-    {
-      id: 2,
-      employee_id: 4,
-      shift_type_id: 1,
-      date_start: '2023-08-07T06:00:00.000Z',
-      date_end: '2023-08-07T14:00:00.000Z',
-      created_at: '2023-07-01T00:00:00.000Z',
-      updated_at: '2023-07-01T00:00:00.000Z',
-      employee: { first_name: 'Emily', last_name: 'Wilson', ...this.employees[3] },
-      shift_type: { id: 1, name: 'Morning Shift', color: '#FFEDD5', border_color: '#F97316' }
-    },
-    {
-      id: 3,
-      employee_id: 3,
-      shift_type_id: 1,
-      date_start: '2023-08-13T06:00:00.000Z',
-      date_end: '2023-08-13T14:00:00.000Z',
-      created_at: '2023-07-01T00:00:00.000Z',
-      updated_at: '2023-07-01T00:00:00.000Z',
-      employee: { first_name: 'Mike', last_name: 'Davis', ...this.employees[2] },
-      shift_type: { id: 1, name: 'Morning Shift', color: '#FFEDD5', border_color: '#F97316' }
-    },
-    {
-      id: 4,
-      employee_id: 2,
-      shift_type_id: 1,
-      date_start: '2023-08-17T06:00:00.000Z',
-      date_end: '2023-08-17T14:00:00.000Z',
-      created_at: '2023-07-01T00:00:00.000Z',
-      updated_at: '2023-07-01T00:00:00.000Z',
-      employee: { first_name: 'Sarah', last_name: 'Johnson', ...this.employees[1] },
-      shift_type: { id: 1, name: 'Morning Shift', color: '#FFEDD5', border_color: '#F97316' }
-    },
-    {
-      id: 5,
-      employee_id: 1,
-      shift_type_id: 1,
-      date_start: '2023-08-23T06:00:00.000Z',
-      date_end: '2023-08-23T14:00:00.000Z',
-      created_at: '2023-07-01T00:00:00.000Z',
-      updated_at: '2023-07-01T00:00:00.000Z',
-      employee: { first_name: 'John', last_name: 'Smith', ...this.employees[0] },
-      shift_type: { id: 1, name: 'Morning Shift', color: '#FFEDD5', border_color: '#F97316' }
-    },
-    {
-      id: 6,
-      employee_id: 4,
-      shift_type_id: 1,
-      date_start: '2023-08-29T06:00:00.000Z',
-      date_end: '2023-08-29T14:00:00.000Z',
-      created_at: '2023-07-01T00:00:00.000Z',
-      updated_at: '2023-07-01T00:00:00.000Z',
-      employee: { first_name: 'Emily', last_name: 'Wilson', ...this.employees[3] },
-      shift_type: { id: 1, name: 'Morning Shift', color: '#FFEDD5', border_color: '#F97316' }
-    },
-
-    // Afternoon shifts
-    {
-      id: 7,
-      employee_id: 2,
-      shift_type_id: 2,
-      date_start: '2023-08-03T14:00:00.000Z',
-      date_end: '2023-08-03T22:00:00.000Z',
-      created_at: '2023-07-01T00:00:00.000Z',
-      updated_at: '2023-07-01T00:00:00.000Z',
-      employee: { first_name: 'Sarah', last_name: 'Johnson', ...this.employees[1] },
-      shift_type: { id: 2, name: 'Afternoon Shift', color: '#DBEAFE', border_color: '#3B82F6' }
-    },
-    {
-      id: 8,
-      employee_id: 1,
-      shift_type_id: 2,
-      date_start: '2023-08-08T14:00:00.000Z',
-      date_end: '2023-08-08T22:00:00.000Z',
-      created_at: '2023-07-01T00:00:00.000Z',
-      updated_at: '2023-07-01T00:00:00.000Z',
-      employee: { first_name: 'John', last_name: 'Smith', ...this.employees[0] },
-      shift_type: { id: 2, name: 'Afternoon Shift', color: '#DBEAFE', border_color: '#3B82F6' }
-    },
-    {
-      id: 9,
-      employee_id: 4,
-      shift_type_id: 2,
-      date_start: '2023-08-15T14:00:00.000Z',
-      date_end: '2023-08-15T22:00:00.000Z',
-      created_at: '2023-07-01T00:00:00.000Z',
-      updated_at: '2023-07-01T00:00:00.000Z',
-      employee: { first_name: 'Emily', last_name: 'Wilson', ...this.employees[3] },
-      shift_type: { id: 2, name: 'Afternoon Shift', color: '#DBEAFE', border_color: '#3B82F6' }
-    },
-    {
-      id: 10,
-      employee_id: 3,
-      shift_type_id: 2,
-      date_start: '2023-08-19T14:00:00.000Z',
-      date_end: '2023-08-19T22:00:00.000Z',
-      created_at: '2023-07-01T00:00:00.000Z',
-      updated_at: '2023-07-01T00:00:00.000Z',
-      employee: { first_name: 'Mike', last_name: 'Davis', ...this.employees[2] },
-      shift_type: { id: 2, name: 'Afternoon Shift', color: '#DBEAFE', border_color: '#3B82F6' }
-    },
-    {
-      id: 11,
-      employee_id: 2,
-      shift_type_id: 2,
-      date_start: '2023-08-25T14:00:00.000Z',
-      date_end: '2023-08-25T22:00:00.000Z',
-      created_at: '2023-07-01T00:00:00.000Z',
-      updated_at: '2023-07-01T00:00:00.000Z',
-      employee: { first_name: 'Sarah', last_name: 'Johnson', ...this.employees[1] },
-      shift_type: { id: 2, name: 'Afternoon Shift', color: '#DBEAFE', border_color: '#3B82F6' }
-    },
-    {
-      id: 12,
-      employee_id: 1,
-      shift_type_id: 2,
-      date_start: '2023-08-31T14:00:00.000Z',
-      date_end: '2023-08-31T22:00:00.000Z',
-      created_at: '2023-07-01T00:00:00.000Z',
-      updated_at: '2023-07-01T00:00:00.000Z',
-      employee: { first_name: 'John', last_name: 'Smith', ...this.employees[0] },
-      shift_type: { id: 2, name: 'Afternoon Shift', color: '#DBEAFE', border_color: '#3B82F6' }
-    },
-
-    // Night shifts
-    {
-      id: 13,
-      employee_id: 3,
-      shift_type_id: 3,
-      date_start: '2023-08-05T22:00:00.000Z',
-      date_end: '2023-08-06T06:00:00.000Z',
-      created_at: '2023-07-01T00:00:00.000Z',
-      updated_at: '2023-07-01T00:00:00.000Z',
-      employee: { first_name: 'Mike', last_name: 'Davis', ...this.employees[2] },
-      shift_type: { id: 3, name: 'Night Shift', color: '#E0E7FF', border_color: '#4F46E5' }
-    },
-    {
-      id: 14,
-      employee_id: 2,
-      shift_type_id: 3,
-      date_start: '2023-08-10T22:00:00.000Z',
-      date_end: '2023-08-11T06:00:00.000Z',
-      created_at: '2023-07-01T00:00:00.000Z',
-      updated_at: '2023-07-01T00:00:00.000Z',
-      employee: { first_name: 'Sarah', last_name: 'Johnson', ...this.employees[1] },
-      shift_type: { id: 3, name: 'Night Shift', color: '#E0E7FF', border_color: '#4F46E5' }
-    },
-    {
-      id: 15,
-      employee_id: 1,
-      shift_type_id: 3,
-      date_start: '2023-08-15T22:00:00.000Z',
-      date_end: '2023-08-16T06:00:00.000Z',
-      created_at: '2023-07-01T00:00:00.000Z',
-      updated_at: '2023-07-01T00:00:00.000Z',
-      employee: { first_name: 'John', last_name: 'Smith', ...this.employees[0] },
-      shift_type: { id: 3, name: 'Night Shift', color: '#E0E7FF', border_color: '#4F46E5' }
-    },
-    {
-      id: 16,
-      employee_id: 4,
-      shift_type_id: 3,
-      date_start: '2023-08-21T22:00:00.000Z',
-      date_end: '2023-08-22T06:00:00.000Z',
-      created_at: '2023-07-01T00:00:00.000Z',
-      updated_at: '2023-07-01T00:00:00.000Z',
-      employee: { first_name: 'Emily', last_name: 'Wilson', ...this.employees[3] },
-      shift_type: { id: 3, name: 'Night Shift', color: '#E0E7FF', border_color: '#4F46E5' }
-    },
-    {
-      id: 17,
-      employee_id: 3,
-      shift_type_id: 3,
-      date_start: '2023-08-27T22:00:00.000Z',
-      date_end: '2023-08-28T06:00:00.000Z',
-      created_at: '2023-07-01T00:00:00.000Z',
-      updated_at: '2023-07-01T00:00:00.000Z',
-      employee: { first_name: 'Mike', last_name: 'Davis', ...this.employees[2] },
-      shift_type: { id: 3, name: 'Night Shift', color: '#E0E7FF', border_color: '#4F46E5' }
-    }
-  ];
+  private mockShifts: Shift[] = [];
 
   private apiUrl = environment.apiUrl;
 
@@ -324,15 +131,15 @@ export class ScheduleCalendarService {
       }
     }, 10000); // 10 seconds timeout
 
-    const { startDate, endDate, view } = this.getCurrentState();
-    const viewType = 'monthly // Always use monthly as backend doesn't do aggregation
+    const {startDate, endDate, view} = this.getCurrentState();
+    const viewType = 'monthly'; // Always use monthly as backend doesnt do aggregation
 
     const params = new HttpParams()
       .set('start_date', startDate)
       .set('end_date', endDate)
       .set('view_type', viewType);
 
-    return this.http.get<ShiftRangeResponse>(`${this.apiUrl}/shifts/by-range`, { params })
+    return this.http.get<ShiftRangeResponse>(`${this.apiUrl}/shifts/by-range`, {params})
       .pipe(
         tap(response => {
           if (response.success) {
@@ -346,7 +153,7 @@ export class ScheduleCalendarService {
         }),
         catchError(error => {
           console.log('Error capturado en el catchError:', error);
-          const errorMessage = error.error?.message || 'An error occurred while fetching shifts
+          const errorMessage = error.error?.message || 'An error occurred while fetching shifts';
           this.setError(errorMessage);
           this.setLoading(false);
 
@@ -386,18 +193,18 @@ export class ScheduleCalendarService {
 
   // Set loading state
   setLoading(isLoading: boolean): void {
-    this.updateState({ isLoading });
+    this.updateState({isLoading});
   }
 
   // Set current view (month, week, day)
   setView(view: CalendarViewType): void {
-    this.updateState({ view });
+    this.updateState({view});
     this.updateDateRange(); // This will trigger loading shifts and generating calendar
   }
 
   // Set selected department
   setDepartment(department: Department): void {
-    this.updateState({ selectedDepartment: department });
+    this.updateState({selectedDepartment: department});
     // No need to reload data from API when changing department filter
     this.generateCalendar();
   }
@@ -406,12 +213,12 @@ export class ScheduleCalendarService {
 
   // Set error state
   setError(error: string | null): void {
-    this.updateState({ error });
+    this.updateState({error});
   }
 
   // Update date range based on current view and date
   updateDateRange(): void {
-    const { currentDate, view } = this.getCurrentState();
+    const {currentDate, view} = this.getCurrentState();
     let startDate: Date, endDate: Date;
 
     switch (view) {
@@ -445,7 +252,7 @@ export class ScheduleCalendarService {
 
   // Navigate to previous period (month, week, or day)
   navigateToPrevious(): void {
-    const { currentDate, view } = this.getCurrentState();
+    const {currentDate, view} = this.getCurrentState();
     const newDate = new Date(currentDate);
 
     switch (view) {
@@ -460,13 +267,13 @@ export class ScheduleCalendarService {
         break;
     }
 
-    this.updateState({ currentDate: newDate });
+    this.updateState({currentDate: newDate});
     this.updateDateRange();
   }
 
   // Navigate to next period (month, week, or day)
   navigateToNext(): void {
-    const { currentDate, view } = this.getCurrentState();
+    const {currentDate, view} = this.getCurrentState();
     const newDate = new Date(currentDate);
 
     switch (view) {
@@ -481,13 +288,13 @@ export class ScheduleCalendarService {
         break;
     }
 
-    this.updateState({ currentDate: newDate });
+    this.updateState({currentDate: newDate});
     this.updateDateRange();
   }
 
   // Navigate to today
   navigateToToday(): void {
-    this.updateState({ currentDate: new Date() });
+    this.updateState({currentDate: new Date()});
     this.updateDateRange();
   }
 
@@ -498,7 +305,7 @@ export class ScheduleCalendarService {
 
   // Get employee list for team section
   getEmployees(): any[] {
-    const { selectedDepartment } = this.getCurrentState();
+    const {selectedDepartment} = this.getCurrentState();
     if (selectedDepartment && selectedDepartment.id !== 1) { // Not "All Departments"
       return this.employees.filter(e => e.department === selectedDepartment.name);
     }
@@ -507,7 +314,7 @@ export class ScheduleCalendarService {
 
   // Generate the calendar days based on current view and date
   private generateCalendar(): void {
-    const { currentDate, view, selectedDepartment } = this.getCurrentState();
+    const {currentDate, view, selectedDepartment} = this.getCurrentState();
     let calendar: CalendarDay[] = [];
 
     switch (view) {
@@ -535,7 +342,7 @@ export class ScheduleCalendarService {
       }));
     }
 
-    this.updateState({ calendar });
+    this.updateState({calendar});
   }
 
   // Generate month calendar (5-6 rows of 7 days)
@@ -637,9 +444,9 @@ export class ScheduleCalendarService {
     if (!this.mockShifts || !Array.isArray(this.mockShifts)) {
       return []; // Return empty array if mockShifts is undefined, null, or not an array
     }
-    
+
     return this.mockShifts.filter(shift => {
-      const shiftDate = new Date(shift.date_start);
+      const shiftDate = new Date((shift.date_start) ? shift.date_start : '');
       return this.isSameDay(date, shiftDate);
     });
   }
@@ -655,11 +462,12 @@ export class ScheduleCalendarService {
 
   // Format date for display: Month YYYY
   formatMonthYear(date: Date): string {
-    return date.toLocaleString('default', { month: 'long', year: 'numeric' });
+    return date.toLocaleString('default', {month: 'long', year: 'numeric'});
   }
 
   // Get time string from date
-  formatShiftTime(dateStr: string): string {
+  formatShiftTime(dateStr: string | null): string {
+    if (!dateStr) return '';
     return new Date(dateStr).toLocaleTimeString('en-US', {
       hour: 'numeric',
       minute: '2-digit',
@@ -692,7 +500,7 @@ export class ScheduleCalendarService {
     if (!shift.employee_id || !shift.shift_type_id || !shift.date_start || !shift.date_end) {
       this.setError('Missing required shift data');
       this.setLoading(false);
-      return of({ success: false, message: 'Missing required shift data' });
+      return of({success: false, message: 'Missing required shift data'});
     }
 
     // Create a proper shift data object to send to the API
@@ -715,10 +523,10 @@ export class ScheduleCalendarService {
         });
       }),
       catchError(error => {
-        const errorMessage = error.error?.message || 'An error occurred while creating the shift
+        const errorMessage = error.error?.message || 'An error occurred while creating the shift';
         this.setError(errorMessage);
         this.setLoading(false);
-        return of({ success: false, message: errorMessage });
+        return of({success: false, message: errorMessage});
       }),
       tap(() => this.setLoading(false))
     );
@@ -726,7 +534,7 @@ export class ScheduleCalendarService {
 
   // Select a day
   selectDay(date: Date): void {
-    this.updateState({ currentDate: date });
+    this.updateState({currentDate: date});
 
     if (this.getCurrentState().view !== 'day') {
       this.setView('day'); // This will trigger updateDateRange

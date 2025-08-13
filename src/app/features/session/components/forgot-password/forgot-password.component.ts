@@ -5,7 +5,6 @@ import {RouterLink, RouterLinkActive} from "@angular/router";
   selector: 'app-forgot-password',
   standalone: true,
   imports: [
-    RouterLinkActive,
     RouterLink
   ],
   templateUrl: './forgot-password.component.html',

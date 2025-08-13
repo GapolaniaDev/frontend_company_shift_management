@@ -8,7 +8,9 @@ export enum ShiftState {
 export interface Shift {
   id: number;
   shift_type_id: number | null;
+  shift_type?: any;
   employee_id: number | null;
+  employee?: any;
   date_start: string | null;
   date_end: string | null;
   total_hours: string | number | null;
@@ -33,11 +35,13 @@ export interface Shift {
   radius: number | null;
   zoom: number | null;
   state: ShiftState;
+  location?: string;
 }
 
 export const defaultShift: Shift = {
   id: 0,
   shift_type_id: null,
+  shift_type: null,
   employee_id: null,
   date_start: null,
   date_end: null,

@@ -1,13 +1,13 @@
 import { inject, Injectable } from '@angular/core'
 import { HttpClient } from '@angular/common/http'
 import { Observable } from 'rxjs'
-import { 
-  AssignSupervisorRequest, 
-  Employee, 
-  EmployeeCreateRequest, 
-  EmployeeResponse, 
-  EmployeeUpdateRequest 
-} from '../models/employee.model
+import {
+  AssignSupervisorRequest,
+  Employee,
+  EmployeeCreateRequest,
+  EmployeeResponse,
+  EmployeeUpdateRequest
+} from '../models/employee.model';
 import { environment } from '@env/environment';
 
 @Injectable({

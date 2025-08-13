@@ -1,6 +1,5 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing
-
-import { StatusBarComponent } from './status-bar.component
+import {ComponentFixture, TestBed} from "@angular/core/testing";
+import {StatusBarComponent} from "@features/schedule";
 
 describe('StatusBarComponent', () => {
   let component: StatusBarComponent;
@@ -10,7 +9,7 @@ describe('StatusBarComponent', () => {
     await TestBed.configureTestingModule({
       imports: [StatusBarComponent]
     })
-    .compileComponents();
+      .compileComponents();
 
     fixture = TestBed.createComponent(StatusBarComponent);
     component = fixture.componentInstance;

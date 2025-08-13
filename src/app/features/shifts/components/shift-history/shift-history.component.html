@@ -3,8 +3,8 @@
   <div class="bg-[#192b47] text-white py-6 rounded-2xl shadow-lg mb-5">
     <!-- Month/Year display -->
     <div class="px-6 mb-4 flex justify-between items-center">
-      <button 
-        [disabled]="loading || isAtPastLimit" 
+      <button
+        [disabled]="loading || isAtPastLimit"
         [ngClass]="{'opacity-50 cursor-not-allowed': loading || isAtPastLimit, 'text-white/70 hover:text-white cursor-pointer': !loading && !isAtPastLimit}"
         (click)="previousDay()">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
@@ -12,8 +12,8 @@
         </svg>
       </button>
       <div class="text-lg font-bold tracking-wide">{{ selectedDate | date:'MMMM yyyy' }}</div>
-      <button 
-        [disabled]="loading || isAtFutureLimit" 
+      <button
+        [disabled]="loading || isAtFutureLimit"
         [ngClass]="{'opacity-50 cursor-not-allowed': loading || isAtFutureLimit, 'text-white/70 hover:text-white cursor-pointer': !loading && !isAtFutureLimit}"
         (click)="nextDay()">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
@@ -63,7 +63,7 @@
         <div class="flex justify-between items-center">
           <div class="text-white">
             <h3 class="text-xl font-bold tracking-tight">Current Shift</h3>
-            <p class="text-blue-100 text-sm">{{ formatDate(currentShift.date_start) }}</p>
+            <p class="text-blue-100 text-sm">{{ formatDate(currentShift.date_start!) }}</p>
           </div>
           <div class="flex items-center gap-2">
             <!-- Shift status indicator -->
@@ -107,9 +107,9 @@
               TIME
             </div>
             <div class="text-base font-bold text-slate-800 dark:text-white flex items-center">
-              <span class="text-blue-600 dark:text-blue-400">{{ formatTime(currentShift.date_start) }}</span>
+              <span class="text-blue-600 dark:text-blue-400">{{ formatTime(currentShift.date_start!) }}</span>
               <span class="mx-2 text-slate-400">—</span>
-              <span class="text-blue-600 dark:text-blue-400">{{ formatTime(currentShift.date_end) }}</span>
+              <span class="text-blue-600 dark:text-blue-400">{{ formatTime(currentShift.date_end!) }}</span>
             </div>
           </div>
 
@@ -170,12 +170,12 @@
                   {{ shift.employee?.name || 'Employee' }}
                 </div>
                 <div class="text-slate-500 dark:text-slate-400 text-sm">
-                  {{ formatDate(shift.date_start) }}
+                  {{ formatDate(shift.date_start!) }}
                 </div>
               </div>
               <div class="flex items-center">
                 <div class="bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 text-sm font-medium py-1 px-3 rounded-full">
-                  {{ formatTime(shift.date_start) }} - {{ formatTime(shift.date_end) }}
+                  {{ formatTime(shift.date_start!) }} - {{ formatTime(shift.date_end!) }}
                 </div>
                 <!-- Shift status indicator -->
                 <div class="ml-2 px-2 py-1 text-xs font-bold rounded-md"

@@ -132,7 +132,8 @@ export class ScheduleComponent implements OnInit {
   }
 
   // Format time for display
-  formatTime(dateStr: string): string {
+  formatTime(dateStr: string | null): string {
+    if (!dateStr) return '';
     return this.calendarService.formatShiftTime(dateStr);
   }
 

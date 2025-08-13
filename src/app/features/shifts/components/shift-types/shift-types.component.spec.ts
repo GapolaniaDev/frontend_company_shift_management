@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ShiftTypesComponent } from './shift-types.component
+import {ShiftTypesComponent} from "@features/shifts";
 
 describe('ShiftTypesComponent', () => {
   let component: ShiftTypesComponent;

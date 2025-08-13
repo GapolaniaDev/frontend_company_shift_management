@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { NoShiftDetailsComponent } from './no-shift-details.component
+import { NoShiftDetailsComponent } from './no-shift-details.component';
 
 describe('NoShiftDetailsComponent', () => {
   let component: NoShiftDetailsComponent;

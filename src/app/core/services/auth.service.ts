@@ -1,18 +1,18 @@
-import { Injectable } from '@angular/core'
-import { Observable, catchError, map, tap, throwError } from 'rxjs'
-import { ApiService } from '@core/services/api.service'
-import { 
-  AuthResponse, 
-  LoginRequest, 
-  RegisterRequest, 
-  User 
-} from '../../models/user.model
+import { Injectable } from '@angular/core';
+import { Observable, catchError, map, tap, throwError } from 'rxjs';
+import { ApiService } from '@core/services/api.service';
+import {
+  AuthResponse,
+  LoginRequest,
+  RegisterRequest,
+  User
+} from "@app/models/user.model";
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private readonly TOKEN_KEY = 'auth_token
+  private readonly TOKEN_KEY = 'auth_token';
   private currentUser: User | null = null;
 
   constructor(private apiService: ApiService) { }
@@ -60,7 +60,7 @@ export class AuthService {
   getCurrentUser(): Observable<User> {
     if (this.currentUser) {
       return new Observable<User>(observer => {
-        observer.next(this.currentUser);
+        observer.next(this.currentUser!);
         observer.complete();
       });
     }

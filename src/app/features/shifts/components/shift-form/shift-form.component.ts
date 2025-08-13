@@ -1,13 +1,13 @@
-import { Component, OnInit, OnDestroy } from '@angular/core'
-import { CommonModule } from '@angular/common'
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms'
-import { ActivatedRoute, Router, RouterModule } from '@angular/router'
-import { Observable, Subject, catchError, finalize, of, takeUntil } from 'rxjs'
-import { ShiftService } from '../../data-access/shift.service'
-import { ShiftTypeService } from '../../data-access/shift-types/shift-type.service'
-import { EmployeeService } from '../../data-access/employees/employee.service'
-import { Employee } from '../../models/employee.model'
-import { ShiftType } from "@features/shifts/models/shift-type.model"
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { Observable, Subject, catchError, finalize, of, takeUntil } from 'rxjs';
+import {ShiftService} from "@features/shifts";
+import { ShiftTypeService } from '../../data-access/shift-types/shift-type.service';
+import { EmployeeService } from '../../data-access/employees/employee.service';
+import { Employee } from '../../models/employee.model';
+import { ShiftType } from "@features/shifts/models/shift-type.model";
 import { Shift } from "@features/shifts/models/shift";
 
 @Component({
@@ -25,10 +25,10 @@ export class ShiftFormComponent implements OnInit, OnDestroy {
   submitting = false;
   error: string | null = null;
   success: string | null = null;
-  
+
   employees: Employee[] = [];
   shiftTypes: ShiftType[] = [];
-  
+
   private destroy$ = new Subject<void>();
 
   constructor(
@@ -54,7 +54,7 @@ export class ShiftFormComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.loadDependencies();
-    
+
     // Check if we're in edit mode
     this.route.paramMap.pipe(takeUntil(this.destroy$)).subscribe(params => {
       const id = params.get('id');
@@ -76,7 +76,7 @@ export class ShiftFormComponent implements OnInit, OnDestroy {
    */
   loadDependencies(): void {
     this.loading = true;
-    
+
     // Load employees
     this.employeeService.getEmployees()
       .pipe(takeUntil(this.destroy$))
@@ -89,7 +89,7 @@ export class ShiftFormComponent implements OnInit, OnDestroy {
           this.error = 'Failed to load employees. Please refresh the page.'
         }
       });
-    
+
     // Load shift types
     this.shiftTypeService.getShiftTypes()
       .pipe(
@@ -114,7 +114,7 @@ export class ShiftFormComponent implements OnInit, OnDestroy {
    */
   loadShiftDetails(id: number): void {
     this.loading = true;
-    
+
     this.shiftService.getShiftById(id)
       .pipe(
         takeUntil(this.destroy$),
@@ -125,13 +125,13 @@ export class ShiftFormComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (shift: Shift) => {
           // Convert date strings to input-compatible format
-          const dateStart = new Date(shift.date_start);
-          const dateEnd = new Date(shift.date_end);
-          
+          const dateStart = new Date(shift.date_start!);
+          const dateEnd = new Date(shift.date_end!);
+
           // Format dates for input (YYYY-MM-DDThh:mm)
           const formattedDateStart = this.formatDateForInput(dateStart);
           const formattedDateEnd = this.formatDateForInput(dateEnd);
-          
+
           this.shiftForm.patchValue({
             employee_id: shift.employee_id,
             shift_type_id: shift.shift_type_id,
@@ -146,7 +146,7 @@ export class ShiftFormComponent implements OnInit, OnDestroy {
         },
         error: (err) => {
           console.error('Failed to load shift details', err);
-          this.error = 'Failed to load shift details. Please try again.;
+          this.error = 'Failed to load shift details. Please try again.';
         }
       });
   }
@@ -165,16 +165,16 @@ export class ShiftFormComponent implements OnInit, OnDestroy {
     if (this.shiftForm.invalid) {
       return;
     }
-    
+
     this.submitting = true;
     this.error = null;
     this.success = null;
-    
+
     // Create observable based on whether we're creating or updating
     const action$: Observable<Shift> = this.isEditMode && this.shiftId
       ? this.shiftService.updateShift(this.shiftId, this.shiftForm.value)
       : this.shiftService.createShift(this.shiftForm.value);
-    
+
     action$.pipe(
       takeUntil(this.destroy$),
       finalize(() => {
@@ -182,18 +182,17 @@ export class ShiftFormComponent implements OnInit, OnDestroy {
       }),
       catchError(err => {
         console.error('Error saving shift', err);
-        this.error = 'Failed to save shift. Please check the form and try again.
+        this.error = 'Failed to save shift. Please check the form and try again.';
         return of(null);
       })
     ).subscribe(shift => {
       if (shift) {
         if (this.isEditMode) {
-          this.success = 'Shift updated successfully!;
+          this.success = 'Shift updated successfully!';
         } else {
-          this.success = 'Shift created successfully!;
+          this.success = 'Shift created successfully!';
           this.shiftForm.reset();
-          
-          // Redirect to the shifts list after a short delay
+
           setTimeout(() => {
             this.router.navigate(['/shifts']);
           }, 1500);

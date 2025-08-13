@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core'
 import { CommonModule } from '@angular/common'
 import { FormsModule, ReactiveFormsModule, FormGroup, FormBuilder, Validators } from '@angular/forms'
 import { Shift } from "@features/shifts/models/shift";
-import { SharedNgIconsModule } from '../../../../shared/ng-icons.module
+import { SharedNgIconsModule} from "@shared/ng-icons.module";
 
 @Component({
   selector: 'app-shift-form',
@@ -25,7 +25,7 @@ import { SharedNgIconsModule } from '../../../../shared/ng-icons.module
             <ng-icon name="heroXMark"></ng-icon>
           </button>
         </div>
-        
+
         <form [formGroup]="shiftForm" (ngSubmit)="onSubmit()" class="p-6">
           <div class="space-y-4">
             <!-- Employee Selection -->
@@ -33,7 +33,7 @@ import { SharedNgIconsModule } from '../../../../shared/ng-icons.module
               <label for="employee" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
                 Employee
               </label>
-              <select 
+              <select
                 id="employee"
                 formControlName="employee_id"
                 class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 dark:border-gray-700 dark:bg-gray-800 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
@@ -45,13 +45,13 @@ import { SharedNgIconsModule } from '../../../../shared/ng-icons.module
                 Please select an employee
               </div>
             </div>
-            
+
             <!-- Shift Type Selection -->
             <div>
               <label for="shift_type" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
                 Shift Type
               </label>
-              <select 
+              <select
                 id="shift_type"
                 formControlName="shift_type_id"
                 class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 dark:border-gray-700 dark:bg-gray-800 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
@@ -63,13 +63,13 @@ import { SharedNgIconsModule } from '../../../../shared/ng-icons.module
                 Please select a shift type
               </div>
             </div>
-            
+
             <!-- Date Selection -->
             <div>
               <label for="shift_date" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
                 Shift Date
               </label>
-              <input 
+              <input
                 type="date"
                 id="shift_date"
                 formControlName="shift_date"
@@ -78,9 +78,9 @@ import { SharedNgIconsModule } from '../../../../shared/ng-icons.module
                 Please select a valid date
               </div>
             </div>
-            
+
             <!-- Start Time and End Time will be determined by shift type -->
-            
+
             <!-- Comments -->
             <div>
               <label for="comments" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
@@ -94,15 +94,15 @@ import { SharedNgIconsModule } from '../../../../shared/ng-icons.module
                 placeholder="Add any notes about this shift"></textarea>
             </div>
           </div>
-          
+
           <div class="mt-6 flex justify-end space-x-3">
-            <button 
+            <button
               type="button"
               (click)="onClose()"
               class="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
               Cancel
             </button>
-            <button 
+            <button
               type="submit"
               [disabled]="shiftForm.invalid"
               class="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed">
@@ -126,7 +126,7 @@ export class ShiftFormComponent {
   @Output() close = new EventEmitter<void>();
 
   shiftForm: FormGroup;
-  
+
   // Mock employees for demo
   employees = [
     { id: 1, name: 'John Smith' },
@@ -148,7 +148,7 @@ export class ShiftFormComponent {
     if (this.shift) {
       // If editing an existing shift
       const shiftDate = new Date(this.shift.date_start || '');
-      
+
       this.shiftForm.patchValue({
         employee_id: this.shift.employee_id,
         shift_type_id: this.shift.shift_type_id,
@@ -166,11 +166,11 @@ export class ShiftFormComponent {
   onSubmit(): void {
     if (this.shiftForm.valid) {
       const formValues = this.shiftForm.value;
-      
+
       // Convert the selected date and shift type to actual start/end times
       const shiftDate = new Date(formValues.shift_date);
       let startHour: number, endHour: number;
-      
+
       switch (parseInt(formValues.shift_type_id)) {
         case 1: // Morning
           startHour = 6;
@@ -188,17 +188,17 @@ export class ShiftFormComponent {
           startHour = 9;
           endHour = 17;
       }
-      
+
       const dateStart = new Date(shiftDate);
       dateStart.setHours(startHour, 0, 0, 0);
-      
+
       const dateEnd = new Date(shiftDate);
       if (formValues.shift_type_id === 3) {
         // For night shift, end time is the next day
         dateEnd.setDate(dateEnd.getDate() + 1);
       }
       dateEnd.setHours(endHour, 0, 0, 0);
-      
+
       const shiftData: Partial<Shift> = {
         ...this.shift, // Preserve existing data if editing
         employee_id: parseInt(formValues.employee_id),
@@ -207,7 +207,7 @@ export class ShiftFormComponent {
         date_end: dateEnd.toISOString(),
         comments: formValues.comments
       };
-      
+
       this.save.emit(shiftData);
     }
   }

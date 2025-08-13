@@ -1,7 +1,7 @@
-import { Shift } from './shift
+import { defaultShift } from "@features/shifts";
 
 describe('Shift', () => {
   it('should create an instance', () => {
-    expect(new Shift()).toBeTruthy();
+    expect(defaultShift).toBeTruthy();
   });
 });

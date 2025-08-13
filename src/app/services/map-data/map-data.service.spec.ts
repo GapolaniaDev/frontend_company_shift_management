@@ -1,6 +1,6 @@
-import { TestBed } from '@angular/core/testing
+import { TestBed } from '@angular/core/testing';
 
-import { MapDataService } from './map-data.service
+import { MapDataService } from './map-data.service';
 
 describe('MapDataService', () => {
   let service: MapDataService;
