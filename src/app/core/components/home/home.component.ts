@@ -1,17 +1,17 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ShiftStateService } from '../../../services/shift-state/shift-state.service';
-import { LoaderService } from '../../../services/loader/loader.service';
-import { Subscription } from 'rxjs';
+import { Component, OnDestroy, OnInit } from '@angular/core'
+import { ShiftStateService } from '../../../services/shift-state/shift-state.service'
+import { LoaderService } from "@core/services/loader.service";
+import { Subscription } from 'rxjs'
 import { CommonModule, NgIf } from "@angular/common";
-import { MapsComponent } from "../maps/maps.component";
+import { MapsComponent } from "@features/shifts/components/maps/maps.component";
 import { ClockComponent } from "../clock/clock.component";
-import { ShiftDetailsComponent } from "../shift-details/shift-details.component";
-import { NoShiftDetailsComponent } from "../no-shift-details/no-shift-details.component";
-import { SharedNgIconsModule } from "../../../shared/ng-icons.module";
+import { ShiftDetailsComponent } from "@features/shifts/components/shift-details/shift-details.component";
+import { NoShiftDetailsComponent } from "@features/shifts/components/no-shift-details/no-shift-details.component";
+import { SharedNgIconsModule } from "@shared/ng-icons.module";
 import { ConfirmationModalComponent } from "../confirmation-modal/confirmation-modal.component";
-import { GeolocationService } from "../../../services/geolocation/geolocation.service";
-import { ShiftCompletedComponent } from "../shift-completed/shift-completed.component";
-import { Shift, ShiftState } from '../../../models/shift';
+import { GeolocationService } from "@core/services/geolocation/geolocation.service";
+import { ShiftCompletedComponent } from "@features/shifts/components/shift-completed/shift-completed.component";
+import { Shift, ShiftState } from "@features/shifts/models/shift";
 
 // Make ShiftState enum available for the template
 const ShiftStateEnum = ShiftState;

@@ -1,12 +1,12 @@
-import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { ApiService } from '../api.service';
+import { Injectable } from '@angular/core'
+import { Observable } from 'rxjs'
+import { ApiService } from '@core/services/api.service'
 import { 
   ShiftConfiguration, 
   ShiftConfigurationCreateRequest, 
   ShiftConfigurationResponse, 
   ShiftConfigurationUpdateRequest 
-} from '../../models/shift-configuration.model';
+} from "@features/shifts/models/shift"-configuration.model
 
 @Injectable({
   providedIn: 'root'

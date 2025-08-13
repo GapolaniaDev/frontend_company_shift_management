@@ -1,7 +1,7 @@
-import {Component, OnInit, OnDestroy} from '@angular/core';
-import {CommonModule, NgIf} from '@angular/common';
-import {Subscription} from 'rxjs';
-import {ConfirmationModalService} from "../../../services/confirmation-modal/confirmation-modal.service";
+import {Component, OnInit, OnDestroy} from '@angular/core'
+import {CommonModule, NgIf} from '@angular/common'
+import {Subscription} from 'rxjs'
+import {ConfirmationModalService} from "@core/services/confirmation-modal/confirmation-modal.service";
 
 
 @Component({

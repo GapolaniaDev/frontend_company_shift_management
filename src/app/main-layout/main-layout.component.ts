@@ -1,10 +1,10 @@
-import {Component, OnInit, NgModule, Renderer2} from '@angular/core';
-import {CommonModule} from '@angular/common';
+import {Component, OnInit, NgModule, Renderer2} from '@angular/core'
+import {CommonModule} from '@angular/common'
 import {RouterLink, RouterOutlet, Router} from "@angular/router";
-import {LoginService} from "../session/services/login.service";
+import {LoginService} from "@features/session/data-access/login.service";
 import {MenuComponent} from "../core/components/menu/menu.component";
 import {LoaderComponent} from "../core/components/loader/loader.component";
-import {DarkModeService} from "../services/dark-mode/dark-mode.service";
+import {DarkModeService} from "@core/services/dark-mode.service";
 
 @Component({
   selector: 'app-main-layout',
