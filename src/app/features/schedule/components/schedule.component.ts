@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core'
 import { CommonModule } from '@angular/common'
 import { FormsModule } from '@angular/forms'
-import { ScheduleCalendarService, CalendarViewType, Department } from '@features/schedule/data-access/schedule-calendar.service';
+import { ScheduleCalendarService, CalendarViewType } from '@features/schedule/data-access/schedule-calendar.service';
 import { SharedNgIconsModule } from '@shared/ng-icons.module';
 import { ShiftFormComponent } from '@features/schedule/components/shift-form/shift-form.component';
 import { Shift } from "@features/shifts/models/shift";
@@ -55,14 +55,25 @@ export class ScheduleComponent implements OnInit {
     this.calendarService.setView(view);
   }
 
-  // Change department
-  changeDepartment(event: Event): void {
+  // Change location
+  changeLocation(event: Event): void {
     const selectElement = event.target as HTMLSelectElement;
-    const departmentId = parseInt(selectElement.value, 10);
-    const department = this.calendarService.getDepartments().find(d => d.id === departmentId);
+    const locationId = parseInt(selectElement.value, 10);
+    const location = this.calendarService.getLocations().find(d => d.id === locationId);
 
-    if (department) {
-      this.calendarService.setDepartment(department);
+    if (location) {
+      this.calendarService.setLocation(location);
+    }
+  }
+
+  // Change shiftType
+  changeShiftType(event: Event): void {
+    const selectElement = event.target as HTMLSelectElement;
+    const shiftTypeId = parseInt(selectElement.value, 10);
+    const shiftType = this.calendarService.getShiftType().find(d => d.id === shiftTypeId);
+
+    if (shiftType) {
+      this.calendarService.setLocation(shiftType);
     }
   }
 
@@ -152,4 +163,6 @@ export class ScheduleComponent implements OnInit {
   addShift(): void {
     this.openShiftForm(null, this.calendarService.getCurrentState().currentDate);
   }
+
+  protected readonly location = location;
 }
