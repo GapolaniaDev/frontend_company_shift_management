@@ -38,7 +38,6 @@
     </div>
   </div>
 
-
   <!-- Main Content -->
   <main class="flex-grow w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
     <!-- Controls -->
@@ -170,97 +169,94 @@
       </div>
     </div>
 
-    <!-- Calendar -->
-    <div class="bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden">
-      <!-- Days of Week -->
-      <div class="grid grid-cols-7 gap-px bg-gray-200 dark:bg-gray-700">
-        <div *ngFor="let day of daysOfWeek"
-             class="bg-white dark:bg-gray-800 py-2 text-center text-sm font-semibold text-gray-900 dark:text-gray-100">
-          {{ day }}
-        </div>
-      </div>
-
-      <!-- Calendar Grid -->
+    <!-- Grantt Grid -->
+    <div class="mx-auto py-4">
       <div
-        [ngClass]="getCalendarGridClass()"
-        class="grid gap-px bg-gray-200 dark:bg-gray-700">
-        <!-- Calendar Days -->
-        <div
-          *ngFor="let day of calendarService.getCurrentState().calendar"
-          (click)="selectDay(day)"
-          [class.bg-gray-100]="day.isToday && day.isCurrentMonth"
-          [class.dark:bg-gray-700]="day.isToday && day.isCurrentMonth"
-          [class.text-gray-400]="!day.isCurrentMonth"
-          [class.dark:text-gray-500]="!day.isCurrentMonth"
-          [class.cursor-pointer]="day.isCurrentMonth"
-          class="calendar-day bg-white dark:bg-gray-800 p-2 h-32 sm:h-40">
-          <div class="flex justify-between items-center">
-            <div class="text-sm" [class.font-bold]="day.isToday">
-              {{ day.date.getDate() }}
+        class="rounded-lg shadow overflow-hidden bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
+        <!-- Column headers: first column for resource names, then 7 days -->
+        <div class="grid grid-cols-8 text-xs font-semibold text-gray-600 dark:text-gray-300">
+          <div class="px-3 py-2 bg-gray-100 dark:bg-gray-700/50">Schedule</div>
+          <div
+            class="px-3 py-2 bg-gray-100 dark:bg-gray-700/50 text-center border-l border-gray-200 dark:border-gray-700 col-span-7">
+            August
+          </div>
+        </div>
+
+        <!-- Body rows -->
+        <div class="divide-y divide-gray-200 dark:divide-gray-700">
+          <!-- Open Shifts row -->
+          <div class="grid grid-cols-8">
+            <div
+              class="px-2 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 bg-gray-50 dark:bg-gray-800/60">
+              Open Shifts
             </div>
-            <ng-icon
-              *ngIf="day.isCurrentMonth"
-              name="heroPlus"
-              class="h-4 w-4 text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 cursor-pointer"
-              (click)="openShiftForm(null, day.date); $event.stopPropagation();">
-            </ng-icon>
+            <div class="px-3 py-2 text-center border-l border-gray-200 dark:border-gray-700">Sunday 24</div>
+            <div class="px-3 py-2 text-center border-l border-gray-200 dark:border-gray-700">Monday 25</div>
+            <div class="px-3 py-2 text-center border-l border-gray-200 dark:border-gray-700">Tuesday 26</div>
+            <div class="px-3 py-2 text-center border-l border-gray-200 dark:border-gray-700">Wednesday 27</div>
+            <div class="px-3 py-2 text-center border-l border-gray-200 dark:border-gray-700">Thursday 28</div>
+            <div class="px-3 py-2 text-center border-l border-gray-200 dark:border-gray-700">Friday 29</div>
+            <div class="px-3 py-2 text-center border-l border-gray-200 dark:border-gray-700">Saturday 30</div>
           </div>
 
-          <!-- Shifts for this day -->
-          <div *ngFor="let shift of day.shifts"
-               [ngClass]="getShiftClass(shift.shift_type_id)"
-               class="mt-1 p-1 rounded text-xs cursor-pointer hover:opacity-80"
-               (click)="openShiftForm(shift, day.date); $event.stopPropagation();">
-            <div class="font-medium">
-              {{ shift.employee.first_name }} {{ shift.employee.last_name }}
+          <!-- Empleado 2 -->
+          <div class="grid grid-cols-8">
+            <div class="px-3 py-3 flex items-center gap-2 border-r border-gray-200 dark:border-gray-700">
+                <span
+                  class="inline-flex items-center justify-center h-5 w-5 rounded-full text-[10px] font-bold bg-blue-600 text-white">E</span>
+              <span class="text-sm">Empleado 2</span>
             </div>
-            <div class="text-gray-500 dark:text-gray-400">
-              {{ formatTime(shift.date_start) }}-{{ formatTime(shift.date_end) }}
+            <!-- 7 day cells grid -->
+            <div class="col-span-7 grid grid-cols-7 gap-px bg-gray-200 dark:bg-gray-700">
+              <div class="bg-gray-50 dark:bg-gray-800">1</div>
+              <div class="bg-gray-50 dark:bg-gray-800">2</div>
+              <div class="bg-gray-50 dark:bg-gray-800">3</div>
+              <div class="bg-gray-50 dark:bg-gray-800">4</div>
+              <div class="bg-gray-50 dark:bg-gray-800">5</div>
+              <div class="bg-gray-50 dark:bg-gray-800">6</div>
+              <div class="bg-gray-50 dark:bg-gray-800">7</div>
+            </div>
+          </div>
+
+          <!-- Empleado 3 -->
+          <div class="grid grid-cols-8">
+            <div class="px-3 py-3 flex items-center gap-2 border-r border-gray-200 dark:border-gray-700">
+                <span
+                  class="inline-flex items-center justify-center h-5 w-5 rounded-full text-[10px] font-bold bg-indigo-600 text-white">E</span>
+              <span class="text-sm">Empleado 3</span>
+            </div>
+            <div class="col-span-7 grid grid-cols-7 gap-px bg-gray-2 00 dark:bg-gray-700">
+              <div class="bg-gray-50 dark:bg-gray-800"></div>
+              <div class="bg-gray-50 dark:bg-gray-800"></div>
+              <div class="bg-gray-50 dark:bg-gray-800"></div>
+              <div class="bg-gray-50 dark:bg-gray-800"></div>
+              <div class="bg-gray-50 dark:bg-gray-800"></div>
+              <div class="bg-gray-50 dark:bg-gray-800"></div>
+              <div class="bg-gray-50 dark:bg-gray-800"></div>
+            </div>
+          </div>
+
+          <!-- Empleado 6 with a Mon–Fri strip 8:00–17:00 "Cleaner Day" -->
+          <div class="grid grid-cols-8 border-l border-gray-200 dark:border-gray-700">
+            <div class="px-3 py-3 flex items-center gap-2 border-l border-r border-gray-200 dark:border-gray-700">
+                <span
+                  class="inline-flex items-center justify-center h-5 w-5 rounded-full text-[10px] font-bold bg-emerald-600 text-white">E</span>
+              <span class="text-sm">Empleado 6</span>
+            </div>
+            <div class="col-span-7 grid grid-cols-7 gap-px bg-gray-200 dark:bg-gray-700">
+              <div class="bg-gray-50 dark:bg-gray-800">1</div>
+              <div class="bg-gray-50 dark:bg-gray-800">2</div>
+              <div class="bg-gray-50 dark:bg-gray-800">3</div>
+              <div class="bg-gray-50 dark:bg-gray-800">4</div>
+              <div class="bg-gray-50 dark:bg-gray-800">5</div>
+              <div class="bg-gray-50 dark:bg-gray-800">6</div>
+              <div class="bg-gray-50 dark:bg-gray-800">7</div>
             </div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Team Members -->
-    <div class="mt-8">
-      <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-        Team Members
-      </h3>
-      <div class="bg-white dark:bg-gray-800 shadow rounded-lg overflow-hidden">
-        <ul class="divide-y divide-gray-200 dark:divide-gray-700">
-          <li *ngFor="let employee of calendarService.getEmployees()"
-              class="px-6 py-4 flex items-center justify-between">
-            <div class="flex items-center">
-              <img
-                [src]="employee.photo"
-                [alt]="'Profile picture of ' + employee.name"
-                class="h-10 w-10 rounded-full object-cover bg-gray-200"
-                width="40"
-                height="40"
-              />
-              <div class="ml-3">
-                <p class="text-sm font-medium text-gray-900 dark:text-white">
-                  {{ employee.name }}
-                </p>
-                <p class="text-sm text-gray-500 dark:text-gray-400">
-                  {{ employee.department }}
-                </p>
-              </div>
-            </div>
-            <div class="flex items-center">
-              <span
-                class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
-                Active
-              </span>
-              <button class="ml-4 text-gray-400 hover:text-gray-500 dark:hover:text-gray-300">
-                <ng-icon name="heroEllipsisVertical"></ng-icon>
-              </button>
-            </div>
-          </li>
-        </ul>
-      </div>
-    </div>
   </main>
 </div>
 
