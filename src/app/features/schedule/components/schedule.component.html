@@ -39,22 +39,22 @@
   </div>
 
   <!-- Main Content -->
-  <main class="flex-grow w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
+  <main class="flex-grow w-full mx-auto px-4 sm:px-6 lg:px-8 py-3">
     <!-- Controls -->
-    <div class="mb-6 flex flex-col sm:flex-row justify-between items-start sm:items-center space-y-4 sm:space-y-0">
-      <div>
-        <h2 class="text-2xl font-bold text-gray-900 dark:text-white">
-          Shift Calendar
+    <div class="mb-3 flex flex-col sm:flex-row justify-between items-start sm:items-center space-y-2 sm:space-y-0">
+      <div class="flex-shrink-0">
+        <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-1">
+          {{ getCurrentMonthYearInfo() }}
         </h2>
-        <p class="text-gray-500 dark:text-gray-400">
-          Manage your team's schedule efficiently
+        <p class="text-sm text-gray-500 dark:text-gray-400">
+          {{ getWeekRangeInfo() }} • Schedule Management
         </p>
       </div>
-      <div class="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-3">
+      <div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2">
         <div class="relative">
           <select
             (change)="changeLocation($event)"
-            class="appearance-none bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-md py-2 pl-3 pr-10 text-sm font-medium text-gray-700 dark:text-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+            class="appearance-none bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-md py-1.5 pl-2 pr-8 text-xs font-medium text-gray-700 dark:text-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
             <option *ngFor="let location of calendarService.getLocations()" [value]="location.id">
               {{ location.name }}
             </option>
@@ -67,7 +67,7 @@
         <div class="relative">
           <select
             (change)="changeShiftType($event)"
-            class="appearance-none bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-md py-2 pl-3 pr-10 text-sm font-medium text-gray-700 dark:text-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+            class="appearance-none bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-md py-1.5 pl-2 pr-8 text-xs font-medium text-gray-700 dark:text-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
             <option *ngFor="let shiftType of calendarService.getShiftType()" [value]="shiftType.id">
               {{ shiftType.name }}
             </option>
@@ -80,97 +80,84 @@
         <div class="flex space-x-2">
           <button
             (click)="calendarService.navigateToPrevious()"
-            class="inline-flex items-center px-3 py-2 border border-gray-300 dark:border-gray-700 shadow-sm text-sm font-medium rounded-md text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+            class="inline-flex items-center px-2 py-1.5 border border-gray-300 dark:border-gray-700 shadow-sm text-xs font-medium rounded-md text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500">
             <ng-icon name="heroChevronLeft" class="mr-1"></ng-icon>
             Previous
           </button>
           <button
             (click)="calendarService.navigateToToday()"
-            class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+            class="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500">
             Today
           </button>
           <button
             (click)="calendarService.navigateToNext()"
-            class="inline-flex items-center px-3 py-2 border border-gray-300 dark:border-gray-700 shadow-sm text-sm font-medium rounded-md text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+            class="inline-flex items-center px-2 py-1.5 border border-gray-300 dark:border-gray-700 shadow-sm text-xs font-medium rounded-md text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500">
             Next
             <ng-icon name="heroChevronRight" class="ml-1"></ng-icon>
           </button>
         </div>
         <button
           (click)="addShift()"
-          class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+          class="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500">
           <ng-icon name="heroPlus" class="mr-2"></ng-icon>
           Add Shift
         </button>
       </div>
+      <div class="flex justify-between items-center mb-3">
+        <div class="flex space-x-1">
+          <button
+            [class.bg-white]="calendarService.getCurrentState().view === 'month'"
+            [class.dark:bg-gray-800]="calendarService.getCurrentState().view === 'month'"
+            [class.border-gray-300]="calendarService.getCurrentState().view === 'month'"
+            [class.dark:border-gray-700]="calendarService.getCurrentState().view === 'month'"
+            [class.text-gray-700]="calendarService.getCurrentState().view === 'month'"
+            [class.dark:text-gray-300]="calendarService.getCurrentState().view === 'month'"
+            [class.hover:bg-gray-50]="calendarService.getCurrentState().view !== 'month'"
+            [class.dark:hover:bg-gray-700]="calendarService.getCurrentState().view !== 'month'"
+            [class.text-gray-500]="calendarService.getCurrentState().view !== 'month'"
+            [class.dark:text-gray-400]="calendarService.getCurrentState().view !== 'month'"
+            (click)="changeView('month')"
+            class="inline-flex items-center px-2 py-1 text-xs font-medium rounded-md border">
+            Month
+          </button>
+          <button
+            [class.bg-white]="calendarService.getCurrentState().view === 'week'"
+            [class.dark:bg-gray-800]="calendarService.getCurrentState().view === 'week'"
+            [class.border-gray-300]="calendarService.getCurrentState().view === 'week'"
+            [class.dark:border-gray-700]="calendarService.getCurrentState().view === 'week'"
+            [class.text-gray-700]="calendarService.getCurrentState().view === 'week'"
+            [class.dark:text-gray-300]="calendarService.getCurrentState().view === 'week'"
+            [class.hover:bg-gray-50]="calendarService.getCurrentState().view !== 'week'"
+            [class.dark:hover:bg-gray-700]="calendarService.getCurrentState().view !== 'week'"
+            [class.text-gray-500]="calendarService.getCurrentState().view !== 'week'"
+            [class.dark:text-gray-400]="calendarService.getCurrentState().view !== 'week'"
+            (click)="changeView('week')"
+            class="inline-flex items-center px-2 py-1 text-xs font-medium rounded-md border">
+            Week
+          </button>
+          <button
+            [class.bg-white]="calendarService.getCurrentState().view === 'day'"
+            [class.dark:bg-gray-800]="calendarService.getCurrentState().view === 'day'"
+            [class.border-gray-300]="calendarService.getCurrentState().view === 'day'"
+            [class.dark:border-gray-700]="calendarService.getCurrentState().view === 'day'"
+            [class.text-gray-700]="calendarService.getCurrentState().view === 'day'"
+            [class.dark:text-gray-300]="calendarService.getCurrentState().view === 'day'"
+            [class.hover:bg-gray-50]="calendarService.getCurrentState().view !== 'day'"
+            [class.dark:hover:bg-gray-700]="calendarService.getCurrentState().view !== 'day'"
+            [class.text-gray-500]="calendarService.getCurrentState().view !== 'day'"
+            [class.dark:text-gray-400]="calendarService.getCurrentState().view !== 'day'"
+            (click)="changeView('day')"
+            class="inline-flex items-center px-2 py-1 text-xs font-medium rounded-md border">
+            Day
+          </button>
+        </div>
+      </div>
     </div>
 
     <!-- Month and Year -->
-    <div class="flex justify-between items-center mb-6">
-      <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
-        {{ calendarService.formatMonthYear(calendarService.getCurrentState().currentDate) }}
-      </h3>
-      <div class="flex space-x-2">
-        <button
-          [class.bg-white]="calendarService.getCurrentState().view === 'month'"
-          [class.dark:bg-gray-800]="calendarService.getCurrentState().view === 'month'"
-          [class.border-gray-300]="calendarService.getCurrentState().view === 'month'"
-          [class.dark:border-gray-700]="calendarService.getCurrentState().view === 'month'"
-          [class.text-gray-700]="calendarService.getCurrentState().view === 'month'"
-          [class.dark:text-gray-300]="calendarService.getCurrentState().view === 'month'"
-          [class.hover:bg-gray-50]="calendarService.getCurrentState().view !== 'month'"
-          [class.dark:hover:bg-gray-700]="calendarService.getCurrentState().view !== 'month'"
-          [class.text-gray-500]="calendarService.getCurrentState().view !== 'month'"
-          [class.dark:text-gray-400]="calendarService.getCurrentState().view !== 'month'"
-          (click)="changeView('month')"
-          class="inline-flex items-center px-3 py-1 text-sm font-medium rounded-md border">
-          Month
-        </button>
-        <button
-          [class.bg-white]="calendarService.getCurrentState().view === 'week'"
-          [class.dark:bg-gray-800]="calendarService.getCurrentState().view === 'week'"
-          [class.border-gray-300]="calendarService.getCurrentState().view === 'week'"
-          [class.dark:border-gray-700]="calendarService.getCurrentState().view === 'week'"
-          [class.text-gray-700]="calendarService.getCurrentState().view === 'week'"
-          [class.dark:text-gray-300]="calendarService.getCurrentState().view === 'week'"
-          [class.hover:bg-gray-50]="calendarService.getCurrentState().view !== 'week'"
-          [class.dark:hover:bg-gray-700]="calendarService.getCurrentState().view !== 'week'"
-          [class.text-gray-500]="calendarService.getCurrentState().view !== 'week'"
-          [class.dark:text-gray-400]="calendarService.getCurrentState().view !== 'week'"
-          (click)="changeView('week')"
-          class="inline-flex items-center px-3 py-1 text-sm font-medium rounded-md border">
-          Week
-        </button>
-        <button
-          [class.bg-white]="calendarService.getCurrentState().view === 'day'"
-          [class.dark:bg-gray-800]="calendarService.getCurrentState().view === 'day'"
-          [class.border-gray-300]="calendarService.getCurrentState().view === 'day'"
-          [class.dark:border-gray-700]="calendarService.getCurrentState().view === 'day'"
-          [class.text-gray-700]="calendarService.getCurrentState().view === 'day'"
-          [class.dark:text-gray-300]="calendarService.getCurrentState().view === 'day'"
-          [class.hover:bg-gray-50]="calendarService.getCurrentState().view !== 'day'"
-          [class.dark:hover:bg-gray-700]="calendarService.getCurrentState().view !== 'day'"
-          [class.text-gray-500]="calendarService.getCurrentState().view !== 'day'"
-          [class.dark:text-gray-400]="calendarService.getCurrentState().view !== 'day'"
-          (click)="changeView('day')"
-          class="inline-flex items-center px-3 py-1 text-sm font-medium rounded-md border">
-          Day
-        </button>
-      </div>
-    </div>
 
-    <!-- Calendar Legend -->
-    <div class="flex flex-wrap gap-4 mb-4">
-      <div *ngFor="let type of shiftTypes" class="flex items-center">
-        <div class="w-3 h-3 rounded-full" [style.background-color]="type.color"></div>
-        <span class="ml-2 text-sm text-gray-600 dark:text-gray-400">
-          {{ type.name }}
-        </span>
-      </div>
-    </div>
-
-    <!-- Grantt Grid -->
-    <div class="mx-auto py-4">
+    <!-- Gantt Grid -->
+    <div class="mx-auto py-2">
       <!-- 1) Habilitar scroll horizontal -->
       <div
         class="has-thin-scroll overflow-x-auto relative rounded-lg shadow bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">

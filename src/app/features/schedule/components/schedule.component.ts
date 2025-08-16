@@ -276,5 +276,47 @@ export class ScheduleComponent implements OnInit {
     });
   }
 
+  // Get current month and year info
+  getCurrentMonthYearInfo(): string {
+    const currentDate = this.calendarService.getCurrentState().currentDate;
+    return currentDate.toLocaleDateString('en-US', { 
+      month: 'long', 
+      year: 'numeric' 
+    });
+  }
+
+  // Get week range for current month
+  getWeekRangeInfo(): string {
+    const { view, currentDate, startDate, endDate } = this.calendarService.getCurrentState();
+    
+    if (view === 'month') {
+      const start = new Date(startDate);
+      const end = new Date(endDate);
+      const startWeek = this.getWeekNumber(start);
+      const endWeek = this.getWeekNumber(end);
+      
+      if (startWeek === endWeek) {
+        return `Week ${startWeek}`;
+      } else {
+        return `Weeks ${startWeek}-${endWeek}`;
+      }
+    } else if (view === 'week') {
+      const weekNum = this.getWeekNumber(currentDate);
+      return `Week ${weekNum}`;
+    } else {
+      const weekNum = this.getWeekNumber(currentDate);
+      return `Week ${weekNum}`;
+    }
+  }
+
+  // Calculate week number of the year
+  private getWeekNumber(date: Date): number {
+    const d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+    const dayNum = d.getUTCDay() || 7;
+    d.setUTCDate(d.getUTCDate() + 4 - dayNum);
+    const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+    return Math.ceil((((d.getTime() - yearStart.getTime()) / 86400000) + 1) / 7);
+  }
+
   protected readonly location = location;
 }

@@ -100,7 +100,184 @@ export class ScheduleCalendarService {
   ];
 
   // Mock shifts data
-  private mockShifts: Shift[] = [];
+  private mockShifts: any[] = [
+    {
+      id: 1,
+      date_start: '2025-08-01T06:00:00',
+      date_end: '2025-08-01T14:00:00',
+      employee_id: 1,
+      shift_type_id: 1,
+      state: 1,
+      total_hours: '8',
+      comments: null,
+      weekday_code: 'fri',
+      employee: {
+        id: 1,
+        first_name: 'John',
+        last_name: 'Smith',
+        email: 'john.smith@company.com',
+        photo: 'https://replicate.delivery/xezq/2Iy4nfF7Z8wf0kBxjSXaiiK9WMvGrFrRMax8o8Y0bdcUr9YUA/out-0.png'
+      },
+      shift_type: {
+        id: 1,
+        name: 'Morning'
+      }
+    },
+    {
+      id: 2,
+      date_start: '2025-08-01T14:00:00',
+      date_end: '2025-08-01T22:00:00',
+      employee_id: 2,
+      shift_type_id: 2,
+      state: 1,
+      total_hours: '8',
+      comments: null,
+      weekday_code: 'fri',
+      employee: {
+        id: 2,
+        first_name: 'Sarah',
+        last_name: 'Johnson',
+        email: 'sarah.johnson@company.com',
+        photo: 'https://replicate.delivery/xezq/7TGIC403YmYHBJDpZnfZaSgg5SFGMXbH5idbRiMe2GoUr9YUA/out-0.png'
+      },
+      shift_type: {
+        id: 2,
+        name: 'Afternoon'
+      }
+    },
+    {
+      id: 3,
+      date_start: '2025-08-02T22:00:00',
+      date_end: '2025-08-03T06:00:00',
+      employee_id: 3,
+      shift_type_id: 3,
+      state: 1,
+      total_hours: '8',
+      comments: null,
+      weekday_code: 'sat',
+      employee: {
+        id: 3,
+        first_name: 'Mike',
+        last_name: 'Davis',
+        email: 'mike.davis@company.com',
+        photo: 'https://replicate.delivery/xezq/8kv9bKZxJg7DMhBBYI6j2AZh2TefkNUbFFoI20QsZD0Ur9YUA/out-0.png'
+      },
+      shift_type: {
+        id: 3,
+        name: 'Night'
+      }
+    },
+    {
+      id: 4,
+      date_start: '2025-08-05T06:00:00',
+      date_end: '2025-08-05T14:00:00',
+      employee_id: 1,
+      shift_type_id: 1,
+      state: 1,
+      total_hours: '8',
+      comments: null,
+      weekday_code: 'tue',
+      employee: {
+        id: 1,
+        first_name: 'John',
+        last_name: 'Smith',
+        email: 'john.smith@company.com',
+        photo: 'https://replicate.delivery/xezq/2Iy4nfF7Z8wf0kBxjSXaiiK9WMvGrFrRMax8o8Y0bdcUr9YUA/out-0.png'
+      },
+      shift_type: {
+        id: 1,
+        name: 'Morning'
+      }
+    },
+    {
+      id: 5,
+      date_start: '2025-08-05T14:00:00',
+      date_end: '2025-08-05T22:00:00',
+      employee_id: 4,
+      shift_type_id: 2,
+      state: 1,
+      total_hours: '8',
+      comments: null,
+      weekday_code: 'tue',
+      employee: {
+        id: 4,
+        first_name: 'Emily',
+        last_name: 'Wilson',
+        email: 'emily.wilson@company.com',
+        photo: 'https://replicate.delivery/xezq/ewLaAwC8Fs1WGaGPCeJFfRsaf8y4NlokIbXWhSjWVU3Ut2jRB/out-0.png'
+      },
+      shift_type: {
+        id: 2,
+        name: 'Afternoon'
+      }
+    },
+    {
+      id: 6,
+      date_start: '2025-08-07T06:00:00',
+      date_end: '2025-08-07T14:00:00',
+      employee_id: 2,
+      shift_type_id: 1,
+      state: 1,
+      total_hours: '8',
+      comments: null,
+      weekday_code: 'thu',
+      employee: {
+        id: 2,
+        first_name: 'Sarah',
+        last_name: 'Johnson',
+        email: 'sarah.johnson@company.com',
+        photo: 'https://replicate.delivery/xezq/7TGIC403YmYHBJDpZnfZaSgg5SFGMXbH5idbRiMe2GoUr9YUA/out-0.png'
+      },
+      shift_type: {
+        id: 1,
+        name: 'Morning'
+      }
+    },
+    {
+      id: 7,
+      date_start: '2025-08-10T22:00:00',
+      date_end: '2025-08-11T06:00:00',
+      employee_id: 3,
+      shift_type_id: 3,
+      state: 1,
+      total_hours: '8',
+      comments: null,
+      weekday_code: 'sun',
+      employee: {
+        id: 3,
+        first_name: 'Mike',
+        last_name: 'Davis',
+        email: 'mike.davis@company.com',
+        photo: 'https://replicate.delivery/xezq/8kv9bKZxJg7DMhBBYI6j2AZh2TefkNUbFFoI20QsZD0Ur9YUA/out-0.png'
+      },
+      shift_type: {
+        id: 3,
+        name: 'Night'
+      }
+    },
+    {
+      id: 8,
+      date_start: '2025-08-12T06:00:00',
+      date_end: '2025-08-12T14:00:00',
+      employee_id: 4,
+      shift_type_id: 1,
+      state: 1,
+      total_hours: '8',
+      comments: null,
+      weekday_code: 'tue',
+      employee: {
+        id: 4,
+        first_name: 'Emily',
+        last_name: 'Wilson',
+        email: 'emily.wilson@company.com',
+        photo: 'https://replicate.delivery/xezq/ewLaAwC8Fs1WGaGPCeJFfRsaf8y4NlokIbXWhSjWVU3Ut2jRB/out-0.png'
+      },
+      shift_type: {
+        id: 1,
+        name: 'Morning'
+      }
+    }
+  ];
 
   private apiUrl = environment.apiUrl;
 
