@@ -172,7 +172,8 @@
     <!-- Grantt Grid -->
     <div class="mx-auto py-4">
       <!-- 1) Habilitar scroll horizontal -->
-      <div class="overflow-x-auto rounded-lg shadow bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
+      <div
+        class="has-thin-scroll overflow-x-auto relative rounded-lg shadow bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
         <!-- Header -->
         <div
           class="grid [grid-template-columns:314px_repeat(31,minmax(9rem,1fr))] text-xs font-semibold text-gray-600 dark:text-gray-300">
@@ -190,50 +191,117 @@
         <!-- Body rows -->
         <div>
           <!-- Open Shifts row -->
-          <div class="grid [grid-template-columns:314px_repeat(31,minmax(9rem,1fr))] border-t border-gray-200 dark:border-gray-700 first:border-t-0">
+          <div class="grid relative [grid-template-columns:314px_repeat(31,minmax(9rem,1fr))]">
+            <div class="pointer-events-none absolute inset-x-0 top-0 z-10 border-t border-gray-200 dark:border-gray-700"></div>
+            <div class="pointer-events-none absolute inset-x-0 bottom-0 z-10 border-b border-gray-200 dark:border-gray-700"></div>
             <!-- 2/3) Columna fija (fila) -->
             <div
-              class="px-2 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 bg-gray-50 dark:bg-gray-800 sticky left-0 z-10 w-[314px] min-w-[314px] max-w-[314px] border-r border-gray-200 dark:border-gray-700 relative after:content-[''] after:absolute after:top-0 after:right-0 after:h-full after:w-px after:bg-gray-200 dark:after:bg-gray-700">
+              class="px-2 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 bg-gray-50 dark:bg-gray-800 sticky left-0 z-20 w-[314px] min-w-[314px] max-w-[314px] border-r border-gray-200 dark:border-gray-700 relative after:content-[''] after:absolute after:top-0 after:right-0 after:h-full after:w-px after:bg-gray-200 dark:after:bg-gray-700">
               Open Shifts
             </div>
-            <div class="px-3 py-2 text-center border-l border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">1</div>
-            <div class="px-3 py-2 text-center border-l border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">2</div>
-            <div class="px-3 py-2 text-center border-l border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">3</div>
-            <div class="px-3 py-2 text-center border-l border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">4</div>
-            <div class="px-3 py-2 text-center border-l border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">5</div>
-            <div class="px-3 py-2 text-center border-l border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">6</div>
-            <div class="px-3 py-2 text-center border-l border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">7</div>
-            <div class="px-3 py-2 text-center border-l border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">8</div>
-            <div class="px-3 py-2 text-center border-l border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">9</div>
-            <div class="px-3 py-2 text-center border-l border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">10</div>
-            <div class="px-3 py-2 text-center border-l border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">11</div>
-            <div class="px-3 py-2 text-center border-l border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">12</div>
-            <div class="px-3 py-2 text-center border-l border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">13</div>
-            <div class="px-3 py-2 text-center border-l border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">14</div>
-            <div class="px-3 py-2 text-center border-l border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">15</div>
-            <div class="px-3 py-2 text-center border-l border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">16</div>
-            <div class="px-3 py-2 text-center border-l border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">17</div>
-            <div class="px-3 py-2 text-center border-l border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">18</div>
-            <div class="px-3 py-2 text-center border-l border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">19</div>
-            <div class="px-3 py-2 text-center border-l border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">20</div>
-            <div class="px-3 py-2 text-center border-l border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">21</div>
-            <div class="px-3 py-2 text-center border-l border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">22</div>
-            <div class="px-3 py-2 text-center border-l border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">23</div>
-            <div class="px-3 py-2 text-center border-l border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">24</div>
-            <div class="px-3 py-2 text-center border-l border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">25</div>
-            <div class="px-3 py-2 text-center border-l border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">26</div>
-            <div class="px-3 py-2 text-center border-l border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">27</div>
-            <div class="px-3 py-2 text-center border-l border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">28</div>
-            <div class="px-3 py-2 text-center border-l border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">29</div>
-            <div class="px-3 py-2 text-center border-l border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">30</div>
-            <div class="px-3 py-2 text-center border-l border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">31</div>
+            <div class="px-3 py-2 text-center border-l border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">
+              1
+            </div>
+            <div class="px-3 py-2 text-center border-l border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">
+              2
+            </div>
+            <div class="px-3 py-2 text-center border-l border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">
+              3
+            </div>
+            <div class="px-3 py-2 text-center border-l border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">
+              4
+            </div>
+            <div class="px-3 py-2 text-center border-l border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">
+              5
+            </div>
+            <div class="px-3 py-2 text-center border-l border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">
+              6
+            </div>
+            <div class="px-3 py-2 text-center border-l border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">
+              7
+            </div>
+            <div class="px-3 py-2 text-center border-l border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">
+              8
+            </div>
+            <div class="px-3 py-2 text-center border-l border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">
+              9
+            </div>
+            <div class="px-3 py-2 text-center border-l border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">
+              10
+            </div>
+            <div class="px-3 py-2 text-center border-l border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">
+              11
+            </div>
+            <div class="px-3 py-2 text-center border-l border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">
+              12
+            </div>
+            <div class="px-3 py-2 text-center border-l border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">
+              13
+            </div>
+            <div class="px-3 py-2 text-center border-l border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">
+              14
+            </div>
+            <div class="px-3 py-2 text-center border-l border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">
+              15
+            </div>
+            <div class="px-3 py-2 text-center border-l border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">
+              16
+            </div>
+            <div class="px-3 py-2 text-center border-l border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">
+              17
+            </div>
+            <div class="px-3 py-2 text-center border-l border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">
+              18
+            </div>
+            <div class="px-3 py-2 text-center border-l border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">
+              19
+            </div>
+            <div class="px-3 py-2 text-center border-l border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">
+              20
+            </div>
+            <div class="px-3 py-2 text-center border-l border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">
+              21
+            </div>
+            <div class="px-3 py-2 text-center border-l border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">
+              22
+            </div>
+            <div class="px-3 py-2 text-center border-l border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">
+              23
+            </div>
+            <div class="px-3 py-2 text-center border-l border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">
+              24
+            </div>
+            <div class="px-3 py-2 text-center border-l border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">
+              25
+            </div>
+            <div class="px-3 py-2 text-center border-l border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">
+              26
+            </div>
+            <div class="px-3 py-2 text-center border-l border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">
+              27
+            </div>
+            <div class="px-3 py-2 text-center border-l border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">
+              28
+            </div>
+            <div class="px-3 py-2 text-center border-l border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">
+              29
+            </div>
+            <div class="px-3 py-2 text-center border-l border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">
+              30
+            </div>
+            <div class="px-3 py-2 text-center border-l border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">
+              31
+            </div>
           </div>
 
           <!-- Empleado 2 -->
-          <div class="grid [grid-template-columns:314px_repeat(31,minmax(9rem,1fr))] border-t border-gray-200 dark:border-gray-700">
+          <div class="grid relative [grid-template-columns:314px_repeat(31,minmax(9rem,1fr))]">
+            <div class="pointer-events-none absolute inset-x-0 top-0 z-10 border-t border-gray-200 dark:border-gray-700"></div>
+            <div class="pointer-events-none absolute inset-x-0 bottom-0 z-10 border-b border-gray-200 dark:border-gray-700"></div>
             <div
-              class="px-3 py-3 flex items-center gap-2 sticky left-0 z-10 w-[314px] min-w-[314px] max-w-[314px] bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 relative after:content-[''] after:absolute after:top-0 after:right-0 after:h-full after:w-px after:bg-gray-200 dark:after:bg-gray-700">
-              <span class="inline-flex items-center justify-center h-5 w-5 rounded-full text-[10px] font-bold bg-blue-600 text-white">E</span>
+              class="px-3 py-3 flex items-center gap-2 sticky left-0 z-20 w-[314px] min-w-[314px] max-w-[314px] bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 relative after:content-[''] after:absolute after:top-0 after:right-0 after:h-full after:w-px after:bg-gray-200 dark:after:bg-gray-700">
+              <span
+                class="inline-flex items-center justify-center h-5 w-5 rounded-full text-[10px] font-bold bg-blue-600 text-white">E</span>
               <span class="text-sm">Empleado 2</span>
             </div>
             <div class="bg-gray-50 dark:bg-gray-800 border-l border-gray-200 dark:border-gray-700 px-3 py-2">1</div>
@@ -270,10 +338,13 @@
           </div>
 
           <!-- Empleado 3 -->
-          <div class="grid [grid-template-columns:314px_repeat(31,minmax(9rem,1fr))] border-t border-gray-200 dark:border-gray-700">
+          <div class="grid relative [grid-template-columns:314px_repeat(31,minmax(9rem,1fr))]">
+            <div class="pointer-events-none absolute inset-x-0 top-0 z-10 border-t border-gray-200 dark:border-gray-700"></div>
+            <div class="pointer-events-none absolute inset-x-0 bottom-0 z-10 border-b border-gray-200 dark:border-gray-700"></div>
             <div
-              class="px-3 py-3 flex items-center gap-2 sticky left-0 z-10 w-[314px] min-w-[314px] max-w-[314px] bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 relative after:content-[''] after:absolute after:top-0 after:right-0 after:h-full after:w-px after:bg-gray-200 dark:after:bg-gray-700">
-              <span class="inline-flex items-center justify-center h-5 w-5 rounded-full text-[10px] font-bold bg-indigo-600 text-white">E</span>
+              class="px-3 py-3 flex items-center gap-2 sticky left-0 z-20 w-[314px] min-w-[314px] max-w-[314px] bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 relative after:content-[''] after:absolute after:top-0 after:right-0 after:h-full after:w-px after:bg-gray-200 dark:after:bg-gray-700">
+              <span
+                class="inline-flex items-center justify-center h-5 w-5 rounded-full text-[10px] font-bold bg-indigo-600 text-white">E</span>
               <span class="text-sm">Empleado 3</span>
             </div>
             <div class="bg-gray-50 dark:bg-gray-800 border-l border-gray-200 dark:border-gray-700"></div>
@@ -311,10 +382,13 @@
           </div>
 
           <!-- Empleado 6 -->
-          <div class="grid [grid-template-columns:314px_repeat(31,minmax(9rem,1fr))] border-t border-gray-200 dark:border-gray-700">
+          <div class="grid relative [grid-template-columns:314px_repeat(31,minmax(9rem,1fr))]">
+            <div class="pointer-events-none absolute inset-x-0 top-0 z-10 border-t border-gray-200 dark:border-gray-700"></div>
+            <div class="pointer-events-none absolute inset-x-0 bottom-0 z-10 border-b border-gray-200 dark:border-gray-700"></div>
             <div
-              class="px-3 py-3 flex items-center gap-2 sticky left-0 z-10 w-[314px] min-w-[314px] max-w-[314px] bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 relative after:content-[''] after:absolute after:top-0 after:right-0 after:h-full after:w-px after:bg-gray-200 dark:after:bg-gray-700">
-              <span class="inline-flex items-center justify-center h-5 w-5 rounded-full text-[10px] font-bold bg-emerald-600 text-white">E</span>
+              class="px-3 py-3 flex items-center gap-2 sticky left-0 z-20 w-[314px] min-w-[314px] max-w-[314px] bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 relative after:content-[''] after:absolute after:top-0 after:right-0 after:h-full after:w-px after:bg-gray-200 dark:after:bg-gray-700">
+              <span
+                class="inline-flex items-center justify-center h-5 w-5 rounded-full text-[10px] font-bold bg-emerald-600 text-white">E</span>
               <span class="text-sm">Empleado 6</span>
             </div>
             <div class="bg-gray-50 dark:bg-gray-800 border-l border-gray-200 dark:border-gray-700 px-3 py-2">1</div>
