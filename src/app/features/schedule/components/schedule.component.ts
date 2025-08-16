@@ -164,5 +164,117 @@ export class ScheduleComponent implements OnInit {
     this.openShiftForm(null, this.calendarService.getCurrentState().currentDate);
   }
 
+  // Gantt Chart Methods
+  getGanttDates(): Date[] {
+    const { view, currentDate, startDate, endDate } = this.calendarService.getCurrentState();
+    const dates: Date[] = [];
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+    
+    // Generate dates based on current view
+    switch (view) {
+      case 'month':
+        // Show all days of the month
+        for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
+          dates.push(new Date(d));
+        }
+        break;
+      case 'week':
+        // Show 7 days of the week
+        for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
+          dates.push(new Date(d));
+        }
+        break;
+      case 'day':
+        // Show only the current day
+        dates.push(new Date(currentDate));
+        break;
+      default:
+        // Default to month view
+        for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
+          dates.push(new Date(d));
+        }
+    }
+    
+    return dates;
+  }
+
+  getDayName(date: Date): string {
+    return date.toLocaleDateString('en-US', { weekday: 'short' });
+  }
+
+  isToday(date: Date): boolean {
+    const today = new Date();
+    return date.toDateString() === today.toDateString();
+  }
+
+  getGanttEmployees(): any[] {
+    // Get unique employees from all shifts in the current period
+    const shifts = this.getAllShiftsForPeriod();
+    const employeeMap = new Map();
+    
+    shifts.forEach(shift => {
+      if (shift.employee && shift.employee.id) {
+        employeeMap.set(shift.employee.id, shift.employee);
+      }
+    });
+    
+    return Array.from(employeeMap.values()).sort((a, b) => {
+      const nameA = `${a.first_name || ''} ${a.last_name || ''}`.trim();
+      const nameB = `${b.first_name || ''} ${b.last_name || ''}`.trim();
+      return nameA.localeCompare(nameB);
+    });
+  }
+
+  getAllShiftsForPeriod(): Shift[] {
+    const calendar = this.calendarService.getCurrentState().calendar;
+    const allShifts: Shift[] = [];
+    
+    calendar.forEach(day => {
+      allShifts.push(...day.shifts);
+    });
+    
+    return allShifts;
+  }
+
+  getEmployeeShiftsForPeriod(employeeId: number): Shift[] {
+    return this.getAllShiftsForPeriod().filter(shift => 
+      shift.employee && shift.employee.id === employeeId
+    );
+  }
+
+  // Helper method to create Date objects in template
+  createDateFromString(dateString: string | null): Date {
+    return new Date(dateString || new Date());
+  }
+
+  // Get shifts for a specific employee on a specific day
+  getEmployeeShiftsForDay(employeeId: number, day: Date): Shift[] {
+    return this.getAllShiftsForPeriod().filter(shift => {
+      if (!shift.employee || shift.employee.id !== employeeId) return false;
+      if (!shift.date_start) return false;
+      
+      const shiftDate = new Date(shift.date_start);
+      return this.isSameDay(day, shiftDate);
+    });
+  }
+
+  // Helper method to check if two dates are the same day
+  private isSameDay(date1: Date, date2: Date): boolean {
+    return date1.getFullYear() === date2.getFullYear() &&
+           date1.getMonth() === date2.getMonth() &&
+           date1.getDate() === date2.getDate();
+  }
+
+  // Format time in short format (HH:mm)
+  formatTimeShort(dateStr: string | null): string {
+    if (!dateStr) return '';
+    return new Date(dateStr).toLocaleTimeString('en-US', {
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false
+    });
+  }
+
   protected readonly location = location;
 }
