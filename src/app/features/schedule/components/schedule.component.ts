@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core'
 import { CommonModule } from '@angular/common'
 import { FormsModule } from '@angular/forms'
-import { ScheduleCalendarService, CalendarViewType, Department } from '@features/schedule/data-access/schedule-calendar.service';
+import { ScheduleCalendarService, CalendarViewType } from '@features/schedule/data-access/schedule-calendar.service';
 import { SharedNgIconsModule } from '@shared/ng-icons.module';
 import { ShiftFormComponent } from '@features/schedule/components/shift-form/shift-form.component';
 import { Shift } from "@features/shifts/models/shift";
@@ -55,14 +55,25 @@ export class ScheduleComponent implements OnInit {
     this.calendarService.setView(view);
   }
 
-  // Change department
-  changeDepartment(event: Event): void {
+  // Change location
+  changeLocation(event: Event): void {
     const selectElement = event.target as HTMLSelectElement;
-    const departmentId = parseInt(selectElement.value, 10);
-    const department = this.calendarService.getDepartments().find(d => d.id === departmentId);
+    const locationId = parseInt(selectElement.value, 10);
+    const location = this.calendarService.getLocations().find(d => d.id === locationId);
 
-    if (department) {
-      this.calendarService.setDepartment(department);
+    if (location) {
+      this.calendarService.setLocation(location);
+    }
+  }
+
+  // Change shiftType
+  changeShiftType(event: Event): void {
+    const selectElement = event.target as HTMLSelectElement;
+    const shiftTypeId = parseInt(selectElement.value, 10);
+    const shiftType = this.calendarService.getShiftType().find(d => d.id === shiftTypeId);
+
+    if (shiftType) {
+      this.calendarService.setLocation(shiftType);
     }
   }
 
@@ -152,4 +163,160 @@ export class ScheduleComponent implements OnInit {
   addShift(): void {
     this.openShiftForm(null, this.calendarService.getCurrentState().currentDate);
   }
+
+  // Gantt Chart Methods
+  getGanttDates(): Date[] {
+    const { view, currentDate, startDate, endDate } = this.calendarService.getCurrentState();
+    const dates: Date[] = [];
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+    
+    // Generate dates based on current view
+    switch (view) {
+      case 'month':
+        // Show all days of the month
+        for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
+          dates.push(new Date(d));
+        }
+        break;
+      case 'week':
+        // Show 7 days of the week
+        for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
+          dates.push(new Date(d));
+        }
+        break;
+      case 'day':
+        // Show only the current day
+        dates.push(new Date(currentDate));
+        break;
+      default:
+        // Default to month view
+        for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
+          dates.push(new Date(d));
+        }
+    }
+    
+    return dates;
+  }
+
+  getDayName(date: Date): string {
+    return date.toLocaleDateString('en-US', { weekday: 'short' });
+  }
+
+  isToday(date: Date): boolean {
+    const today = new Date();
+    return date.toDateString() === today.toDateString();
+  }
+
+  getGanttEmployees(): any[] {
+    // Get unique employees from all shifts in the current period
+    const shifts = this.getAllShiftsForPeriod();
+    const employeeMap = new Map();
+    
+    shifts.forEach(shift => {
+      if (shift.employee && shift.employee.id) {
+        employeeMap.set(shift.employee.id, shift.employee);
+      }
+    });
+    
+    return Array.from(employeeMap.values()).sort((a, b) => {
+      const nameA = `${a.first_name || ''} ${a.last_name || ''}`.trim();
+      const nameB = `${b.first_name || ''} ${b.last_name || ''}`.trim();
+      return nameA.localeCompare(nameB);
+    });
+  }
+
+  getAllShiftsForPeriod(): Shift[] {
+    const calendar = this.calendarService.getCurrentState().calendar;
+    const allShifts: Shift[] = [];
+    
+    calendar.forEach(day => {
+      allShifts.push(...day.shifts);
+    });
+    
+    return allShifts;
+  }
+
+  getEmployeeShiftsForPeriod(employeeId: number): Shift[] {
+    return this.getAllShiftsForPeriod().filter(shift => 
+      shift.employee && shift.employee.id === employeeId
+    );
+  }
+
+  // Helper method to create Date objects in template
+  createDateFromString(dateString: string | null): Date {
+    return new Date(dateString || new Date());
+  }
+
+  // Get shifts for a specific employee on a specific day
+  getEmployeeShiftsForDay(employeeId: number, day: Date): Shift[] {
+    return this.getAllShiftsForPeriod().filter(shift => {
+      if (!shift.employee || shift.employee.id !== employeeId) return false;
+      if (!shift.date_start) return false;
+      
+      const shiftDate = new Date(shift.date_start);
+      return this.isSameDay(day, shiftDate);
+    });
+  }
+
+  // Helper method to check if two dates are the same day
+  private isSameDay(date1: Date, date2: Date): boolean {
+    return date1.getFullYear() === date2.getFullYear() &&
+           date1.getMonth() === date2.getMonth() &&
+           date1.getDate() === date2.getDate();
+  }
+
+  // Format time in short format (HH:mm)
+  formatTimeShort(dateStr: string | null): string {
+    if (!dateStr) return '';
+    return new Date(dateStr).toLocaleTimeString('en-US', {
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false
+    });
+  }
+
+  // Get current month and year info
+  getCurrentMonthYearInfo(): string {
+    const currentDate = this.calendarService.getCurrentState().currentDate;
+    return currentDate.toLocaleDateString('en-US', { 
+      month: 'long', 
+      year: 'numeric' 
+    });
+  }
+
+  // Get week range for current month
+  getWeekRangeInfo(): string {
+    const { view, currentDate, startDate, endDate } = this.calendarService.getCurrentState();
+    
+    if (view === 'month') {
+      const start = new Date(startDate);
+      const end = new Date(endDate);
+      const startWeek = this.getWeekNumber(start);
+      const endWeek = this.getWeekNumber(end);
+      
+      if (startWeek === endWeek) {
+        return `Week ${startWeek}`;
+      } else {
+        return `Weeks ${startWeek}-${endWeek}`;
+      }
+    } else if (view === 'week') {
+      const weekNum = this.getWeekNumber(currentDate);
+      return `Week ${weekNum}`;
+    } else {
+      const weekNum = this.getWeekNumber(currentDate);
+      return `Week ${weekNum}`;
+    }
+  }
+
+  // Calculate week number of the year
+  private getWeekNumber(date: Date): number {
+    const d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+    const dayNum = d.getUTCDay() || 7;
+    d.setUTCDate(d.getUTCDate() + 4 - dayNum);
+    const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+    return Math.ceil((((d.getTime() - yearStart.getTime()) / 86400000) + 1) / 7);
+  }
+
+  protected readonly location = location;
 }

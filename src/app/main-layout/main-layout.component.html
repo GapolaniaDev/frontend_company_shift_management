@@ -2,25 +2,25 @@
 
 <header class="fixed top-0 w-full bg-white dark:bg-gray-900 shadow-md z-50">
 
-  <nav class="container mx-auto px-6 py-3 flex justify-between items-center">
+  <nav class="container mx-auto px-3 py-1.5 flex items-center justify-between gap-2">
     <!-- Menú lateral -->
     <app-menu (menuOpenChange)="onMenuOpenChange($event)"></app-menu>
 
 
-    <div class="text-2xl font-bold text-gray-800 dark:text-white">Shift Management</div>
+    <div class="text-lg font-semibold text-gray-800 dark:text-white">Shift Management</div>
 
-    <div class="hidden lg:flex space-x-4">
+    <div class="hidden lg:flex items-center gap-2">
       <button *ngIf="!isLoggedIn" routerLink="/login"
-              class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">
+            class="bg-blue-500 hover:bg-blue-600 text-white font-medium py-1 px-3 rounded-md text-xs">
         Login
       </button>
       <button *ngIf="isLoggedIn" (click)="logout()"
-              class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">
+              class="bg-blue-500 hover:bg-blue-600 text-white font-medium py-1 px-3 rounded-md text-xs">
         Logout
       </button>
 
       <!-- Botón de modo oscuro -->
-      <button (click)="toggleDarkMode()" class="p-2 rounded text-gray-800 dark:text-gray-200 bg-transparent">
+      <button (click)="toggleDarkMode()" class="p-1.5 rounded-md text-gray-800 dark:text-gray-200 bg-transparent">
         <span *ngIf="!isDarkMode">🌙</span> <!-- Mostrar luna si está en modo claro -->
         <span *ngIf="isDarkMode">☀️</span> <!-- Mostrar sol si está en modo oscuro -->
       </button>

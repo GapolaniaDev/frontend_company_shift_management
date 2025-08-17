@@ -40,3 +40,165 @@
     border-left: 4px solid #4F46E5;
     color: #E0E7FF;
 }
+
+/* Gantt Table Styles */
+.gantt-container {
+    position: relative;
+    overflow: hidden;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+}
+
+.gantt-scroll-container {
+    overflow-x: auto;
+    overflow-y: visible;
+    position: relative;
+}
+
+/* Custom scrollbar styles */
+.has-thin-scroll::-webkit-scrollbar {
+    height: 8px;
+}
+
+.has-thin-scroll::-webkit-scrollbar-track {
+    background: #F3F4F6;
+    border-radius: 4px;
+}
+
+.dark .has-thin-scroll::-webkit-scrollbar-track {
+    background: #374151;
+}
+
+.has-thin-scroll::-webkit-scrollbar-thumb {
+    background: #6366F1;
+    border-radius: 4px;
+    border: 1px solid #E5E7EB;
+}
+
+.dark .has-thin-scroll::-webkit-scrollbar-thumb {
+    background: #6366F1;
+    border-color: #4B5563;
+}
+
+.has-thin-scroll::-webkit-scrollbar-thumb:hover {
+    background: #4F46E5;
+}
+
+.dark .has-thin-scroll::-webkit-scrollbar-thumb:hover {
+    background: #4F46E5;
+}
+
+/* Gantt Grid */
+.gantt-grid {
+    display: grid;
+    grid-template-columns: 250px repeat(auto-fit, 52px);
+    min-width: max-content;
+}
+
+.gantt-header-row {
+    display: contents;
+}
+
+.gantt-header-cell {
+    height: 52px;
+    border-right: 1px solid #E5E7EB;
+    border-bottom: 1px solid #E5E7EB;
+    background-color: #F9FAFB;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    position: relative;
+}
+
+.dark .gantt-header-cell {
+    border-right-color: #4B5563;
+    border-bottom-color: #4B5563;
+    background-color: #1F2937;
+}
+
+.gantt-header-employee {
+    position: sticky;
+    left: 0;
+    z-index: 30;
+    width: 250px;
+    min-width: 250px;
+    max-width: 250px;
+    background-color: #F9FAFB;
+    border-right: 2px solid #6366F1;
+}
+
+.dark .gantt-header-employee {
+    background-color: #1F2937;
+    border-right-color: #6366F1;
+}
+
+.gantt-header-date {
+    width: 52px;
+    min-width: 52px;
+    max-width: 52px;
+}
+
+.gantt-body-row {
+    display: contents;
+}
+
+.gantt-row-cell {
+    height: 52px;
+    border-right: 1px solid #E5E7EB;
+    border-bottom: 1px solid #E5E7EB;
+    background-color: white;
+    position: relative;
+}
+
+.dark .gantt-row-cell {
+    border-right-color: #4B5563;
+    border-bottom-color: #4B5563;
+    background-color: #111827;
+}
+
+.gantt-employee-cell {
+    position: sticky;
+    left: 0;
+    z-index: 20;
+    width: 250px;
+    min-width: 250px;
+    max-width: 250px;
+    background-color: white;
+    border-right: 2px solid #6366F1;
+    padding: 8px 12px;
+    display: flex;
+    align-items: center;
+}
+
+.dark .gantt-employee-cell {
+    background-color: #111827;
+    border-right-color: #6366F1;
+}
+
+.gantt-date-cell {
+    width: 52px;
+    min-width: 52px;
+    max-width: 52px;
+    background-color: #F9FAFB;
+}
+
+.dark .gantt-date-cell {
+    background-color: #1F2937;
+}
+
+.gantt-date-cell:hover {
+    background-color: #F3F4F6;
+}
+
+.dark .gantt-date-cell:hover {
+    background-color: #374151;
+}
+
+.gantt-date-cell.today {
+    background-color: #FEF3C7;
+}
+
+.dark .gantt-date-cell.today {
+    background-color: rgba(254, 243, 199, 0.1);
+}

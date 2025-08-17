@@ -4,10 +4,16 @@ import {Shift} from "@features/shifts/models/shift";
 import {ShiftService} from "@core/services/shifts/shift.service";
 import {HttpClient, HttpParams} from '@angular/common/http'
 import {environment} from '../../../../environments/environment'
+import LocationRestriction = google.maps.places.LocationRestriction;
 
 export type CalendarViewType = 'month' | 'week' | 'day'
 
-export interface Department {
+export interface Location {
+  id: number;
+  name: string;
+}
+
+export interface ShiftType {
   id: number;
   name: string;
 }
@@ -28,7 +34,8 @@ export interface ShiftRangeResponse {
 export interface ScheduleState {
   currentDate: Date;
   view: CalendarViewType;
-  selectedDepartment: Department | null;
+  selectedLocation: Location | null;
+  selectedShiftType: ShiftType | null;
   calendar: CalendarDay[];
   isLoading: boolean;
   error: string | null;
@@ -40,13 +47,21 @@ export interface ScheduleState {
   providedIn: 'root'
 })
 export class ScheduleCalendarService {
-  private departments: Department[] = [
-    {id: 1, name: 'All Departments'},
-    {id: 2, name: 'IT Department'},
-    {id: 3, name: 'Customer Service'},
-    {id: 4, name: 'Sales'},
-    {id: 5, name: 'Operations'}
+  private locations: Location[] = [
+    {id: 1, name: 'All Locations'},
+    {id: 2, name: 'Santos SA'},
+    {id: 3, name: 'Banks SA'},
+    {id: 4, name: 'Locklisth'},
+    {id: 5, name: 'Giant Basebal'}
   ];
+
+  private shiftTypes: ShiftType[] = [
+    {id: 1, name: 'All ShiftType'},
+    {id: 2, name: 'Night Shift'},
+    {id: 3, name: 'Day Shift'},
+    {id: 4, name: 'Afternoon Shift'},
+  ];
+
 
   // Mock employees data
   private employees = [
@@ -54,30 +69,215 @@ export class ScheduleCalendarService {
       id: 1,
       name: 'John Smith',
       photo: 'https://replicate.delivery/xezq/2Iy4nfF7Z8wf0kBxjSXaiiK9WMvGrFrRMax8o8Y0bdcUr9YUA/out-0.png',
-      department: 'IT Department'
+      department: 'IT Department',
+      shiftType: 'Full Time',
+      location: 'New York'
     },
     {
       id: 2,
       name: 'Sarah Johnson',
       photo: 'https://replicate.delivery/xezq/7TGIC403YmYHBJDpZnfZaSgg5SFGMXbH5idbRiMe2GoUr9YUA/out-0.png',
-      department: 'Customer Service'
+      department: 'Customer Service',
+      shiftType: 'Full Time',
+      location: 'New York'
     },
     {
       id: 3,
       name: 'Mike Davis',
       photo: 'https://replicate.delivery/xezq/8kv9bKZxJg7DMhBBYI6j2AZh2TefkNUbFFoI20QsZD0Ur9YUA/out-0.png',
-      department: 'Sales'
+      department: 'Sales',
+      shiftType: 'Full Time',
+      location: 'New York'
     },
     {
       id: 4,
       name: 'Emily Wilson',
       photo: 'https://replicate.delivery/xezq/ewLaAwC8Fs1WGaGPCeJFfRsaf8y4NlokIbXWhSjWVU3Ut2jRB/out-0.png',
-      department: 'Operations'
+      department: 'Operations',
+      shiftType: 'Full Time',
+      location: 'New York'
     }
   ];
 
   // Mock shifts data
-  private mockShifts: Shift[] = [];
+  private mockShifts: any[] = [
+    {
+      id: 1,
+      date_start: '2025-08-01T06:00:00',
+      date_end: '2025-08-01T14:00:00',
+      employee_id: 1,
+      shift_type_id: 1,
+      state: 1,
+      total_hours: '8',
+      comments: null,
+      weekday_code: 'fri',
+      employee: {
+        id: 1,
+        first_name: 'John',
+        last_name: 'Smith',
+        email: 'john.smith@company.com',
+        photo: 'https://replicate.delivery/xezq/2Iy4nfF7Z8wf0kBxjSXaiiK9WMvGrFrRMax8o8Y0bdcUr9YUA/out-0.png'
+      },
+      shift_type: {
+        id: 1,
+        name: 'Morning'
+      }
+    },
+    {
+      id: 2,
+      date_start: '2025-08-01T14:00:00',
+      date_end: '2025-08-01T22:00:00',
+      employee_id: 2,
+      shift_type_id: 2,
+      state: 1,
+      total_hours: '8',
+      comments: null,
+      weekday_code: 'fri',
+      employee: {
+        id: 2,
+        first_name: 'Sarah',
+        last_name: 'Johnson',
+        email: 'sarah.johnson@company.com',
+        photo: 'https://replicate.delivery/xezq/7TGIC403YmYHBJDpZnfZaSgg5SFGMXbH5idbRiMe2GoUr9YUA/out-0.png'
+      },
+      shift_type: {
+        id: 2,
+        name: 'Afternoon'
+      }
+    },
+    {
+      id: 3,
+      date_start: '2025-08-02T22:00:00',
+      date_end: '2025-08-03T06:00:00',
+      employee_id: 3,
+      shift_type_id: 3,
+      state: 1,
+      total_hours: '8',
+      comments: null,
+      weekday_code: 'sat',
+      employee: {
+        id: 3,
+        first_name: 'Mike',
+        last_name: 'Davis',
+        email: 'mike.davis@company.com',
+        photo: 'https://replicate.delivery/xezq/8kv9bKZxJg7DMhBBYI6j2AZh2TefkNUbFFoI20QsZD0Ur9YUA/out-0.png'
+      },
+      shift_type: {
+        id: 3,
+        name: 'Night'
+      }
+    },
+    {
+      id: 4,
+      date_start: '2025-08-05T06:00:00',
+      date_end: '2025-08-05T14:00:00',
+      employee_id: 1,
+      shift_type_id: 1,
+      state: 1,
+      total_hours: '8',
+      comments: null,
+      weekday_code: 'tue',
+      employee: {
+        id: 1,
+        first_name: 'John',
+        last_name: 'Smith',
+        email: 'john.smith@company.com',
+        photo: 'https://replicate.delivery/xezq/2Iy4nfF7Z8wf0kBxjSXaiiK9WMvGrFrRMax8o8Y0bdcUr9YUA/out-0.png'
+      },
+      shift_type: {
+        id: 1,
+        name: 'Morning'
+      }
+    },
+    {
+      id: 5,
+      date_start: '2025-08-05T14:00:00',
+      date_end: '2025-08-05T22:00:00',
+      employee_id: 4,
+      shift_type_id: 2,
+      state: 1,
+      total_hours: '8',
+      comments: null,
+      weekday_code: 'tue',
+      employee: {
+        id: 4,
+        first_name: 'Emily',
+        last_name: 'Wilson',
+        email: 'emily.wilson@company.com',
+        photo: 'https://replicate.delivery/xezq/ewLaAwC8Fs1WGaGPCeJFfRsaf8y4NlokIbXWhSjWVU3Ut2jRB/out-0.png'
+      },
+      shift_type: {
+        id: 2,
+        name: 'Afternoon'
+      }
+    },
+    {
+      id: 6,
+      date_start: '2025-08-07T06:00:00',
+      date_end: '2025-08-07T14:00:00',
+      employee_id: 2,
+      shift_type_id: 1,
+      state: 1,
+      total_hours: '8',
+      comments: null,
+      weekday_code: 'thu',
+      employee: {
+        id: 2,
+        first_name: 'Sarah',
+        last_name: 'Johnson',
+        email: 'sarah.johnson@company.com',
+        photo: 'https://replicate.delivery/xezq/7TGIC403YmYHBJDpZnfZaSgg5SFGMXbH5idbRiMe2GoUr9YUA/out-0.png'
+      },
+      shift_type: {
+        id: 1,
+        name: 'Morning'
+      }
+    },
+    {
+      id: 7,
+      date_start: '2025-08-10T22:00:00',
+      date_end: '2025-08-11T06:00:00',
+      employee_id: 3,
+      shift_type_id: 3,
+      state: 1,
+      total_hours: '8',
+      comments: null,
+      weekday_code: 'sun',
+      employee: {
+        id: 3,
+        first_name: 'Mike',
+        last_name: 'Davis',
+        email: 'mike.davis@company.com',
+        photo: 'https://replicate.delivery/xezq/8kv9bKZxJg7DMhBBYI6j2AZh2TefkNUbFFoI20QsZD0Ur9YUA/out-0.png'
+      },
+      shift_type: {
+        id: 3,
+        name: 'Night'
+      }
+    },
+    {
+      id: 8,
+      date_start: '2025-08-12T06:00:00',
+      date_end: '2025-08-12T14:00:00',
+      employee_id: 4,
+      shift_type_id: 1,
+      state: 1,
+      total_hours: '8',
+      comments: null,
+      weekday_code: 'tue',
+      employee: {
+        id: 4,
+        first_name: 'Emily',
+        last_name: 'Wilson',
+        email: 'emily.wilson@company.com',
+        photo: 'https://replicate.delivery/xezq/ewLaAwC8Fs1WGaGPCeJFfRsaf8y4NlokIbXWhSjWVU3Ut2jRB/out-0.png'
+      },
+      shift_type: {
+        id: 1,
+        name: 'Morning'
+      }
+    }
+  ];
 
   private apiUrl = environment.apiUrl;
 
@@ -103,7 +303,8 @@ export class ScheduleCalendarService {
   private initialState: ScheduleState = {
     currentDate: new Date(), // Current date
     view: 'month',
-    selectedDepartment: this.departments[0],
+    selectedLocation: this.locations[0],
+    selectedShiftType: this.shiftTypes[0],
     calendar: [],
     isLoading: false,
     error: null,
@@ -202,9 +403,16 @@ export class ScheduleCalendarService {
     this.updateDateRange(); // This will trigger loading shifts and generating calendar
   }
 
-  // Set selected department
-  setDepartment(department: Department): void {
-    this.updateState({selectedDepartment: department});
+  // Set selected location
+  setLocation(location: Location): void {
+    this.updateState({selectedLocation: location});
+    // No need to reload data from API when changing department filter
+    this.generateCalendar();
+  }
+
+  // Set selected ShiftType
+  setShifttype(shiftType: ShiftType): void {
+    this.updateState({selectedShiftType: shiftType});
     // No need to reload data from API when changing department filter
     this.generateCalendar();
   }
@@ -298,23 +506,30 @@ export class ScheduleCalendarService {
     this.updateDateRange();
   }
 
-  // Get a list of departments
-  getDepartments(): Department[] {
-    return [...this.departments];
+  // Get a list of locations
+  getLocations(): Location[] {
+    return [...this.locations];
+  }
+
+  // Get a list of locations
+  getShiftType(): ShiftType[] {
+    return [...this.shiftTypes];
   }
 
   // Get employee list for team section
   getEmployees(): any[] {
-    const {selectedDepartment} = this.getCurrentState();
-    if (selectedDepartment && selectedDepartment.id !== 1) { // Not "All Departments"
-      return this.employees.filter(e => e.department === selectedDepartment.name);
-    }
-    return [...this.employees];
+    const {selectedLocation, selectedShiftType} = this.getCurrentState();
+
+    return this.employees.filter(e => {
+      const matchLocation = !selectedLocation || selectedLocation.id === 1 || e.location === selectedLocation.name;
+      const matchShiftType = !selectedShiftType || e.shiftType === selectedShiftType.name;
+      return matchLocation && matchShiftType;
+    });
   }
 
   // Generate the calendar days based on current view and date
   private generateCalendar(): void {
-    const {currentDate, view, selectedDepartment} = this.getCurrentState();
+    const {currentDate, view, selectedLocation, selectedShiftType} = this.getCurrentState();
     let calendar: CalendarDay[] = [];
 
     switch (view) {
@@ -329,18 +544,28 @@ export class ScheduleCalendarService {
         break;
     }
 
-    // Filter shifts by department if needed
-    if (selectedDepartment && selectedDepartment.id !== 1) { // Not "All Departments"
-      calendar = calendar.map(day => ({
-        ...day,
-        shifts: day.shifts.filter(shift => {
-          if (shift.employee && 'department' in shift.employee) {
-            return shift.employee.department === selectedDepartment.name;
-          }
-          return true;
-        })
-      }));
-    }
+    // Filter shifts by selectedLocation and selectedShiftType if needed
+    calendar = calendar.map(day => ({
+      ...day,
+      shifts: day.shifts.filter(shift => {
+        // If the shift has an employee object, check its fields; otherwise keep the shift
+        const emp: any = (shift as any).employee;
+
+        let matches = true;
+
+        if (selectedLocation && selectedLocation.id !== 1) {
+          const locOk = emp && 'location' in emp ? emp.location === selectedLocation.name : true;
+          matches = matches && locOk;
+        }
+
+        if (selectedShiftType && selectedShiftType.id !== 1) {
+          const typeOk = emp && 'shiftType' in emp ? emp.shiftType === selectedShiftType.name : true;
+          matches = matches && typeOk;
+        }
+
+        return matches;
+      })
+    }));
 
     this.updateState({calendar});
   }
