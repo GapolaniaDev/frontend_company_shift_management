@@ -50,7 +50,7 @@ export class GanttCellComponent {
     this.shiftHover.emit(shift);
   }
 
-  trackByShiftId(index: number, shift: Shift): string {
+  trackByShiftId = (index: number, shift: Shift): string => {
     return shift.id;
   }
 }

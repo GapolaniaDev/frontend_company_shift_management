@@ -44,7 +44,7 @@ export class GanttRowCellsComponent {
     this.shiftHover.emit({ shift, date: this.formatDateKey(date) });
   }
 
-  trackByDate(index: number, date: Date): string {
+  trackByDate = (index: number, date: Date): string => {
     return this.formatDateKey(date);
   }
 }

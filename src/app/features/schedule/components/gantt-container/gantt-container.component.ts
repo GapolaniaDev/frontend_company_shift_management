@@ -75,7 +75,7 @@ export class GanttContainerComponent {
     this.addShift.emit();
   }
 
-  trackByEmployee(index: number, employee: Employee): string {
+  trackByEmployee = (index: number, employee: Employee): string => {
     return employee.id;
   }
 
