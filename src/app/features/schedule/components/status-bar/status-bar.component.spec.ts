@@ -1,5 +1,5 @@
 import {ComponentFixture, TestBed} from "@angular/core/testing";
-import {StatusBarComponent} from "@features/schedule";
+import {StatusBarComponent} from "@features/schedule/components/status-bar/status-bar.component";
 
 describe('StatusBarComponent', () => {
   let component: StatusBarComponent;
