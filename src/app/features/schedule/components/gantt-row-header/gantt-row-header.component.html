@@ -1,0 +1,11 @@
+<div
+  (click)="onEmployeeClick()"
+  class="px-3 py-3 flex items-center gap-2 sticky left-0 z-20 w-[250px] min-w-[250px] max-w-[250px] bg-white dark:bg-gray-800 border-r-2 border-indigo-600 dark:border-indigo-600 relative min-h-[52px] cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700"
+  [class.ring-2]="isSelected"
+  [class.ring-indigo-500]="isSelected">
+  <img 
+    [src]="employee.avatar" 
+    [alt]="employee.name"
+    class="h-6 w-6 rounded-full">
+  <span class="text-sm font-medium">{{ employee.name }}</span>
+</div>

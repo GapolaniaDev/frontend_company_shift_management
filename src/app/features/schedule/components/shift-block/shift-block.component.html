@@ -1,0 +1,9 @@
+<div 
+  (click)="onClick()"
+  (mouseenter)="onMouseEnter()"
+  [class.ring-2]="isSelected"
+  [class.ring-indigo-500]="isSelected"
+  class="inset-0">
+  <span class="text-[9px] font-bold">{{ shift.code }}</span>
+  <span class="text-[8px]" [class]="getCodeTextColor()">{{ getTimeDisplay() }}</span>
+</div>

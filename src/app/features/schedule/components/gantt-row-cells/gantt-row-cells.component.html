@@ -1,0 +1,11 @@
+<!-- Days cells for this employee -->
+<app-gantt-cell
+  *ngFor="let day of days; trackBy: trackByDate"
+  [shifts]="getShiftsForDate(day)"
+  [date]="day"
+  [isEmpty]="getShiftsForDate(day).length === 0"
+  [isSelected]="isDateSelected(day)"
+  (cellClick)="onCellClick($event)"
+  (shiftClick)="onShiftClick($event, day)"
+  (shiftHover)="onShiftHover($event, day)">
+</app-gantt-cell>

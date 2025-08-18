@@ -1,0 +1,26 @@
+<!-- Employee Row -->
+<div 
+  class="grid relative [grid-auto-columns:0]"
+  [style.grid-template-columns]="getGridTemplateColumns()">
+  
+  <!-- Top and bottom borders -->
+  <div class="pointer-events-none absolute inset-x-0 top-0 z-10 border-t border-gray-200 dark:border-gray-700"></div>
+  <div class="pointer-events-none absolute inset-x-0 bottom-0 z-10 border-b border-gray-200 dark:border-gray-700"></div>
+  
+  <!-- Row Header (Employee info) -->
+  <app-gantt-row-header
+    [employee]="employee"
+    [isSelected]="isEmployeeSelected"
+    (employeeClick)="onEmployeeClick($event)">
+  </app-gantt-row-header>
+
+  <!-- Row Cells (Days with shifts) -->
+  <app-gantt-row-cells
+    [employee]="employee"
+    [days]="days"
+    [selectedDate]="selectedDate"
+    (cellClick)="onCellClick($event)"
+    (shiftClick)="onShiftClick($event)"
+    (shiftHover)="onShiftHover($event)">
+  </app-gantt-row-cells>
+</div>

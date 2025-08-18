@@ -1,0 +1,73 @@
+<div class="h-screen w-full overflow-hidden flex flex-col bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-200 pt-20">
+  <!-- Loading Overlay -->
+  <div *ngIf="isLoading"
+       class="fixed inset-0 bg-black bg-opacity-20 flex items-center justify-center z-50">
+    <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-xl">
+      <div class="flex items-center space-x-3">
+        <svg class="animate-spin h-8 w-8 text-indigo-600" xmlns="http://www.w3.org/2000/svg" fill="none"
+             viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor"
+                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+        <span class="text-lg font-medium text-gray-900 dark:text-white">Loading...</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Error Modal -->
+  <div *ngIf="error"
+       class="fixed inset-0 bg-black bg-opacity-20 flex items-center justify-center z-50">
+    <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-xl max-w-md w-full">
+      <div class="flex flex-col items-center space-y-4">
+        <div class="rounded-full bg-red-100 p-3">
+          <svg class="h-6 w-6 text-red-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+               stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+          </svg>
+        </div>
+        <h3 class="text-lg font-medium text-gray-900 dark:text-white">Error</h3>
+        <p class="text-center text-gray-600 dark:text-gray-300">{{ error }}</p>
+        <button
+          (click)="error = null"
+          class="mt-4 inline-flex justify-center w-full px-4 py-2 text-sm font-medium text-white bg-red-600 border border-transparent rounded-md shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <main class="flex-1 w-full p-2 flex flex-col min-h-0 overflow-hidden">
+    <!-- Controls Bar -->
+    <app-controls-bar
+      [currentDate]="currentDate"
+      [viewMode]="viewMode"
+      (addShift)="onAddShift()">
+    </app-controls-bar>
+
+    <!-- Gantt Grid -->
+    <div class="flex-1 min-h-0 py-2">
+      <div class="has-thin-scroll overflow-x-auto overflow-y-auto relative rounded-lg shadow bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 flex-1 min-h-0 h-full w-full">
+        <!-- Header -->
+        <app-gantt-header
+          [currentDate]="currentDate"
+          [viewMode]="viewMode"
+          [days]="getDaysInCurrentView()">
+        </app-gantt-header>
+
+        <!-- Body rows -->
+        <div>
+          <app-gantt-row
+            *ngFor="let employee of employees; trackBy: trackByEmployee"
+            [employee]="employee"
+            [days]="getDaysInCurrentView()"
+            (shiftClick)="onShiftClick($event.shift, employee, $event.date)"
+            (cellClick)="onCellClick(employee, $event)">
+          </app-gantt-row>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
