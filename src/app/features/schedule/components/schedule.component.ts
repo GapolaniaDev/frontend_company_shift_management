@@ -325,13 +325,164 @@ export class ScheduleComponent implements OnInit {
 
   // Transform data for Gantt components
   getGanttEmployeesData(): Employee[] {
-    const employees = this.getGanttEmployees();
-    return employees.map(emp => ({
-      id: emp.id.toString(),
-      name: `${emp.first_name || ''} ${emp.last_name || ''}`.trim(),
-      avatar: emp.avatar || 'https://via.placeholder.com/32',
-      shifts: this.getEmployeeShiftsGroupedByDate(emp.id)
-    }));
+    // Use mock data for demonstration
+    return this.getMockEmployeesData();
+    
+    // Original code commented out for now
+    // const employees = this.getGanttEmployees();
+    // return employees.map(emp => ({
+    //   id: emp.id.toString(),
+    //   name: `${emp.first_name || ''} ${emp.last_name || ''}`.trim(),
+    //   avatar: emp.avatar || 'https://via.placeholder.com/32',
+    //   shifts: this.getEmployeeShiftsGroupedByDate(emp.id)
+    // }));
+  }
+
+  // Mock data for demonstration
+  private getMockEmployeesData(): Employee[] {
+    const currentDate = new Date();
+    const year = currentDate.getFullYear();
+    const month = currentDate.getMonth();
+    
+    const employees: Employee[] = [
+      {
+        id: '1',
+        name: 'John Smith',
+        avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face',
+        shifts: {}
+      },
+      {
+        id: '2',
+        name: 'Maria Garcia',
+        avatar: 'https://images.unsplash.com/photo-1494790108755-2616b612b5bc?w=100&h=100&fit=crop&crop=face',
+        shifts: {}
+      },
+      {
+        id: '3',
+        name: 'Mike Johnson',
+        avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face',
+        shifts: {}
+      },
+      {
+        id: '4',
+        name: 'Sarah Wilson',
+        avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop&crop=face',
+        shifts: {}
+      },
+      {
+        id: '5',
+        name: 'David Brown',
+        avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop&crop=face',
+        shifts: {}
+      },
+      {
+        id: '6',
+        name: 'Lisa Anderson',
+        avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=100&h=100&fit=crop&crop=face',
+        shifts: {}
+      },
+      {
+        id: '7',
+        name: 'Robert Miller',
+        avatar: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=100&h=100&fit=crop&crop=face',
+        shifts: {}
+      },
+      {
+        id: '8',
+        name: 'Jennifer Davis',
+        avatar: 'https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=100&h=100&fit=crop&crop=face',
+        shifts: {}
+      },
+      {
+        id: '9',
+        name: 'Chris Taylor',
+        avatar: 'https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?w=100&h=100&fit=crop&crop=face',
+        shifts: {}
+      },
+      {
+        id: '10',
+        name: 'Amanda White',
+        avatar: 'https://images.unsplash.com/photo-1521577352947-9bb58764b69a?w=100&h=100&fit=crop&crop=face',
+        shifts: {}
+      }
+    ];
+
+    // Generate random shifts for each employee
+    employees.forEach((employee, empIndex) => {
+      const daysInMonth = new Date(year, month + 1, 0).getDate();
+      
+      for (let day = 1; day <= daysInMonth; day++) {
+        const dateKey = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+        
+        // Random chance to have shifts (70% chance)
+        if (Math.random() > 0.3) {
+          const shiftsForDay: GanttShift[] = [];
+          
+          // Random number of shifts (1-3)
+          const numShifts = Math.floor(Math.random() * 3) + 1;
+          
+          for (let i = 0; i < numShifts; i++) {
+            const shiftTypes: Array<'morning' | 'afternoon' | 'night'> = ['morning', 'afternoon', 'night'];
+            const shiftType = shiftTypes[Math.floor(Math.random() * shiftTypes.length)];
+            
+            let startTime: string, endTime: string, code: string;
+            
+            switch (shiftType) {
+              case 'morning':
+                startTime = '06:00';
+                endTime = '14:00';
+                code = Math.random() > 0.5 ? 'M' : 'AM';
+                break;
+              case 'afternoon':
+                startTime = '14:00';
+                endTime = '22:00';
+                code = Math.random() > 0.5 ? 'A' : 'PM';
+                break;
+              case 'night':
+                startTime = '22:00';
+                endTime = '06:00';
+                code = Math.random() > 0.5 ? 'N' : 'NT';
+                break;
+            }
+            
+            shiftsForDay.push({
+              id: `${employee.id}-${day}-${i}`,
+              type: shiftType,
+              startTime,
+              endTime,
+              code,
+              location: Math.random() > 0.5 ? 'HQ' : 'Branch'
+            });
+          }
+          
+          employee.shifts[dateKey] = shiftsForDay;
+        }
+      }
+    });
+
+    return employees;
+  }
+
+  // Mock locations data
+  getMockLocations(): any[] {
+    return [
+      { id: '1', name: 'Headquarters' },
+      { id: '2', name: 'Downtown Branch' },
+      { id: '3', name: 'North Branch' },
+      { id: '4', name: 'South Branch' },
+      { id: '5', name: 'Remote Work' }
+    ];
+  }
+
+  // Mock shift types data
+  getMockShiftTypes(): any[] {
+    return [
+      { id: '1', name: 'Morning Shift' },
+      { id: '2', name: 'Afternoon Shift' },
+      { id: '3', name: 'Night Shift' },
+      { id: '4', name: 'Full Day' },
+      { id: '5', name: 'Part Time' }
+    ];
   }
 
   private getEmployeeShiftsGroupedByDate(employeeId: number): { [key: string]: GanttShift[] } {
