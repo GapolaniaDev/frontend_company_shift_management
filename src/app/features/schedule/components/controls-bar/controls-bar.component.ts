@@ -2,6 +2,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NgIconComponent, provideIcons } from '@ng-icons/core';
 import { heroChevronLeft, heroChevronRight, heroChevronDown, heroPlus } from '@ng-icons/heroicons/outline';
+import { ViewMode } from '../shared-types';
 
 export interface Location {
   id: string;
@@ -12,8 +13,6 @@ export interface ShiftType {
   id: string;
   name: string;
 }
-
-export type ViewMode = 'month' | 'week' | 'day';
 
 @Component({
   selector: 'app-controls-bar',

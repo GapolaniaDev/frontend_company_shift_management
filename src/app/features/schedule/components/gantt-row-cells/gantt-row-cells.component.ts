@@ -1,14 +1,7 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { GanttCellComponent } from '../gantt-cell/gantt-cell.component';
-import { Shift } from '../shift-block/shift-block.component';
-
-export interface Employee {
-  id: string;
-  name: string;
-  avatar: string;
-  shifts: { [key: string]: Shift[] };
-}
+import { Employee, Shift } from '../shared-types';
 
 @Component({
   selector: 'app-gantt-row-cells',

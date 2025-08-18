@@ -1,14 +1,6 @@
 import { Component, Input, Output, EventEmitter, HostBinding } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
-export interface Shift {
-  id: string;
-  type: 'morning' | 'afternoon' | 'night';
-  startTime: string;
-  endTime: string;
-  code: string;
-  location?: string;
-}
+import { Shift } from '../shared-types';
 
 @Component({
   selector: 'app-shift-block',

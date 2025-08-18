@@ -2,8 +2,7 @@ import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { GanttMonthHeaderComponent } from '../gantt-month-header/gantt-month-header.component';
 import { GanttDayHeaderComponent } from '../gantt-day-header/gantt-day-header.component';
-
-export type ViewMode = 'month' | 'week' | 'day';
+import { ViewMode } from '../shared-types';
 
 @Component({
   selector: 'app-gantt-header',

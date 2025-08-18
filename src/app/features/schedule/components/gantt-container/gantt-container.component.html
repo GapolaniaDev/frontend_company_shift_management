@@ -44,6 +44,17 @@
     <app-controls-bar
       [currentDate]="currentDate"
       [viewMode]="viewMode"
+      [locations]="locations"
+      [shiftTypes]="shiftTypes"
+      [selectedLocationId]="selectedLocationId"
+      [selectedShiftTypeId]="selectedShiftTypeId"
+      [searchTags]="searchTags"
+      (previousClick)="onPreviousClick()"
+      (nextClick)="onNextClick()"
+      (todayClick)="onTodayClick()"
+      (viewModeChange)="onViewModeChange($event)"
+      (locationChange)="onLocationChange($event)"
+      (shiftTypeChange)="onShiftTypeChange($event)"
       (addShift)="onAddShift()">
     </app-controls-bar>
 

@@ -5,6 +5,8 @@ import { ScheduleCalendarService, CalendarViewType } from '@features/schedule/da
 import { SharedNgIconsModule } from '@shared/ng-icons.module';
 import { ShiftFormComponent } from '@features/schedule/components/shift-form/shift-form.component';
 import { Shift } from "@features/shifts/models/shift";
+import { GanttContainerComponent } from './gantt-container/gantt-container.component';
+import { Employee, Shift as GanttShift, ViewMode } from './shared-types';
 
 @Component({
   selector: 'app-schedule',
@@ -13,7 +15,8 @@ import { Shift } from "@features/shifts/models/shift";
     CommonModule,
     FormsModule,
     SharedNgIconsModule,
-    ShiftFormComponent
+    ShiftFormComponent,
+    GanttContainerComponent
   ],
   templateUrl: './schedule.component.html',
   styleUrl: './schedule.component.css'
@@ -319,4 +322,123 @@ export class ScheduleComponent implements OnInit {
   }
 
   protected readonly location = location;
+
+  // Transform data for Gantt components
+  getGanttEmployeesData(): Employee[] {
+    const employees = this.getGanttEmployees();
+    return employees.map(emp => ({
+      id: emp.id.toString(),
+      name: `${emp.first_name || ''} ${emp.last_name || ''}`.trim(),
+      avatar: emp.avatar || 'https://via.placeholder.com/32',
+      shifts: this.getEmployeeShiftsGroupedByDate(emp.id)
+    }));
+  }
+
+  private getEmployeeShiftsGroupedByDate(employeeId: number): { [key: string]: GanttShift[] } {
+    const shifts = this.getEmployeeShiftsForPeriod(employeeId);
+    const groupedShifts: { [key: string]: GanttShift[] } = {};
+
+    shifts.forEach(shift => {
+      if (shift.date_start) {
+        const date = new Date(shift.date_start);
+        const dateKey = this.formatDateKey(date);
+        
+        if (!groupedShifts[dateKey]) {
+          groupedShifts[dateKey] = [];
+        }
+
+        groupedShifts[dateKey].push(this.transformShiftToGanttShift(shift));
+      }
+    });
+
+    return groupedShifts;
+  }
+
+  private transformShiftToGanttShift(shift: Shift): GanttShift {
+    return {
+      id: shift.id?.toString() || '',
+      type: this.getShiftTypeFromId(shift.shift_type_id),
+      startTime: this.formatTimeShort(shift.date_start),
+      endTime: this.formatTimeShort(shift.date_end),
+      code: this.getShiftCode(shift.shift_type_id),
+      location: (shift.location as any)?.name || ''
+    };
+  }
+
+  private getShiftTypeFromId(shiftTypeId: number | null | undefined): 'morning' | 'afternoon' | 'night' {
+    switch (shiftTypeId) {
+      case 1: return 'morning';
+      case 2: return 'afternoon';
+      case 3: return 'night';
+      default: return 'morning';
+    }
+  }
+
+  private getShiftCode(shiftTypeId: number | null | undefined): string {
+    switch (shiftTypeId) {
+      case 1: return 'M';
+      case 2: return 'A';
+      case 3: return 'N';
+      default: return 'U';
+    }
+  }
+
+  private formatDateKey(date: Date): string {
+    return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+  }
+
+  getCurrentViewMode(): ViewMode {
+    const view = this.calendarService.getCurrentState().view;
+    return view as ViewMode;
+  }
+
+  getCurrentDate(): Date {
+    return this.calendarService.getCurrentState().currentDate;
+  }
+
+  getIsLoading(): boolean {
+    return this.calendarService.getCurrentState().isLoading;
+  }
+
+  getError(): string | null {
+    return this.calendarService.getCurrentState().error;
+  }
+
+  // Event handlers for Gantt components
+  onGanttShiftClick(event: { shift: GanttShift; employee: Employee; date: string }): void {
+    // Find the original shift and open the form
+    const originalShift = this.findOriginalShift(event.shift.id);
+    if (originalShift) {
+      this.openShiftForm(originalShift, new Date(event.date));
+    }
+  }
+
+  onGanttCellClick(event: { employee: Employee; date: string }): void {
+    // Open shift form to add new shift for this employee and date
+    this.openShiftForm(null, new Date(event.date));
+  }
+
+  onGanttAddShift(): void {
+    this.addShift();
+  }
+
+  private findOriginalShift(shiftId: string): Shift | null {
+    const allShifts = this.getAllShiftsForPeriod();
+    return allShifts.find(shift => shift.id?.toString() === shiftId) || null;
+  }
+
+  // Location and ShiftType change handlers for Gantt
+  onLocationChangeFromGantt(locationId: string): void {
+    const location = this.calendarService.getLocations().find(d => d.id === parseInt(locationId, 10));
+    if (location) {
+      this.calendarService.setLocation(location);
+    }
+  }
+
+  onShiftTypeChangeFromGantt(shiftTypeId: string): void {
+    const shiftType = this.calendarService.getShiftType().find(d => d.id === parseInt(shiftTypeId, 10));
+    if (shiftType) {
+      this.calendarService.setLocation(shiftType); // This might need to be setShiftType if available
+    }
+  }
 }

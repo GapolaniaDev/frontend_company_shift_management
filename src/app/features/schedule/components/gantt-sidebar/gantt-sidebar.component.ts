@@ -1,11 +1,6 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
-export interface Employee {
-  id: string;
-  name: string;
-  avatar: string;
-}
+import { Employee } from '../shared-types';
 
 @Component({
   selector: 'app-gantt-sidebar',

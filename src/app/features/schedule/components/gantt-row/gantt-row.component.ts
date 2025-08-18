@@ -1,8 +1,8 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { GanttRowHeaderComponent, Employee } from '../gantt-row-header/gantt-row-header.component';
+import { GanttRowHeaderComponent } from '../gantt-row-header/gantt-row-header.component';
 import { GanttRowCellsComponent } from '../gantt-row-cells/gantt-row-cells.component';
-import { Shift } from '../shift-block/shift-block.component';
+import { Employee, Shift } from '../shared-types';
 
 @Component({
   selector: 'app-gantt-row',

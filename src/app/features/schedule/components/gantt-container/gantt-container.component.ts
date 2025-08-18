@@ -3,24 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ControlsBarComponent } from '../controls-bar/controls-bar.component';
 import { GanttHeaderComponent } from '../gantt-header/gantt-header.component';
 import { GanttRowComponent } from '../gantt-row/gantt-row.component';
-
-export interface Employee {
-  id: string;
-  name: string;
-  avatar: string;
-  shifts: { [key: string]: Shift[] };
-}
-
-export interface Shift {
-  id: string;
-  type: 'morning' | 'afternoon' | 'night';
-  startTime: string;
-  endTime: string;
-  code: string;
-  location?: string;
-}
-
-export type ViewMode = 'month' | 'week' | 'day';
+import { Employee, Shift, ViewMode } from '../shared-types';
 
 @Component({
   selector: 'app-gantt-container',
@@ -35,10 +18,21 @@ export class GanttContainerComponent {
   @Input() viewMode: ViewMode = 'month';
   @Input() isLoading: boolean = false;
   @Input() error: string | null = null;
+  @Input() locations: any[] = [];
+  @Input() shiftTypes: any[] = [];
+  @Input() selectedLocationId: string | null = null;
+  @Input() selectedShiftTypeId: string | null = null;
+  @Input() searchTags: string[] = [];
 
   @Output() shiftClick = new EventEmitter<{ shift: Shift; employee: Employee; date: string }>();
   @Output() cellClick = new EventEmitter<{ employee: Employee; date: string }>();
   @Output() addShift = new EventEmitter<void>();
+  @Output() previousClick = new EventEmitter<void>();
+  @Output() nextClick = new EventEmitter<void>();
+  @Output() todayClick = new EventEmitter<void>();
+  @Output() viewModeChange = new EventEmitter<ViewMode>();
+  @Output() locationChange = new EventEmitter<string>();
+  @Output() shiftTypeChange = new EventEmitter<string>();
 
   getDaysInCurrentView(): Date[] {
     const days: Date[] = [];
@@ -83,5 +77,29 @@ export class GanttContainerComponent {
 
   trackByEmployee(index: number, employee: Employee): string {
     return employee.id;
+  }
+
+  onPreviousClick(): void {
+    this.previousClick.emit();
+  }
+
+  onNextClick(): void {
+    this.nextClick.emit();
+  }
+
+  onTodayClick(): void {
+    this.todayClick.emit();
+  }
+
+  onViewModeChange(mode: ViewMode): void {
+    this.viewModeChange.emit(mode);
+  }
+
+  onLocationChange(locationId: string): void {
+    this.locationChange.emit(locationId);
+  }
+
+  onShiftTypeChange(shiftTypeId: string): void {
+    this.shiftTypeChange.emit(shiftTypeId);
   }
 }
