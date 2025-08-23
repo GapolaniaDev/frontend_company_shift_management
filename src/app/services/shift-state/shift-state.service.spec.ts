@@ -1,6 +1,6 @@
-import { TestBed } from '@angular/core/testing';
+import {TestBed} from '@angular/core/testing';
 
-import { ShiftStateService } from './shift-state.service';
+import {ShiftStateService} from './shift-state.service';
 
 describe('ShiftStateService', () => {
   let service: ShiftStateService;

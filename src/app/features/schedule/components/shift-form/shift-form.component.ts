@@ -1,8 +1,8 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core'
-import { CommonModule } from '@angular/common'
-import { FormsModule, ReactiveFormsModule, FormGroup, FormBuilder, Validators } from '@angular/forms'
-import { Shift } from "@features/shifts/models/shift";
-import { SharedNgIconsModule} from "@shared/ng-icons.module";
+import {Component, EventEmitter, Input, Output} from '@angular/core'
+import {CommonModule} from '@angular/common'
+import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms'
+import {Shift} from "@features/shifts/models/shift";
+import {SharedNgIconsModule} from "@shared/ng-icons.module";
 
 @Component({
   selector: 'app-shift-form',

@@ -1,8 +1,8 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { NgIconComponent, provideIcons } from '@ng-icons/core';
-import { heroChevronLeft, heroChevronRight, heroChevronDown, heroPlus } from '@ng-icons/heroicons/outline';
-import { ViewMode } from '../shared-types';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {NgIconComponent, provideIcons} from '@ng-icons/core';
+import {heroChevronDown, heroChevronLeft, heroChevronRight, heroPlus} from '@ng-icons/heroicons/outline';
+import {ViewMode} from '../shared-types';
 
 export interface Location {
   id: string;
@@ -42,9 +42,9 @@ export class ControlsBarComponent {
   @Output() tagRemove = new EventEmitter<string>();
 
   getCurrentMonthYearInfo(): string {
-    const options: Intl.DateTimeFormatOptions = { 
-      year: 'numeric', 
-      month: 'long' 
+    const options: Intl.DateTimeFormatOptions = {
+      year: 'numeric',
+      month: 'long'
     };
     return this.currentDate.toLocaleDateString('en-US', options);
   }
@@ -55,10 +55,10 @@ export class ControlsBarComponent {
       startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay());
       const endOfWeek = new Date(startOfWeek);
       endOfWeek.setDate(startOfWeek.getDate() + 6);
-      
+
       return `${startOfWeek.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} - ${endOfWeek.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}`;
     }
-    
+
     return `Week ${this.getWeekNumber(this.currentDate)}`;
   }
 

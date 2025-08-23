@@ -1,5 +1,4 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core'
-import {DatePipe, NgIf} from '@angular/common'
 import {Router} from '@angular/router'
 import {Shift} from "@features/shifts/models/shift";
 

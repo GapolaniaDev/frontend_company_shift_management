@@ -1,9 +1,8 @@
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { BehaviorSubject, Observable, catchError, map, of, tap } from 'rxjs';
+import {Injectable} from '@angular/core';
+import {HttpClient, HttpParams} from '@angular/common/http';
+import {BehaviorSubject, catchError, Observable, of, tap} from 'rxjs';
 import {environment} from "@env/environment";
-import { ShiftHistoryResponse, ShiftHistoryState } from "@features/shifts/models/shift-history.model";
-import { DateSummary } from "@features/shifts/models/shift-history.model";
+import {DateSummary, ShiftHistoryResponse, ShiftHistoryState} from "@features/shifts/models/shift-history.model";
 
 @Injectable({
   providedIn: 'root'

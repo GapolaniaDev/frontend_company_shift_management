@@ -1,7 +1,7 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { GanttCellComponent } from '../gantt-cell/gantt-cell.component';
-import { Employee, Shift } from '../shared-types';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {GanttCellComponent} from '../gantt-cell/gantt-cell.component';
+import {Employee, Shift} from '../shared-types';
 
 @Component({
   selector: 'app-gantt-row-cells',

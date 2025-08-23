@@ -1,12 +1,12 @@
-import { Component, OnInit } from '@angular/core'
-import { CommonModule } from '@angular/common'
-import { FormsModule } from '@angular/forms'
-import { ScheduleCalendarService, CalendarViewType } from '@features/schedule/data-access/schedule-calendar.service';
-import { SharedNgIconsModule } from '@shared/ng-icons.module';
-import { ShiftFormComponent } from '@features/schedule/components/shift-form/shift-form.component';
-import { Shift } from "@features/shifts/models/shift";
-import { GanttContainerComponent } from './gantt-container/gantt-container.component';
-import { Employee, Shift as GanttShift, ViewMode } from './shared-types';
+import {Component, OnInit} from '@angular/core'
+import {CommonModule} from '@angular/common'
+import {FormsModule} from '@angular/forms'
+import {CalendarViewType, ScheduleCalendarService} from '@features/schedule/data-access/schedule-calendar.service';
+import {SharedNgIconsModule} from '@shared/ng-icons.module';
+import {ShiftFormComponent} from '@features/schedule/components/shift-form/shift-form.component';
+import {Shift} from "@features/shifts/models/shift";
+import {GanttContainerComponent} from './gantt-container/gantt-container.component';
+import {Employee, Shift as GanttShift, ViewMode} from './shared-types';
 
 @Component({
   selector: 'app-schedule',

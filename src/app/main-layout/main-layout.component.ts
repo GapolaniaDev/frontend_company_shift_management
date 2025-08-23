@@ -1,6 +1,6 @@
-import {Component, OnInit, NgModule, Renderer2} from '@angular/core'
+import {Component, OnInit, Renderer2} from '@angular/core'
 import {CommonModule} from '@angular/common'
-import {RouterLink, RouterOutlet, Router} from "@angular/router";
+import {Router, RouterLink, RouterOutlet} from "@angular/router";
 import {LoginService} from "@features/session/data-access/login.service";
 import {MenuComponent} from "../core/components/menu/menu.component";
 import {LoaderComponent} from "../core/components/loader/loader.component";

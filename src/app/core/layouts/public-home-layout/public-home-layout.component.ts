@@ -1,7 +1,5 @@
 import {Component} from '@angular/core'
-import {RouterLink, RouterOutlet} from "@angular/router";
-import {CommonModule} from "@angular/common";
-import {MenuComponent} from "../../components/menu/menu.component";
+import {RouterOutlet} from "@angular/router";
 
 @Component({
   selector: 'app-public-home-layout',

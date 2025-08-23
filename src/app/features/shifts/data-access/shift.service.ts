@@ -1,14 +1,8 @@
-import { inject, Injectable } from '@angular/core'
-import { HttpClient } from '@angular/common/http'
-import { Observable } from 'rxjs'
-import { 
-  ClockUpdateRequest, 
-  Shift, 
-  ShiftCreateRequest, 
-  ShiftResponse, 
-  ShiftUpdateRequest 
-} from '../models/shift';
-import { environment } from '@env/environment';
+import {inject, Injectable} from '@angular/core'
+import {HttpClient} from '@angular/common/http'
+import {Observable} from 'rxjs'
+import {ClockUpdateRequest, Shift, ShiftCreateRequest, ShiftResponse, ShiftUpdateRequest} from '../models/shift';
+import {environment} from '@env/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -125,24 +119,24 @@ export class ShiftService {
    * Update clock position with timezone information (legacy method, consolidated)
    */
   updateClockPosition(
-    shiftId: number, 
-    lat: number, 
-    lng: number, 
+    shiftId: number,
+    lat: number,
+    lng: number,
     type: 'clock_on' | 'clock_off',
     timezone?: string
   ): Observable<any> {
     const state = type === 'clock_on' ? 1 : 2;
     const localTime = new Date().toISOString();
-    
+
     const body = {
-      lat, 
-      lng, 
-      type, 
+      lat,
+      lng,
+      type,
       state,
       timezone: timezone || Intl.DateTimeFormat().resolvedOptions().timeZone,
       local_time: localTime
     };
-    
+
     return this.http.put<any>(`${this.baseUrl}/${shiftId}/update-clock`, body);
   }
 

@@ -1,6 +1,6 @@
-import { TestBed } from '@angular/core/testing';
+import {TestBed} from '@angular/core/testing';
 
-import { ConfirmationModalService } from './confirmation-modal.service';
+import {ConfirmationModalService} from './confirmation-modal.service';
 
 describe('ConfirmationModalService', () => {
   let service: ConfirmationModalService;

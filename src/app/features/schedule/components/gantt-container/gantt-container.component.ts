@@ -1,9 +1,9 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { ControlsBarComponent } from '../controls-bar/controls-bar.component';
-import { GanttHeaderComponent } from '../gantt-header/gantt-header.component';
-import { GanttRowComponent } from '../gantt-row/gantt-row.component';
-import { Employee, Shift, ViewMode } from '../shared-types';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {ControlsBarComponent} from '../controls-bar/controls-bar.component';
+import {GanttHeaderComponent} from '../gantt-header/gantt-header.component';
+import {GanttRowComponent} from '../gantt-row/gantt-row.component';
+import {Employee, Shift, ViewMode} from '../shared-types';
 
 @Component({
   selector: 'app-gantt-container',
@@ -38,7 +38,7 @@ export class GanttContainerComponent {
     const days: Date[] = [];
     const year = this.currentDate.getFullYear();
     const month = this.currentDate.getMonth();
-    
+
     switch (this.viewMode) {
       case 'month':
         const daysInMonth = new Date(year, month + 1, 0).getDate();
@@ -59,7 +59,7 @@ export class GanttContainerComponent {
         days.push(new Date(this.currentDate));
         break;
     }
-    
+
     return days;
   }
 

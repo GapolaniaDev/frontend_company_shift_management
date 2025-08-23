@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { ClockComponent } from './clock.component';
+import {ClockComponent} from './clock.component';
 
 describe('ClockComponent', () => {
   let component: ClockComponent;

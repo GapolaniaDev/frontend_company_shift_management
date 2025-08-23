@@ -1,6 +1,6 @@
-import { TestBed } from '@angular/core/testing';
+import {TestBed} from '@angular/core/testing';
 
-import { ClockService } from './clock.service';
+import {ClockService} from './clock.service';
 
 describe('ClockService', () => {
   let service: ClockService;

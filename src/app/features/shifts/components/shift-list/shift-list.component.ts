@@ -1,9 +1,9 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { RouterModule } from '@angular/router';
-import { Subject, takeUntil } from 'rxjs';
-import { Shift, ShiftResponse } from "@features/shifts/models/shift";
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {RouterModule} from '@angular/router';
+import {Subject, takeUntil} from 'rxjs';
+import {Shift, ShiftResponse} from "@features/shifts/models/shift";
 import {ShiftService} from "@features/shifts";
 import {ConfirmationModalService} from "@core/services/confirmation-modal/confirmation-modal.service";
 

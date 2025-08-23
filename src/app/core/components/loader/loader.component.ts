@@ -1,4 +1,4 @@
-import { Component } from '@angular/core'
+import {Component} from '@angular/core'
 import {LoaderService} from "@core/services/loader.service";
 import {AsyncPipe, NgIf} from "@angular/common";
 

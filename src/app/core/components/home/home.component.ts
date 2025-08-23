@@ -1,17 +1,17 @@
-import { Component, OnDestroy, OnInit } from '@angular/core'
-import { ShiftStateService } from '../../../services/shift-state/shift-state.service'
-import { LoaderService } from "@core/services/loader.service";
-import { Subscription } from 'rxjs'
-import { CommonModule, NgIf } from "@angular/common";
-import { MapsComponent } from "@features/shifts/components/maps/maps.component";
-import { ClockComponent } from "../clock/clock.component";
-import { ShiftDetailsComponent } from "@features/shifts/components/shift-details/shift-details.component";
-import { NoShiftDetailsComponent } from "@features/shifts/components/no-shift-details/no-shift-details.component";
-import { SharedNgIconsModule } from "@shared/ng-icons.module";
-import { ConfirmationModalComponent } from "../confirmation-modal/confirmation-modal.component";
-import { GeolocationService } from "@core/services/geolocation/geolocation.service";
-import { ShiftCompletedComponent } from "@features/shifts/components/shift-completed/shift-completed.component";
-import { Shift, ShiftState } from "@features/shifts/models/shift";
+import {Component, OnDestroy, OnInit} from '@angular/core'
+import {ShiftStateService} from '../../../services/shift-state/shift-state.service'
+import {LoaderService} from "@core/services/loader.service";
+import {Subscription} from 'rxjs'
+import {CommonModule, NgIf} from "@angular/common";
+import {MapsComponent} from "@features/shifts/components/maps/maps.component";
+import {ClockComponent} from "../clock/clock.component";
+import {ShiftDetailsComponent} from "@features/shifts/components/shift-details/shift-details.component";
+import {NoShiftDetailsComponent} from "@features/shifts/components/no-shift-details/no-shift-details.component";
+import {SharedNgIconsModule} from "@shared/ng-icons.module";
+import {ConfirmationModalComponent} from "../confirmation-modal/confirmation-modal.component";
+import {GeolocationService} from "@core/services/geolocation/geolocation.service";
+import {ShiftCompletedComponent} from "@features/shifts/components/shift-completed/shift-completed.component";
+import {Shift, ShiftState} from "@features/shifts/models/shift";
 
 // Make ShiftState enum available for the template
 const ShiftStateEnum = ShiftState;
@@ -54,30 +54,30 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.shiftStateService.isShiftActive$.subscribe((isShiftActive) => {
         this.isShiftActive = isShiftActive;
       }),
-      
+
       this.shiftStateService.shiftState$.subscribe((state) => {
         this.shiftState = state;
         console.log('Current shift state:', state);
       }),
-      
+
       this.shiftStateService.isThereShift$.subscribe((isThereShift) => {
         this.isThereShift = isThereShift;
       }),
-      
+
       this.shiftStateService.shifts$.subscribe((shiftData) => {
         if (shiftData.success && shiftData.shift) {
           this.completedShift = shiftData.shift;
         }
       }),
-      
+
       this.geolocationService.userLocation$.subscribe((coords) => {
         this.userGeo = coords;
       })
     );
-    
+
     this.refreshShifts();
   }
-  
+
   /**
    * Get the current shift data
    * @returns The current shift or null if not available
@@ -96,7 +96,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     if (currentShiftData.success && currentShiftData.shift) {
       this.completedShift = currentShiftData.shift;
       this.isShiftJustCompleted = true;
-      
+
       // Set a timeout to reset the completed state after showing the confirmation
       // This gives the user time to see the completion screen before going back to no-shift view
       setTimeout(() => {
@@ -123,7 +123,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   closeCompletedView(): void {
     // Set shiftState to NOT_STARTED to force UI update
     this.shiftStateService.setShiftState(ShiftState.NOT_STARTED);
-    
+
     // Refresh the data to get the latest state from server
     this.refreshShifts();
   }

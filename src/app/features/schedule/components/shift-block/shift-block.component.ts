@@ -1,6 +1,6 @@
-import { Component, Input, Output, EventEmitter, HostBinding } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { Shift } from '../shared-types';
+import {Component, EventEmitter, HostBinding, Input, Output} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {Shift} from '../shared-types';
 
 @Component({
   selector: 'app-shift-block',
@@ -23,7 +23,7 @@ export class ShiftBlockComponent {
 
   getShiftTypeClasses(): string {
     const baseClasses = 'border-l-4 mb-1 flex flex-col justify-center items-center cursor-pointer transition-colors';
-    
+
     switch (this.shift.type) {
       case 'morning':
         return `${baseClasses} bg-orange-100 border-orange-500 text-orange-800 hover:bg-orange-200`;

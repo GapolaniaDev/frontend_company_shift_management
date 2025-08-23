@@ -1,6 +1,6 @@
-import { TestBed } from '@angular/core/testing';
+import {TestBed} from '@angular/core/testing';
 
-import { GeoUtilsService } from './geo-utils.service';
+import {GeoUtilsService} from './geo-utils.service';
 
 describe('GeoUtilsService', () => {
   let service: GeoUtilsService;

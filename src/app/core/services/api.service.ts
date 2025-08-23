@@ -1,7 +1,7 @@
-import { Injectable } from '@angular/core'
-import { HttpClient, HttpParams } from '@angular/common/http'
-import { Observable } from 'rxjs'
-import { environment } from '@env/environment';
+import {Injectable} from '@angular/core'
+import {HttpClient, HttpParams} from '@angular/common/http'
+import {Observable} from 'rxjs'
+import {environment} from '@env/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +19,7 @@ export class ApiService {
    */
   get<T>(endpoint: string, params?: any): Observable<T> {
     let httpParams = new HttpParams();
-    
+
     if (params) {
       Object.keys(params).forEach(key => {
         if (params[key] !== null && params[key] !== undefined) {
@@ -27,7 +27,7 @@ export class ApiService {
         }
       });
     }
-    
+
     return this.http.get<T>(`${this.apiUrl}/${endpoint}`, { params: httpParams });
   }
 

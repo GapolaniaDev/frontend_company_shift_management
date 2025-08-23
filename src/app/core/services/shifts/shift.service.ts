@@ -1,12 +1,12 @@
-import { Injectable } from '@angular/core'
-import { Observable, BehaviorSubject } from 'rxjs'
-import { ApiService } from '@core/services/api.service'
-import { 
-  ClockUpdateRequest, 
-  Shift, 
-  ShiftCreateRequest, 
-  ShiftResponse, 
-  ShiftUpdateRequest 
+import {Injectable} from '@angular/core'
+import {Observable} from 'rxjs'
+import {ApiService} from '@core/services/api.service'
+import {
+  ClockUpdateRequest,
+  Shift,
+  ShiftCreateRequest,
+  ShiftResponse,
+  ShiftUpdateRequest
 } from "@features/shifts/models/shift";
 
 @Injectable({

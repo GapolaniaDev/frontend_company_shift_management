@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core'
-import {RouterLink, Router} from "@angular/router";
-import {ReactiveFormsModule, FormControl, FormGroup, Validators} from '@angular/forms'
-import {JsonPipe, NgIf} from "@angular/common";
-import { LoginService } from '../../data-access/login.service'
+import {Router, RouterLink} from "@angular/router";
+import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms'
+import {NgIf} from "@angular/common";
+import {LoginService} from '../../data-access/login.service'
 
 @Component({
   selector: 'app-login',

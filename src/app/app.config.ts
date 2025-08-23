@@ -1,10 +1,10 @@
-import { ApplicationConfig, provideZoneChangeDetection, APP_INITIALIZER } from '@angular/core'
-import { provideRouter } from '@angular/router'
+import {APP_INITIALIZER, ApplicationConfig, provideZoneChangeDetection} from '@angular/core'
+import {provideRouter} from '@angular/router'
 
-import { routes } from './app.routes'
-import { provideHttpClient, withInterceptors } from "@angular/common/http";
-import { authInterceptor } from "@core/interceptors/auth.interceptor";
-import { TimezoneService } from './services/timezone/timezone.service'
+import {routes} from './app.routes'
+import {provideHttpClient, withInterceptors} from "@angular/common/http";
+import {authInterceptor} from "@core/interceptors/auth.interceptor";
+import {TimezoneService} from './services/timezone/timezone.service'
 
 // Factory function to initialize the TimezoneService
 function initializeTimezoneFactory(timezoneService: TimezoneService) {

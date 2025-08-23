@@ -1,11 +1,10 @@
 import {Injectable} from '@angular/core'
-import {BehaviorSubject, Observable} from 'rxjs'
+import {BehaviorSubject, combineLatest, Observable} from 'rxjs'
 import {ShiftsService} from '../shifts/shifts.service'
-import {Shift, ShiftState, defaultShift, mapToShift} from "@features/shifts/models/shift";
+import {defaultShift, mapToShift, Shift, ShiftState} from "@features/shifts/models/shift";
 import {finalize, map} from 'rxjs/operators'
 import {GeoUtilsService} from "../geo-utils/geo-utils.service";
 import {GeolocationService} from "../geolocation/geolocation.service";
-import {combineLatest} from 'rxjs'
 
 
 @Injectable({
@@ -68,7 +67,7 @@ export class ShiftStateService {
         (data: { success: boolean; data: any | null }) => {
           const shift = data.success && data.data ? mapToShift(data.data) : null;
           this.setShifts({success: data.success, shift});
-          
+
           if (
             data.success &&
             shift?.location_lat &&
@@ -79,7 +78,7 @@ export class ShiftStateService {
             // Update the shift state subject
             if (shift.state !== undefined && shift.state !== null) {
               this.shiftStateSubject.next(shift.state);
-              
+
               // Update isShiftActive based on state (for backward compatibility)
               // STARTED = 1 means the shift is active
               // FINISHED = 2 means the shift is no longer active
@@ -87,7 +86,7 @@ export class ShiftStateService {
             } else {
               // Legacy fallback based on clock_off_lat
               this.isShiftActiveSubject.next(shift?.clock_off_lat != 0);
-              
+
               // Set state based on clock fields for compatibility with existing code
               if (shift?.clock_on_time && !shift?.clock_off_time) {
                 this.shiftStateSubject.next(ShiftState.STARTED);
@@ -137,12 +136,12 @@ export class ShiftStateService {
 
   public setShiftActive(isActive: boolean): void {
     this.isShiftActiveSubject.next(isActive);
-    
+
     // Update state based on isActive for backward compatibility
     if (isActive) {
       // Si estamos activando el turno, asegurémonos de que tenga un local_clock_on_time
       this.shiftStateSubject.next(ShiftState.STARTED);
-      
+
       // Si no hay local_clock_on_time, establecerlo temporalmente
       const currentShift = this.shiftsSubject.getValue().shift;
       if (currentShift && !currentShift.local_clock_on_time) {
@@ -164,13 +163,13 @@ export class ShiftStateService {
       }
     }
   }
-  
+
   public setShiftState(state: ShiftState): void {
     this.shiftStateSubject.next(state);
-    
+
     // Update isShiftActive based on state for backward compatibility
     this.isShiftActiveSubject.next(state === ShiftState.STARTED);
-    
+
     // Si estamos estableciendo el estado a STARTED y no hay local_clock_on_time
     if (state === ShiftState.STARTED) {
       const currentShift = this.shiftsSubject.getValue().shift;
@@ -229,14 +228,14 @@ export class ShiftStateService {
             console.log('Retrieved local_clock_on_time from shift:', data.shift.local_clock_on_time);
             return data.shift.local_clock_on_time;
           }
-          
+
           // Si no está disponible, usamos clock_on_time (hora del servidor)
           if (data.shift.clock_on_time) {
             console.log('Retrieved clock_on_time from shift:', data.shift.clock_on_time);
             return data.shift.clock_on_time;
           }
         }
-        
+
         console.warn('No clock-on time found in shift data');
         return null;
       })

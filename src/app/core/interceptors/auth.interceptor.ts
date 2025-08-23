@@ -1,8 +1,8 @@
-import { HttpInterceptorFn } from "@angular/common/http";
-import { inject } from "@angular/core";
-import { LoginService } from "@features/session/data-access/login.service";
-import { Router } from "@angular/router";
-import { catchError, throwError, switchMap } from "rxjs";
+import {HttpInterceptorFn} from "@angular/common/http";
+import {inject} from "@angular/core";
+import {LoginService} from "@features/session/data-access/login.service";
+import {Router} from "@angular/router";
+import {catchError, throwError} from "rxjs";
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const loginService = inject(LoginService);
@@ -26,7 +26,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
         loginService.logout();
         router.navigate(['/login']);
       }
-      
+
       // Pass the error along
       return throwError(() => error);
     })

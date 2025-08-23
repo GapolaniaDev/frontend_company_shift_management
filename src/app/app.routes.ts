@@ -1,18 +1,18 @@
-import { Routes } from '@angular/router'
-import { MainLayoutComponent } from './main-layout/main-layout.component'
-import { AuthGuard, LoginGuard } from '@core/auth.guard'
-import { HomeComponent } from '@core/components/home/home.component'
-import { PublicHomeComponent } from '@core/components/public-home/public-home.component'
-import { PublicHomeLayoutComponent } from '@core/layouts/public-home-layout/public-home-layout.component'
-import {LoginComponent} from "@features/session";
-import {RegisterComponent} from "@features/session";
-import {ForgotPasswordComponent} from "@features/session";
-import {TermsConditionsComponent} from "@features/session";
-import {ShiftSettingsComponent} from "@features/shifts";
-import {ShiftTypesComponent} from "@features/shifts";
+import {Routes} from '@angular/router'
+import {MainLayoutComponent} from './main-layout/main-layout.component'
+import {AuthGuard, LoginGuard} from '@core/auth.guard'
+import {HomeComponent} from '@core/components/home/home.component'
+import {PublicHomeComponent} from '@core/components/public-home/public-home.component'
+import {PublicHomeLayoutComponent} from '@core/layouts/public-home-layout/public-home-layout.component'
+import {
+  ForgotPasswordComponent,
+  LoginComponent,
+  ProfileComponent,
+  RegisterComponent,
+  TermsConditionsComponent
+} from "@features/session";
+import {ShiftHistoryComponent, ShiftSettingsComponent, ShiftTypesComponent} from "@features/shifts";
 import {PaymentPeriodsComponent} from "@features/schedule";
-import {ProfileComponent} from "@features/session";
-import {ShiftHistoryComponent} from "@features/shifts";
 
 
 export const routes: Routes = [

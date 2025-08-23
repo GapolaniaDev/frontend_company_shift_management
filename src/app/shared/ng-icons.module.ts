@@ -1,22 +1,22 @@
 import {NgModule} from '@angular/core'
 import {NgIconsModule} from '@ng-icons/core';
 import {
-  heroArrowsPointingOutSolid,
   heroArrowPathSolid,
-  heroSunSolid,
+  heroArrowsPointingOutSolid,
   heroCalendarDaysSolid,
   heroClockSolid,
   heroMoonSolid,
+  heroSunSolid,
 } from '@ng-icons/heroicons/solid';
 
 import {
+  heroCalendarDays,
+  heroChevronDown,
   heroChevronLeft,
   heroChevronRight,
-  heroPlus,
-  heroCalendarDays,
-  heroUserCircle,
-  heroChevronDown,
   heroEllipsisVertical,
+  heroPlus,
+  heroUserCircle,
   heroXMark
 } from '@ng-icons/heroicons/outline';
 

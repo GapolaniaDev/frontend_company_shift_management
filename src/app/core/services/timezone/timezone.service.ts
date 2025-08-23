@@ -1,15 +1,15 @@
-import { Injectable } from '@angular/core'
-import { BehaviorSubject, Observable } from 'rxjs'
+import {Injectable} from '@angular/core'
+import {BehaviorSubject, Observable} from 'rxjs'
 
 @Injectable({
   providedIn: 'root'
 })
 export class TimezoneService {
   private static readonly DEFAULT_TIMEZONE = 'UTC'
-  
+
   // BehaviorSubject to handle the timezone reactively
   private timezoneSubject = new BehaviorSubject<string>(TimezoneService.DEFAULT_TIMEZONE);
-  
+
   // Observable to subscribe to timezone changes
   public timezone$: Observable<string> = this.timezoneSubject.asObservable();
 
@@ -25,7 +25,7 @@ export class TimezoneService {
   private initializeTimezone(): void {
     try {
       const browserTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-      
+
       if (browserTimezone && browserTimezone.trim() !== '') {
         this.timezoneSubject.next(browserTimezone);
         console.log('Timezone initialized:', browserTimezone);

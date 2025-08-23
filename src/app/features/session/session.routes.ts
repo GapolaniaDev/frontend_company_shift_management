@@ -1,29 +1,29 @@
-import { Routes } from '@angular/router'
+import {Routes} from '@angular/router'
 
 export const SESSION_ROUTES: Routes = [
-  { 
-    path: 'login', 
+  {
+    path: 'login',
     loadComponent: () => import('./components/login/login.component')
-      .then(m => m.LoginComponent) 
+      .then(m => m.LoginComponent)
   },
-  { 
-    path: 'register', 
+  {
+    path: 'register',
     loadComponent: () => import('./components/register/register.component')
-      .then(m => m.RegisterComponent) 
+      .then(m => m.RegisterComponent)
   },
-  { 
-    path: 'forgot-password', 
+  {
+    path: 'forgot-password',
     loadComponent: () => import('./components/forgot-password/forgot-password.component')
-      .then(m => m.ForgotPasswordComponent) 
+      .then(m => m.ForgotPasswordComponent)
   },
-  { 
-    path: 'terms', 
+  {
+    path: 'terms',
     loadComponent: () => import('./components/terms-conditions/terms-conditions.component')
-      .then(m => m.TermsConditionsComponent) 
+      .then(m => m.TermsConditionsComponent)
   },
-  { 
-    path: 'profile', 
+  {
+    path: 'profile',
     loadComponent: () => import('./components/profile/profile.component')
-      .then(m => m.ProfileComponent) 
+      .then(m => m.ProfileComponent)
   }
 ];

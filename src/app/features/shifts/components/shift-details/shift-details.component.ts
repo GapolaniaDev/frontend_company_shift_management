@@ -1,13 +1,13 @@
-import { Component, OnDestroy, OnInit } from '@angular/core'
-import { DatePipe, NgClass, NgIf } from "@angular/common";
-import { ShiftStateService } from "@core/services/shift-state/shift-state.service";
-import { Shift, ShiftState } from "@features/shifts/models/shift";
-import { Subscription } from 'rxjs'
-import { ConfirmationModalService } from "@core/services/confirmation-modal/confirmation-modal.service";
-import { ShiftsService } from "@core/services/shifts/shifts.service";
-import { LoaderService } from "@core/services/loader.service";
-import { GeolocationService } from "@core/services/geolocation/geolocation.service";
-import { TimezoneService } from "@core/services/timezone/timezone.service";
+import {Component, OnDestroy, OnInit} from '@angular/core'
+import {DatePipe, NgClass, NgIf} from "@angular/common";
+import {ShiftStateService} from "@core/services/shift-state/shift-state.service";
+import {Shift, ShiftState} from "@features/shifts/models/shift";
+import {Subscription} from 'rxjs'
+import {ConfirmationModalService} from "@core/services/confirmation-modal/confirmation-modal.service";
+import {ShiftsService} from "@core/services/shifts/shifts.service";
+import {LoaderService} from "@core/services/loader.service";
+import {GeolocationService} from "@core/services/geolocation/geolocation.service";
+import {TimezoneService} from "@core/services/timezone/timezone.service";
 
 // Make ShiftState enum available for the template
 const ShiftStateEnum = ShiftState;
@@ -50,7 +50,7 @@ export class ShiftDetailsComponent implements OnInit, OnDestroy {
       })
     );
   }
-  
+
   ngOnInit(): void {
     // Get shift data
     this.subscriptions.add(
@@ -65,7 +65,7 @@ export class ShiftDetailsComponent implements OnInit, OnDestroy {
         this.isShiftActive = isActive;
       })
     );
-    
+
     // Get shift state enum value (NOT_STARTED, STARTED, FINISHED)
     this.subscriptions.add(
       this.shiftStateService.shiftState$.subscribe(state => {
@@ -108,14 +108,14 @@ export class ShiftDetailsComponent implements OnInit, OnDestroy {
    */
   private handleShiftAction(actionType: 'clock_on' | 'clock_off'): void {
     this.loaderService.show();
-    
+
     // Check if geolocation is supported
     if (!navigator.geolocation) {
       console.error('Geolocation is not supported by this browser.');
       this.loaderService.hide();
       return;
     }
-    
+
     // Get current shift
     const shift = this.shiftStateService.getCurrentShift().shift;
     if (!shift?.id) {
@@ -123,32 +123,32 @@ export class ShiftDetailsComponent implements OnInit, OnDestroy {
       this.loaderService.hide();
       return;
     }
-    
+
     // Update clock position with user location
     // TimezoneService is used inside ShiftsService automatically
     this.shiftsService.updateClockPosition(
-      shift.id, 
-      this.userLocation.lat, 
-      this.userLocation.lng, 
+      shift.id,
+      this.userLocation.lat,
+      this.userLocation.lng,
       actionType
     ).subscribe({
       next: (response: any) => {
         if (response.success) {
           console.log('Clock update response:', response);
-          
+
           // Actualizar el estado del turno según el tipo de acción
           if (actionType === 'clock_on') {
             this.shiftStateService.setShiftState(ShiftState.STARTED);
           } else {
             this.shiftStateService.setShiftState(ShiftState.FINISHED);
           }
-          
+
           // Actualizar la información del turno para obtener los nuevos tiempos
           this.shiftStateService.fetchShiftsToday(
             () => console.log('Refreshing shift data after clock action...'),
             () => console.log('Shift data refreshed after clock action')
           );
-          
+
           // Para compatibilidad con código existente
           this.shiftStateService.setShiftActive(actionType === 'clock_on');
         }
