@@ -3,9 +3,9 @@ import {GoogleMap, MapCircle, MapMarker} from "@angular/google-maps";
 import {NgIf} from "@angular/common";
 import {MapService} from "@core/services/map/map.service";
 import {Subscription} from 'rxjs'
-import {BUILDING_ICON, ICON_CLOCK_OFF, ICON_CLOCK_ON, ICON_USER_LOCATION} from "@shared/components/menu/constants/map.constants";
+import {BUILDING_ICON, ICON_CLOCK_OFF, ICON_CLOCK_ON, ICON_USER_LOCATION} from "@shared/constants/map.constants";
 import {MapDataService} from "@core/services/map-data/map-data.service";
-import {ShiftStateService} from "@core/services/shift-state/shift-state.service";
+import {ShiftStateService} from "@features/shifts/data-access/shift-state/shift-state.service";
 import {DarkModeService} from "@core/services/dark-mode.service";
 
 @Component({

@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core'
 import {BehaviorSubject, catchError, Observable, of, tap} from 'rxjs'
 import {Shift} from "@features/shifts/models/shift";
-import {ShiftService} from "@core/services/shifts/shift.service";
+import {ShiftService} from "@features/shifts/data-access/shift/shift.service";
 import {HttpClient, HttpParams} from '@angular/common/http'
 import {environment} from '../../../../environments/environment'
 

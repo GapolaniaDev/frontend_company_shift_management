@@ -1,9 +1,9 @@
 import {Routes} from '@angular/router'
-import {MainLayoutComponent} from './main-layout/main-layout.component'
+import {MainLayoutComponent} from '@app/layouts/main-layout/main-layout.component'
 import {AuthGuard, LoginGuard} from '@core/auth.guard'
 import {HomeComponent} from '@core/components/home/home.component'
-import {PublicHomeComponent} from '@core/components/public-home/public-home.component'
-import {PublicHomeLayoutComponent} from '@core/layouts/public-home-layout/public-home-layout.component'
+import {PublicHomeComponent} from '@features/public/public-home/public-home.component'
+import {PublicHomeLayoutComponent} from '@app/layouts/public-home-layout/public-home-layout.component'
 import {
   ForgotPasswordComponent,
   LoginComponent,

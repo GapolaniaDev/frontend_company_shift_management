@@ -1,7 +1,7 @@
 import {Component, Input} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {GanttDayHeaderComponent} from '@features/schedule/components/gantt-day-header/gantt-day-header.component';
-import {ViewMode} from '@features/schedule/components/shared-types';
+import {ViewMode} from '@features/schedule/models/shared-types';
 
 @Component({
   selector: 'app-gantt-header',

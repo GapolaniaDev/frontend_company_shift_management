@@ -10,7 +10,7 @@ export * from './components/no-shift-details/no-shift-details.component';
 export * from './components/maps/maps.component';
 
 // Shift data access
-export * from './data-access/shift.service';
+export * from './data-access/shift/shift.service';
 
 // Shift models
 export * from './models/shift';

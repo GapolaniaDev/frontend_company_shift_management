@@ -1,5 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core'
-import {ShiftStateService} from "@core/services/shift-state/shift-state.service";
+import {ShiftStateService} from "@features/shifts/data-access/shift-state/shift-state.service";
 import {LoaderService} from "@core/services/loader.service";
 import {Subscription} from 'rxjs'
 import {CommonModule, NgIf} from "@angular/common";

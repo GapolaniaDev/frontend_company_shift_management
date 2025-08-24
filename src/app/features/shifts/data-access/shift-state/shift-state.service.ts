@@ -1,10 +1,10 @@
 import {Injectable} from '@angular/core'
 import {BehaviorSubject, combineLatest, Observable} from 'rxjs'
-import {ShiftsService} from "@core/services/shifts/shifts.service";
+import {ShiftsService} from "@features/shifts/data-access/shifts/shifts.service";
 import {defaultShift, mapToShift, Shift, ShiftState} from "@features/shifts/models/shift";
 import {finalize, map} from 'rxjs/operators'
-import {GeoUtilsService} from "../geo-utils/geo-utils.service";
-import {GeolocationService} from "../geolocation/geolocation.service";
+import {GeoUtilsService} from "@core/services/geo-utils/geo-utils.service";
+import {GeolocationService} from "@core/services/geolocation/geolocation.service";
 
 
 @Injectable({

@@ -1,10 +1,10 @@
 import {Component, OnDestroy, OnInit} from '@angular/core'
 import {DatePipe, NgClass, NgIf} from "@angular/common";
-import {ShiftStateService} from "@core/services/shift-state/shift-state.service";
+import {ShiftStateService} from "@features/shifts/data-access/shift-state/shift-state.service";
 import {Shift, ShiftState} from "@features/shifts/models/shift";
 import {Subscription} from 'rxjs'
 import {ConfirmationModalService} from "@core/services/confirmation-modal/confirmation-modal.service";
-import {ShiftsService} from "@core/services/shifts/shifts.service";
+import {ShiftsService} from "@features/shifts/data-access/shifts/shifts.service";
 import {LoaderService} from "@core/services/loader.service";
 import {GeolocationService} from "@core/services/geolocation/geolocation.service";
 import {TimezoneService} from "@core/services/timezone/timezone.service";

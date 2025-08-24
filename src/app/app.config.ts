@@ -9,8 +9,6 @@ import {TimezoneService} from "@core/services/timezone/timezone.service";
 // Factory function to initialize the TimezoneService
 function initializeTimezoneFactory(timezoneService: TimezoneService) {
   return () => {
-    // The service constructor already initializes the timezone
-    // but we return a resolved promise to ensure the app waits for it
     console.log('Initializing TimezoneService at app startup');
     return Promise.resolve();
   };

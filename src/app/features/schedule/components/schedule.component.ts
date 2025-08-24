@@ -6,7 +6,7 @@ import {SharedNgIconsModule} from '@shared/ng-icons.module';
 import {ShiftFormComponent} from '@features/schedule/components/shift-form/shift-form.component';
 import {Shift} from "@features/shifts/models/shift";
 import {GanttContainerComponent} from './gantt-container/gantt-container.component';
-import {Employee, Shift as GanttShift, ViewMode} from './shared-types';
+import {Employee, Shift as GanttShift, ViewMode} from '../models/shared-types';
 
 @Component({
   selector: 'app-schedule',
