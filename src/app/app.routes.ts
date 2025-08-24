@@ -26,7 +26,13 @@ export const routes: Routes = [
     path: '',
     component: PublicLayoutComponent,
     children: [
-      { path: '', component: PublicLayoutComponent }
+      { 
+        path: '', 
+        pathMatch: 'full',
+        loadComponent: () =>
+          import('@features/public/public-home/public-home.component')
+            .then(m => m.PublicHomeComponent)
+      }
     ]
   },
 
