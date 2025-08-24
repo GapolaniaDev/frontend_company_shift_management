@@ -2,8 +2,8 @@ import {Component, OnInit, Renderer2} from '@angular/core'
 import {CommonModule} from '@angular/common'
 import {Router, RouterLink, RouterOutlet} from "@angular/router";
 import {LoginService} from "@features/session/data-access/login.service";
-import {MenuComponent} from "../core/components/menu/menu.component";
-import {LoaderComponent} from "../core/components/loader/loader.component";
+import {MenuComponent} from "@shared/components/menu/menu.component";
+import {LoaderComponent} from "@shared/components/loader/loader.component";
 import {DarkModeService} from "@core/services/dark-mode.service";
 
 @Component({

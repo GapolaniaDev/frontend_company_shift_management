@@ -69,7 +69,7 @@ export const routes: Routes = [
       // 404 page
       {
         path: '**',
-        loadComponent: () => import('@core/components/pages-not-found/pages-not-found.component')
+        loadComponent: () => import('@shared/components/pages-not-found/pages-not-found.component')
           .then(m => m.PagesNotFoundComponent)
       }
     ]
@@ -78,7 +78,7 @@ export const routes: Routes = [
   // Global 404
   {
     path: '**',
-    loadComponent: () => import('@core/components/pages-not-found/pages-not-found.component')
+    loadComponent: () => import('@shared/components/pages-not-found/pages-not-found.component')
       .then(m => m.PagesNotFoundComponent)
   }
 ];

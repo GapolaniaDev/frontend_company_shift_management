@@ -1,5 +1,5 @@
 // Shared components
-export * from './components/pagination.component';
+export * from './components/pagination/pagination.component';
 
 // Re-export directives and pipes when they exist
 // export * from './directives
