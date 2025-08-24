@@ -1,6 +1,6 @@
 .banner {
   position: relative;
-  background-image: url('/assets/images/banner-background.webp');
+  background-image: url('/src/assets/images/banner-background.webp');
   background-size: cover;
   background-position: center;
   overflow: hidden;

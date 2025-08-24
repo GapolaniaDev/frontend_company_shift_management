@@ -1,9 +1,8 @@
 import {Routes} from '@angular/router'
 import {MainLayoutComponent} from '@app/layouts/main-layout/main-layout.component'
 import {AuthGuard, LoginGuard} from '@core/auth.guard'
-import {HomeComponent} from '@core/components/home/home.component'
-import {PublicHomeComponent} from '@features/public/public-home/public-home.component'
-import {PublicHomeLayoutComponent} from '@app/layouts/public-home-layout/public-home-layout.component'
+import {HomeComponent} from '@features/public/home/home.component'
+import {PublicLayoutComponent} from '@app/layouts/public-layout/public-layout.component'
 import {
   ForgotPasswordComponent,
   LoginComponent,
@@ -25,9 +24,9 @@ export const routes: Routes = [
   // Public routes (no layout)
   {
     path: '',
-    component: PublicHomeLayoutComponent,
+    component: PublicLayoutComponent,
     children: [
-      { path: '', component: PublicHomeComponent }
+      { path: '', component: PublicLayoutComponent }
     ]
   },
 
@@ -69,7 +68,7 @@ export const routes: Routes = [
       // 404 page
       {
         path: '**',
-        loadComponent: () => import('@shared/components/pages-not-found/pages-not-found.component')
+        loadComponent: () => import('@features/public/pages-not-found/pages-not-found.component')
           .then(m => m.PagesNotFoundComponent)
       }
     ]
@@ -78,7 +77,7 @@ export const routes: Routes = [
   // Global 404
   {
     path: '**',
-    loadComponent: () => import('@shared/components/pages-not-found/pages-not-found.component')
+    loadComponent: () => import('@features/public/pages-not-found/pages-not-found.component')
       .then(m => m.PagesNotFoundComponent)
   }
 ];

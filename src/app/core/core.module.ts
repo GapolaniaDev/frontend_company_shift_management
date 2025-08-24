@@ -1,7 +1,7 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {HeaderComponent} from "@shared/components/header/header.component";
-import {HomeComponent} from "@core/components/home/home.component";
+import {HomeComponent} from "@features/public/home/home.component";
 import {ModalComponent} from "@shared/components/modal/modal.component";
 import {FooterComponent} from "@shared/components/footer/footer.component";
 

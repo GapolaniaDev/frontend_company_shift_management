@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core'
 import {SharedNgIconsModule} from "@shared/ng-icons.module";
 import {NgIf} from "@angular/common";
-import {ClockService} from "@core/services/clock/clock.service";
+import {ClockService} from "@shared/utils/clock/clock.service";
 import {ShiftStateService} from "@features/shifts/data-access/shift-state/shift-state.service";
 import {Subscription} from 'rxjs'
 import {ShiftState} from "@features/shifts/models/shift";

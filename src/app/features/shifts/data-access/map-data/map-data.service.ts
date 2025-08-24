@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core'
 import {combineLatest, Observable} from 'rxjs'
 import {map} from 'rxjs/operators'
 import {ShiftStateService} from "@features/shifts/data-access/shift-state/shift-state.service";
-import {GeolocationService} from "../geolocation/geolocation.service";
+import {GeolocationService} from "@core/services/geolocation/geolocation.service";
 
 @Injectable({
   providedIn: 'root',
