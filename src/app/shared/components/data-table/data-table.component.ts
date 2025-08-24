@@ -217,7 +217,7 @@ export class DataTableComponent implements OnInit, OnDestroy {
   }
 
   getActionButtonClass(color: string): string {
-    const baseClass = 'inline-flex items-center px-3 py-1 rounded-md text-xs font-medium transition-colors duration-150 ';
+    const baseClass = 'inline-flex items-center rounded font-medium transition-colors duration-150 ';
     
     switch (color) {
       case 'primary':

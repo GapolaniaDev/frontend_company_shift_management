@@ -35,7 +35,7 @@ export class EmployeeListComponent implements OnInit, OnDestroy {
   // Properties for inline filters
   searchValue = '';
   supervisorFilter = '';
-  entriesPerPage = 15;
+  entriesPerPage = 10;
   private searchSubject = new Subject<string>();
 
   tableConfig: DataTableConfig = {
@@ -111,7 +111,7 @@ export class EmployeeListComponent implements OnInit, OnDestroy {
     searchPlaceholder: '',
     searchDelay: 500,
     pageSizeOptions: [10, 25, 50, 100],
-    defaultPageSize: 15,
+    defaultPageSize: 10,
     persistFilters: true,
     showLoading: true,
     sortBy: 'created_at',
