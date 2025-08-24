@@ -15,10 +15,5 @@ export const EMPLOYEES_ROUTES: Routes = [
     path: ':id/edit',
     loadComponent: () => import('./components/employee-form/employee-form.component')
       .then(m => m.EmployeeFormComponent)
-  },
-  {
-    path: 'legacy',
-    loadComponent: () => import('./components/legacy-employees/employees.component')
-      .then(m => m.EmployeesComponent)
   }
 ];
