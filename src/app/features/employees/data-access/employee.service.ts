@@ -6,7 +6,8 @@ import {
   Employee,
   EmployeeCreateRequest,
   EmployeeResponse,
-  EmployeeUpdateRequest
+  EmployeeUpdateRequest,
+  EmployeeDetailResponse
 } from '@features/employees/models/employee.model';
 import {environment} from '@env/environment';
 
@@ -61,10 +62,17 @@ export class EmployeeService {
   }
 
   /**
-   * Get an employee by ID
+   * Get an employee by ID (simple version)
    */
   getEmployeeById(id: number): Observable<Employee> {
     return this.http.get<Employee>(`${this.baseUrl}/${id}`);
+  }
+
+  /**
+   * Get detailed employee profile
+   */
+  getEmployeeDetail(id: number): Observable<EmployeeDetailResponse> {
+    return this.http.get<EmployeeDetailResponse>(`${this.baseUrl}/${id}`);
   }
 
   /**

@@ -191,8 +191,7 @@ export class EmployeeListComponent implements OnInit, OnDestroy {
 
   // Action handlers
   viewEmployee(employee: Employee) {
-    console.log('View employee:', employee);
-    // Implementar navegación o modal de vista
+    this.router.navigate(['/employees', employee.id, 'view']);
   }
 
   editEmployee(employee: Employee) {
