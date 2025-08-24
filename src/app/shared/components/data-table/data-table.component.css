@@ -1,0 +1,42 @@
+/* Custom scrollbar for table */
+.overflow-x-auto::-webkit-scrollbar {
+  height: 6px;
+}
+
+.overflow-x-auto::-webkit-scrollbar-track {
+  @apply bg-gray-100 dark:bg-gray-700;
+}
+
+.overflow-x-auto::-webkit-scrollbar-thumb {
+  @apply bg-gray-300 dark:bg-gray-500 rounded;
+}
+
+.overflow-x-auto::-webkit-scrollbar-thumb:hover {
+  @apply bg-gray-400 dark:bg-gray-400;
+}
+
+/* Table hover effects */
+.table-row-hover {
+  transition: background-color 0.15s ease-in-out;
+}
+
+/* Loading animation */
+.animate-pulse-custom {
+  animation: pulse-custom 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse-custom {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: .5;
+  }
+}
+
+/* Custom input focus styles */
+.input-focus:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(31, 140, 69, 0.2);
+  border-color: #1F8C45;
+}

@@ -19,16 +19,20 @@ export interface Employee {
 }
 
 export interface EmployeeResponse {
+  success: boolean;
   data: Employee[];
-  meta: {
-    current_page: number;
-    from: number;
-    last_page: number;
-    links: any[];
-    path: string;
-    per_page: number;
-    to: number;
+  pagination: {
     total: number;
+    count: number;
+    per_page: number;
+    current_page: number;
+    total_pages: number;
+    links: {
+      next: string | null;
+      prev: string | null;
+      first: string;
+      last: string;
+    };
   };
 }
 

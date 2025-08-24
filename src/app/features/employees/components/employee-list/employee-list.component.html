@@ -1,1 +1,93 @@
-<p>employee-list works!</p>
+<div class="min-h-screen bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-gray-200 p-6 pt-20">
+
+  <!-- Page Header with Inline Filters -->
+  <div class="flex flex-col xl:flex-row xl:items-center xl:justify-between gap-4 mb-6">
+    <!-- Left: Title and Description -->
+    <div class="flex-shrink-0">
+      <h1 class="text-3xl font-bold text-gray-900 dark:text-gray-100">Employees</h1>
+      <p class="mt-1 text-gray-600 dark:text-gray-400">Manage your company employees</p>
+    </div>
+    
+    <!-- Center: Search and Filters -->
+    <div class="flex flex-col sm:flex-row items-start sm:items-center gap-3 flex-1 xl:max-w-2xl xl:mx-8">
+      <!-- Search Field -->
+      <div class="relative w-full sm:w-80">
+        <input
+          type="text"
+          [value]="searchValue"
+          (input)="onSearchChange($event)"
+          placeholder="Search by name or email..."
+          class="w-full pl-9 pr-4 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-md 
+                 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100
+                 focus:ring-1 focus:ring-[#1F8C45] focus:border-[#1F8C45]
+                 placeholder-gray-500 dark:placeholder-gray-400"
+        >
+        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+          <svg class="h-4 w-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+          </svg>
+        </div>
+      </div>
+
+      <!-- Supervisor Filter -->
+      <div class="flex items-center gap-2">
+        <label class="text-sm font-medium text-gray-600 dark:text-gray-400 whitespace-nowrap">
+          Supervisor:
+        </label>
+        <select
+          [value]="supervisorFilter"
+          (change)="onSupervisorChange($event)"
+          class="w-48 px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-md 
+                 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100
+                 focus:ring-1 focus:ring-[#1F8C45] focus:border-[#1F8C45]"
+        >
+          <option value="">All Supervisors</option>
+          <option *ngFor="let supervisor of supervisors" [value]="supervisor.value">
+            {{supervisor.label}}
+          </option>
+        </select>
+      </div>
+
+      <!-- Entries per page -->
+      <div class="flex items-center gap-2 text-sm">
+        <label class="text-gray-600 dark:text-gray-400 whitespace-nowrap">Show:</label>
+        <select 
+          [value]="entriesPerPage"
+          (change)="onEntriesPerPageChange($event)"
+          class="px-2 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-md 
+                 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100
+                 focus:ring-1 focus:ring-[#1F8C45] focus:border-[#1F8C45]"
+        >
+          <option value="10">10</option>
+          <option value="25">25</option>
+          <option value="50">50</option>
+          <option value="100">100</option>
+        </select>
+        <span class="text-gray-600 dark:text-gray-400 whitespace-nowrap">entries</span>
+      </div>
+    </div>
+    
+    <!-- Right: Add Button -->
+    <div class="flex-shrink-0">
+      <button
+        (click)="addNewEmployee()"
+        class="inline-flex items-center px-4 py-2 bg-[#1F8C45] text-white font-medium rounded-lg
+               hover:bg-[#1A7A3A] focus:outline-none focus:ring-2 focus:ring-[#1F8C45] focus:ring-opacity-50
+               transition-colors duration-150"
+      >
+        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+        </svg>
+        Add Employee
+      </button>
+    </div>
+  </div>
+
+  <!-- Data Table -->
+  <app-data-table
+    [config]="tableConfig"
+    [data]="tableData"
+    [loading]="loading"
+    (stateChange)="onTableStateChange($event)"
+  ></app-data-table>
+</div>
