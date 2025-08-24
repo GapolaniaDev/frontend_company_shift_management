@@ -1,6 +1,6 @@
 import {Component, EventEmitter, HostBinding, Input, Output} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {Shift} from '../shared-types';
+import {Shift} from '@features/schedule/components/shared-types';
 
 @Component({
   selector: 'app-shift-block',

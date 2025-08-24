@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core'
 import {environment} from "@env/environment";
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
-import {TimezoneService} from '../timezone/timezone.service'
+import {TimezoneService} from "@core/services/timezone/timezone.service";
 
 @Injectable({
   providedIn: 'root'

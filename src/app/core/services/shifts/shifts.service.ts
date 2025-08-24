@@ -1,8 +1,8 @@
-import {Injectable} from '@angular/core'
+import {Injectable} from '@angular/core';
 import {environment} from "@env/environment";
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
-import {TimezoneService} from '../timezone/timezone.service'
+import {TimezoneService} from "@core/services/timezone/timezone.service";
 
 @Injectable({
   providedIn: 'root'
@@ -42,7 +42,7 @@ export class ShiftsService {
       type,
       state,
       timezone, // Add the timezone to the request
-      local_time: localTime // Send current local time to help server calculate local_clock_on_time
+      local_time: localTime
     };
 
     console.log(`Sending clock update with timezone: ${timezone}, local time: ${localTime}`);

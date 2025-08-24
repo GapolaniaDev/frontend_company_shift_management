@@ -2,7 +2,7 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {NgIconComponent, provideIcons} from '@ng-icons/core';
 import {heroChevronDown, heroChevronLeft, heroChevronRight, heroPlus} from '@ng-icons/heroicons/outline';
-import {ViewMode} from '../shared-types';
+import {ViewMode} from '@features/schedule/components/shared-types';
 
 export interface Location {
   id: string;

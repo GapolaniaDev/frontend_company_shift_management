@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {ShiftBlockComponent} from '../shift-block/shift-block.component';
-import {Shift} from '../shared-types';
+import {ShiftBlockComponent} from "@features/schedule/components/shift-block/shift-block.component";
+import {Shift} from '@features/schedule/components/shared-types';
 
 @Component({
   selector: 'app-gantt-cell',

@@ -4,8 +4,8 @@ import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/
 import {ActivatedRoute, Router, RouterModule} from '@angular/router';
 import {catchError, finalize, Observable, of, Subject, takeUntil} from 'rxjs';
 import {ShiftService} from "@features/shifts";
-import {ShiftTypeService} from '../../data-access/shift-types/shift-type.service';
-import {EmployeeService} from '../../data-access/employees/employee.service';
+import {ShiftTypeService} from "@features/shifts/data-access/shift-types/shift-type.service";
+import {EmployeeService} from "@features/shifts/data-access/employees/employee.service";
 import {Employee} from '../../models/employee.model';
 import {ShiftType} from "@features/shifts/models/shift-type.model";
 import {Shift} from "@features/shifts/models/shift";

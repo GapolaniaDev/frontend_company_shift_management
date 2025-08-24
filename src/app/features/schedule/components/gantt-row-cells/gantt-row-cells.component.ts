@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {GanttCellComponent} from '../gantt-cell/gantt-cell.component';
-import {Employee, Shift} from '../shared-types';
+import {GanttCellComponent} from '@features/schedule/components/gantt-cell/gantt-cell.component';
+import {Employee, Shift} from '@features/schedule/components/shared-types';
 
 @Component({
   selector: 'app-gantt-row-cells',

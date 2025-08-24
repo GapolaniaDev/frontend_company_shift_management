@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {Employee} from '../shared-types';
+import {Employee} from '@features/schedule/components/shared-types';
 
 @Component({
   selector: 'app-gantt-row-header',

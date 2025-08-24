@@ -7,7 +7,7 @@ import {
   EmployeeCreateRequest,
   EmployeeResponse,
   EmployeeUpdateRequest
-} from '../models/employee.model';
+} from '@features/employees/models/employee.model';
 import {environment} from '@env/environment';
 
 @Injectable({

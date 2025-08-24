@@ -1,9 +1,9 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {ControlsBarComponent} from '../controls-bar/controls-bar.component';
-import {GanttHeaderComponent} from '../gantt-header/gantt-header.component';
-import {GanttRowComponent} from '../gantt-row/gantt-row.component';
-import {Employee, Shift, ViewMode} from '../shared-types';
+import {ControlsBarComponent} from "@features/schedule/components/controls-bar/controls-bar.component";
+import {GanttHeaderComponent} from "@features/schedule/components/gantt-header/gantt-header.component";
+import {GanttRowComponent} from "@features/schedule/components/gantt-row/gantt-row.component";
+import {Employee, Shift, ViewMode} from '@features/schedule/components/shared-types';
 
 @Component({
   selector: 'app-gantt-container',
