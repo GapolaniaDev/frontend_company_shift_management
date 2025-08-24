@@ -1,0 +1,4 @@
+/* Row cells container styles */
+:host {
+  display: contents;
+}

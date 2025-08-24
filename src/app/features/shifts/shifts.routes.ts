@@ -1,44 +1,44 @@
-import { Routes } from '@angular/router'
+import {Routes} from '@angular/router'
 
 export const SHIFTS_ROUTES: Routes = [
-  { 
-    path: '', 
+  {
+    path: '',
     loadComponent: () => import('./components/shift-list/shift-list.component')
-      .then(m => m.ShiftListComponent) 
+      .then(m => m.ShiftListComponent)
   },
-  { 
-    path: 'new', 
+  {
+    path: 'new',
     loadComponent: () => import('./components/shift-form/shift-form.component')
-      .then(m => m.ShiftFormComponent) 
+      .then(m => m.ShiftFormComponent)
   },
-  { 
-    path: ':id/edit', 
+  {
+    path: ':id/edit',
     loadComponent: () => import('./components/shift-form/shift-form.component')
-      .then(m => m.ShiftFormComponent) 
+      .then(m => m.ShiftFormComponent)
   },
-  { 
-    path: ':id/details', 
+  {
+    path: ':id/details',
     loadComponent: () => import('./components/shift-details/shift-details.component')
-      .then(m => m.ShiftDetailsComponent) 
+      .then(m => m.ShiftDetailsComponent)
   },
-  { 
-    path: 'history', 
+  {
+    path: 'history',
     loadComponent: () => import('./components/shift-history/shift-history.component')
-      .then(m => m.ShiftHistoryComponent) 
+      .then(m => m.ShiftHistoryComponent)
   },
-  { 
-    path: 'types', 
+  {
+    path: 'types',
     loadComponent: () => import('./components/shift-types/shift-types.component')
-      .then(m => m.ShiftTypesComponent) 
+      .then(m => m.ShiftTypesComponent)
   },
-  { 
-    path: 'settings', 
+  {
+    path: 'settings',
     loadComponent: () => import('./components/shift-settings/shift-settings.component')
-      .then(m => m.ShiftSettingsComponent) 
+      .then(m => m.ShiftSettingsComponent)
   },
-  { 
-    path: 'maps', 
+  {
+    path: 'maps',
     loadComponent: () => import('./components/maps/maps.component')
-      .then(m => m.MapsComponent) 
+      .then(m => m.MapsComponent)
   }
 ];

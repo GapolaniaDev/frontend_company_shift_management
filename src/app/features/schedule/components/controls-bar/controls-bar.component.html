@@ -1,0 +1,161 @@
+<!-- Controls -->
+<div class="mb-3 grid grid-cols-1 md:grid-cols-3 items-start md:items-center gap-2">
+  <!-- LEFT: Month title + week numbers -->
+  <div class="order-1 md:order-1 flex flex-col">
+    <h2 class="text-base md:text-lg font-semibold text-gray-900 dark:text-white leading-tight">
+      {{ getCurrentMonthYearInfo() }}
+    </h2>
+    <div class="mt-1 flex flex-wrap items-center gap-1 text-[11px] text-gray-600 dark:text-gray-300">
+      <p class="text-sm text-gray-500 dark:text-gray-400">{{ getWeekRangeInfo() }}</p>
+    </div>
+  </div>
+
+  <!-- CENTER: Tag search input -->
+  <div class="order-3 md:order-2 flex justify-center">
+    <div class="w-full max-w-xl">
+      <label class="sr-only">Search with tags</label>
+      <div class="relative">
+        <div
+          class="flex flex-wrap items-center gap-1 rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-2 py-1 focus-within:ring-2 focus-within:ring-indigo-500">
+          <!-- Display search tags -->
+          <span
+            *ngFor="let tag of searchTags"
+            class="inline-flex items-center gap-1 rounded bg-indigo-100 text-indigo-800 dark:bg-indigo-900/40 dark:text-indigo-200 px-2 py-0.5 text-xs">
+            <span>{{ tag }}</span>
+            <button 
+              type="button" 
+              (click)="onTagRemove(tag)"
+              class="hover:text-indigo-900 dark:hover:text-white">&times;</button>
+          </span>
+          <input 
+            type="text" 
+            placeholder="Search… add tags"
+            (keyup.enter)="onSearchInput($event)"
+            class="flex-1 min-w-[140px] bg-transparent outline-none text-xs py-1"/>
+        </div>
+        <!-- Suggestions dropdown (hidden by default) -->
+        <div
+          class="absolute z-50 mt-1 w-full rounded-md border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-lg hidden">
+          <ul class="max-h-60 overflow-auto text-sm">
+            <li class="px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer">Employee: John Smith</li>
+            <li class="px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer">Shift: Morning</li>
+            <li class="px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer">Location: Adelaide</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT: All controls/buttons -->
+  <div class="order-2 md:order-3 flex flex-wrap items-center justify-end gap-2">
+    <!-- Location select -->
+    <div class="relative" *ngIf="locations.length > 0">
+      <select
+        [value]="selectedLocationId"
+        (change)="onLocationChange($event)"
+        class="appearance-none bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-md py-1.5 pl-2 pr-8 text-xs font-medium text-gray-700 dark:text-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+        <option *ngFor="let location of locations" [value]="location.id">
+          {{ location.name }}
+        </option>
+      </select>
+      <div
+        class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700 dark:text-gray-300">
+        <ng-icon name="heroChevronDown" class="text-xs"></ng-icon>
+      </div>
+    </div>
+
+    <!-- Shift Type select -->
+    <div class="relative" *ngIf="shiftTypes.length > 0">
+      <select
+        [value]="selectedShiftTypeId"
+        (change)="onShiftTypeChange($event)"
+        class="appearance-none bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-md py-1.5 pl-2 pr-8 text-xs font-medium text-gray-700 dark:text-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+        <option *ngFor="let shiftType of shiftTypes" [value]="shiftType.id">
+          {{ shiftType.name }}
+        </option>
+      </select>
+      <div
+        class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700 dark:text-gray-300">
+        <ng-icon name="heroChevronDown" class="text-xs"></ng-icon>
+      </div>
+    </div>
+
+    <!-- Prev / Today / Next -->
+    <div class="flex items-center gap-2">
+      <button
+        (click)="onPreviousClick()"
+        class="inline-flex items-center px-2 py-1.5 border border-gray-300 dark:border-gray-700 shadow-sm text-xs font-medium rounded-md text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+        <ng-icon name="heroChevronLeft" class="mr-1"></ng-icon>
+        Previous
+      </button>
+      <button
+        (click)="onTodayClick()"
+        class="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+        Today
+      </button>
+      <button
+        (click)="onNextClick()"
+        class="inline-flex items-center px-2 py-1.5 border border-gray-300 dark:border-gray-700 shadow-sm text-xs font-medium rounded-md text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+        Next
+        <ng-icon name="heroChevronRight" class="ml-1"></ng-icon>
+      </button>
+    </div>
+
+    <!-- Add Shift -->
+    <button
+      (click)="onAddShift()"
+      class="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+      <ng-icon name="heroPlus" class="mr-2"></ng-icon>
+      Add Shift
+    </button>
+
+    <!-- View toggles -->
+    <div class="flex items-center gap-1 ml-1">
+      <button
+        [class.bg-white]="viewMode === 'month'"
+        [class.dark:bg-gray-800]="viewMode === 'month'"
+        [class.border-gray-300]="viewMode === 'month'"
+        [class.dark:border-gray-700]="viewMode === 'month'"
+        [class.text-gray-700]="viewMode === 'month'"
+        [class.dark:text-gray-300]="viewMode === 'month'"
+        [class.hover:bg-gray-50]="viewMode !== 'month'"
+        [class.dark:hover:bg-gray-700]="viewMode !== 'month'"
+        [class.text-gray-500]="viewMode !== 'month'"
+        [class.dark:text-gray-400]="viewMode !== 'month'"
+        (click)="onViewModeChange('month')"
+        class="inline-flex items-center px-2 py-1 text-xs font-medium rounded-md border">
+        Month
+      </button>
+      <button
+        [class.bg-white]="viewMode === 'week'"
+        [class.dark:bg-gray-800]="viewMode === 'week'"
+        [class.border-gray-300]="viewMode === 'week'"
+        [class.dark:border-gray-700]="viewMode === 'week'"
+        [class.text-gray-700]="viewMode === 'week'"
+        [class.dark:text-gray-300]="viewMode === 'week'"
+        [class.hover:bg-gray-50]="viewMode !== 'week'"
+        [class.dark:hover:bg-gray-700]="viewMode !== 'week'"
+        [class.text-gray-500]="viewMode !== 'week'"
+        [class.dark:text-gray-400]="viewMode !== 'week'"
+        (click)="onViewModeChange('week')"
+        class="inline-flex items-center px-2 py-1 text-xs font-medium rounded-md border">
+        Week
+      </button>
+      <button
+        [class.bg-white]="viewMode === 'day'"
+        [class.dark:bg-gray-800]="viewMode === 'day'"
+        [class.border-gray-300]="viewMode === 'day'"
+        [class.dark:border-gray-700]="viewMode === 'day'"
+        [class.text-gray-700]="viewMode === 'day'"
+        [class.dark:text-gray-300]="viewMode === 'day'"
+        [class.hover:bg-gray-50]="viewMode !== 'day'"
+        [class.dark:hover:bg-gray-700]="viewMode !== 'day'"
+        [class.text-gray-500]="viewMode !== 'day'"
+        [class.dark:text-gray-400]="viewMode !== 'day'"
+        (click)="onViewModeChange('day')"
+        class="inline-flex items-center px-2 py-1 text-xs font-medium rounded-md border">
+        Day
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,14 +1,15 @@
-import { inject, Injectable } from '@angular/core'
-import { HttpClient } from '@angular/common/http'
-import { Observable } from 'rxjs'
+import {inject, Injectable} from '@angular/core'
+import {HttpClient} from '@angular/common/http'
+import {Observable} from 'rxjs'
 import {
   AssignSupervisorRequest,
   Employee,
   EmployeeCreateRequest,
   EmployeeResponse,
-  EmployeeUpdateRequest
-} from '../models/employee.model';
-import { environment } from '@env/environment';
+  EmployeeUpdateRequest,
+  EmployeeDetailResponse
+} from '@features/employees/models/employee.model';
+import {environment} from '@env/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -61,10 +62,17 @@ export class EmployeeService {
   }
 
   /**
-   * Get an employee by ID
+   * Get an employee by ID (simple version)
    */
   getEmployeeById(id: number): Observable<Employee> {
     return this.http.get<Employee>(`${this.baseUrl}/${id}`);
+  }
+
+  /**
+   * Get detailed employee profile
+   */
+  getEmployeeDetail(id: number): Observable<EmployeeDetailResponse> {
+    return this.http.get<EmployeeDetailResponse>(`${this.baseUrl}/${id}`);
   }
 
   /**

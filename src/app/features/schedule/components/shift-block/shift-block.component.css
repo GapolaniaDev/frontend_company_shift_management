@@ -1,0 +1,5 @@
+/* Shift block specific styles */
+:host {
+  display: block;
+  width: 100%;
+}

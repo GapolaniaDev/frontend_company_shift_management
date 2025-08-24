@@ -1,10 +1,12 @@
-import { Component, OnInit } from '@angular/core'
-import { CommonModule } from '@angular/common'
-import { FormsModule } from '@angular/forms'
-import { ScheduleCalendarService, CalendarViewType } from '@features/schedule/data-access/schedule-calendar.service';
-import { SharedNgIconsModule } from '@shared/ng-icons.module';
-import { ShiftFormComponent } from '@features/schedule/components/shift-form/shift-form.component';
-import { Shift } from "@features/shifts/models/shift";
+import {Component, OnInit} from '@angular/core'
+import {CommonModule} from '@angular/common'
+import {FormsModule} from '@angular/forms'
+import {CalendarViewType, ScheduleCalendarService} from '@features/schedule/data-access/schedule-calendar.service';
+import {SharedNgIconsModule} from '@shared/ng-icons.module';
+import {ShiftFormComponent} from '@features/schedule/components/shift-form/shift-form.component';
+import {Shift} from "@features/shifts/models/shift";
+import {GanttContainerComponent} from './gantt-container/gantt-container.component';
+import {Employee, Shift as GanttShift, ViewMode} from '../models/shared-types';
 
 @Component({
   selector: 'app-schedule',
@@ -13,24 +15,13 @@ import { Shift } from "@features/shifts/models/shift";
     CommonModule,
     FormsModule,
     SharedNgIconsModule,
-    ShiftFormComponent
+    ShiftFormComponent,
+    GanttContainerComponent
   ],
   templateUrl: './schedule.component.html',
   styleUrl: './schedule.component.css'
 })
 export class ScheduleComponent implements OnInit {
-  // Track shift types for legend
-  shiftTypes = [
-    { name: 'Morning Shift (6AM-12PM)', color: '#F97316' },
-    { name: 'Afternoon Shift (12PM-6PM)', color: '#3B82F6' },
-    { name: 'Night Shift (6PM-6AM)', color: '#4F46E5' },
-    { name: 'Day Off', color: '#9CA3AF' }
-  ];
-
-  // Days of week
-  daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-
-  // State for shift form
   showShiftForm = false;
   selectedShift: Partial<Shift> | null = null;
   selectedDate: Date | null = null;
@@ -53,55 +44,6 @@ export class ScheduleComponent implements OnInit {
   // Change view (month, week, day)
   changeView(view: CalendarViewType): void {
     this.calendarService.setView(view);
-  }
-
-  // Change location
-  changeLocation(event: Event): void {
-    const selectElement = event.target as HTMLSelectElement;
-    const locationId = parseInt(selectElement.value, 10);
-    const location = this.calendarService.getLocations().find(d => d.id === locationId);
-
-    if (location) {
-      this.calendarService.setLocation(location);
-    }
-  }
-
-  // Change shiftType
-  changeShiftType(event: Event): void {
-    const selectElement = event.target as HTMLSelectElement;
-    const shiftTypeId = parseInt(selectElement.value, 10);
-    const shiftType = this.calendarService.getShiftType().find(d => d.id === shiftTypeId);
-
-    if (shiftType) {
-      this.calendarService.setLocation(shiftType);
-    }
-  }
-
-  // Get CSS class for shift based on shift type
-  getShiftClass(shiftTypeId: number | null | undefined): string | string[] | Set<string> | {[klass: string]: any} {
-    if (shiftTypeId == null) {
-      return 'bg-gray-200 text-gray-600';
-    }
-
-    switch (shiftTypeId) {
-      case 1: return 'shift-morning';
-      case 2: return 'shift-afternoon';
-      case 3: return 'shift-night';
-      default: return ''
-    }
-  }
-
-  // Select a day
-  selectDay(day: any): void {
-    if (day.isCurrentMonth) {
-      if (this.calendarService.getCurrentState().view === 'month') {
-        // In month view, clicking a day shows the day view
-        this.calendarService.selectDay(day.date);
-      } else {
-        // In other views, clicking a day opens the shift form
-        this.openShiftForm(null, day.date);
-      }
-    }
   }
 
   // Open shift form to add or edit a shift
@@ -135,188 +77,232 @@ export class ScheduleComponent implements OnInit {
     });
   }
 
-  // Show error modal with message
   showErrorModal(message: string): void {
     // In a real app, we'd show a modal here
     // For now, we'll just use an alert
     alert(`Error: ${message}`);
   }
 
-  // Format time for display
-  formatTime(dateStr: string | null): string {
-    if (!dateStr) return '';
-    return this.calendarService.formatShiftTime(dateStr);
-  }
-
-  // Get calendar grid based on current view
-  getCalendarGridClass(): string {
-    const { view } = this.calendarService.getCurrentState();
-    switch (view) {
-      case 'month': return 'grid-cols-7 grid-rows-5';
-      case 'week': return 'grid-cols-7 grid-rows-1';
-      case 'day': return 'grid-cols-1 grid-rows-1';
-      default: return 'grid-cols-7 grid-rows-5';
-    }
-  }
-
-  // Add new shift via form
   addShift(): void {
     this.openShiftForm(null, this.calendarService.getCurrentState().currentDate);
   }
-
-  // Gantt Chart Methods
-  getGanttDates(): Date[] {
-    const { view, currentDate, startDate, endDate } = this.calendarService.getCurrentState();
-    const dates: Date[] = [];
-    const start = new Date(startDate);
-    const end = new Date(endDate);
-    
-    // Generate dates based on current view
-    switch (view) {
-      case 'month':
-        // Show all days of the month
-        for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
-          dates.push(new Date(d));
-        }
-        break;
-      case 'week':
-        // Show 7 days of the week
-        for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
-          dates.push(new Date(d));
-        }
-        break;
-      case 'day':
-        // Show only the current day
-        dates.push(new Date(currentDate));
-        break;
-      default:
-        // Default to month view
-        for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
-          dates.push(new Date(d));
-        }
-    }
-    
-    return dates;
-  }
-
-  getDayName(date: Date): string {
-    return date.toLocaleDateString('en-US', { weekday: 'short' });
-  }
-
-  isToday(date: Date): boolean {
-    const today = new Date();
-    return date.toDateString() === today.toDateString();
-  }
-
-  getGanttEmployees(): any[] {
-    // Get unique employees from all shifts in the current period
-    const shifts = this.getAllShiftsForPeriod();
-    const employeeMap = new Map();
-    
-    shifts.forEach(shift => {
-      if (shift.employee && shift.employee.id) {
-        employeeMap.set(shift.employee.id, shift.employee);
-      }
-    });
-    
-    return Array.from(employeeMap.values()).sort((a, b) => {
-      const nameA = `${a.first_name || ''} ${a.last_name || ''}`.trim();
-      const nameB = `${b.first_name || ''} ${b.last_name || ''}`.trim();
-      return nameA.localeCompare(nameB);
-    });
-  }
-
   getAllShiftsForPeriod(): Shift[] {
     const calendar = this.calendarService.getCurrentState().calendar;
     const allShifts: Shift[] = [];
-    
+
     calendar.forEach(day => {
       allShifts.push(...day.shifts);
     });
-    
+
     return allShifts;
   }
 
-  getEmployeeShiftsForPeriod(employeeId: number): Shift[] {
-    return this.getAllShiftsForPeriod().filter(shift => 
-      shift.employee && shift.employee.id === employeeId
-    );
+  protected readonly location = location;
+
+  // Transform data for Gantt components
+  getGanttEmployeesData(): Employee[] {
+    // Use mock data for demonstration
+    return this.getMockEmployeesData();
   }
 
-  // Helper method to create Date objects in template
-  createDateFromString(dateString: string | null): Date {
-    return new Date(dateString || new Date());
-  }
+  // Mock data for demonstration
+  private getMockEmployeesData(): Employee[] {
+    const currentDate = new Date();
+    const year = currentDate.getFullYear();
+    const month = currentDate.getMonth();
 
-  // Get shifts for a specific employee on a specific day
-  getEmployeeShiftsForDay(employeeId: number, day: Date): Shift[] {
-    return this.getAllShiftsForPeriod().filter(shift => {
-      if (!shift.employee || shift.employee.id !== employeeId) return false;
-      if (!shift.date_start) return false;
-      
-      const shiftDate = new Date(shift.date_start);
-      return this.isSameDay(day, shiftDate);
-    });
-  }
-
-  // Helper method to check if two dates are the same day
-  private isSameDay(date1: Date, date2: Date): boolean {
-    return date1.getFullYear() === date2.getFullYear() &&
-           date1.getMonth() === date2.getMonth() &&
-           date1.getDate() === date2.getDate();
-  }
-
-  // Format time in short format (HH:mm)
-  formatTimeShort(dateStr: string | null): string {
-    if (!dateStr) return '';
-    return new Date(dateStr).toLocaleTimeString('en-US', {
-      hour: '2-digit',
-      minute: '2-digit',
-      hour12: false
-    });
-  }
-
-  // Get current month and year info
-  getCurrentMonthYearInfo(): string {
-    const currentDate = this.calendarService.getCurrentState().currentDate;
-    return currentDate.toLocaleDateString('en-US', { 
-      month: 'long', 
-      year: 'numeric' 
-    });
-  }
-
-  // Get week range for current month
-  getWeekRangeInfo(): string {
-    const { view, currentDate, startDate, endDate } = this.calendarService.getCurrentState();
-    
-    if (view === 'month') {
-      const start = new Date(startDate);
-      const end = new Date(endDate);
-      const startWeek = this.getWeekNumber(start);
-      const endWeek = this.getWeekNumber(end);
-      
-      if (startWeek === endWeek) {
-        return `Week ${startWeek}`;
-      } else {
-        return `Weeks ${startWeek}-${endWeek}`;
+    const employees: Employee[] = [
+      {
+        id: '1',
+        name: 'John Smith',
+        avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face',
+        shifts: {}
+      },
+      {
+        id: '2',
+        name: 'Maria Garcia',
+        avatar: 'https://images.unsplash.com/photo-1494790108755-2616b612b5bc?w=100&h=100&fit=crop&crop=face',
+        shifts: {}
+      },
+      {
+        id: '3',
+        name: 'Mike Johnson',
+        avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face',
+        shifts: {}
+      },
+      {
+        id: '4',
+        name: 'Sarah Wilson',
+        avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop&crop=face',
+        shifts: {}
+      },
+      {
+        id: '5',
+        name: 'David Brown',
+        avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop&crop=face',
+        shifts: {}
+      },
+      {
+        id: '6',
+        name: 'Lisa Anderson',
+        avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=100&h=100&fit=crop&crop=face',
+        shifts: {}
+      },
+      {
+        id: '7',
+        name: 'Robert Miller',
+        avatar: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=100&h=100&fit=crop&crop=face',
+        shifts: {}
+      },
+      {
+        id: '8',
+        name: 'Jennifer Davis',
+        avatar: 'https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=100&h=100&fit=crop&crop=face',
+        shifts: {}
+      },
+      {
+        id: '9',
+        name: 'Chris Taylor',
+        avatar: 'https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?w=100&h=100&fit=crop&crop=face',
+        shifts: {}
+      },
+      {
+        id: '10',
+        name: 'Amanda White',
+        avatar: 'https://images.unsplash.com/photo-1521577352947-9bb58764b69a?w=100&h=100&fit=crop&crop=face',
+        shifts: {}
       }
-    } else if (view === 'week') {
-      const weekNum = this.getWeekNumber(currentDate);
-      return `Week ${weekNum}`;
-    } else {
-      const weekNum = this.getWeekNumber(currentDate);
-      return `Week ${weekNum}`;
+    ];
+
+    // Generate random shifts for each employee
+    employees.forEach((employee) => {
+      const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+      for (let day = 1; day <= daysInMonth; day++) {
+        const dateKey = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+
+        if (Math.random() > 0.3) {
+          const shiftsForDay: GanttShift[] = [];
+
+          // Random number of shifts (1-3)
+          const numShifts = Math.floor(Math.random() * 3) + 1;
+
+          for (let i = 0; i < numShifts; i++) {
+            const shiftTypes: Array<'morning' | 'afternoon' | 'night'> = ['morning', 'afternoon', 'night'];
+            const shiftType = shiftTypes[Math.floor(Math.random() * shiftTypes.length)];
+
+            let startTime: string, endTime: string, code: string;
+
+            switch (shiftType) {
+              case 'morning':
+                startTime = '06:00';
+                endTime = '14:00';
+                code = Math.random() > 0.5 ? 'M' : 'AM';
+                break;
+              case 'afternoon':
+                startTime = '14:00';
+                endTime = '22:00';
+                code = Math.random() > 0.5 ? 'A' : 'PM';
+                break;
+              case 'night':
+                startTime = '22:00';
+                endTime = '06:00';
+                code = Math.random() > 0.5 ? 'N' : 'NT';
+                break;
+            }
+
+            shiftsForDay.push({
+              id: `${employee.id}-${day}-${i}`,
+              type: shiftType,
+              startTime,
+              endTime,
+              code,
+              location: Math.random() > 0.5 ? 'HQ' : 'Branch'
+            });
+          }
+
+          employee.shifts[dateKey] = shiftsForDay;
+        }
+      }
+    });
+
+    return employees;
+  }
+
+  // Mock locations data
+  getMockLocations(): any[] {
+    return [
+      { id: '1', name: 'Headquarters' },
+      { id: '2', name: 'Downtown Branch' },
+      { id: '3', name: 'North Branch' },
+      { id: '4', name: 'South Branch' },
+      { id: '5', name: 'Remote Work' }
+    ];
+  }
+
+  // Mock shift types data
+  getMockShiftTypes(): any[] {
+    return [
+      { id: '1', name: 'Morning Shift' },
+      { id: '2', name: 'Afternoon Shift' },
+      { id: '3', name: 'Night Shift' },
+      { id: '4', name: 'Full Day' },
+      { id: '5', name: 'Part Time' }
+    ];
+  }
+
+  getCurrentViewMode(): ViewMode {
+    const view = this.calendarService.getCurrentState().view;
+    return view as ViewMode;
+  }
+
+  getCurrentDate(): Date {
+    return this.calendarService.getCurrentState().currentDate;
+  }
+
+  getIsLoading(): boolean {
+    return this.calendarService.getCurrentState().isLoading;
+  }
+
+  getError(): string | null {
+    return this.calendarService.getCurrentState().error;
+  }
+
+  // Event handlers for Gantt components
+  onGanttShiftClick(event: { shift: GanttShift; employee: Employee; date: string }): void {
+    // Find the original shift and open the form
+    const originalShift = this.findOriginalShift(event.shift.id);
+    if (originalShift) {
+      this.openShiftForm(originalShift, new Date(event.date));
     }
   }
 
-  // Calculate week number of the year
-  private getWeekNumber(date: Date): number {
-    const d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
-    const dayNum = d.getUTCDay() || 7;
-    d.setUTCDate(d.getUTCDate() + 4 - dayNum);
-    const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
-    return Math.ceil((((d.getTime() - yearStart.getTime()) / 86400000) + 1) / 7);
+  onGanttCellClick(event: { employee: Employee; date: string }): void {
+    // Open shift form to add new shift for this employee and date
+    this.openShiftForm(null, new Date(event.date));
   }
 
-  protected readonly location = location;
+  onGanttAddShift(): void {
+    this.addShift();
+  }
+
+  private findOriginalShift(shiftId: string): Shift | null {
+    const allShifts = this.getAllShiftsForPeriod();
+    return allShifts.find(shift => shift.id?.toString() === shiftId) || null;
+  }
+
+  // Location and ShiftType change handlers for Gantt
+  onLocationChangeFromGantt(locationId: string): void {
+    const location = this.calendarService.getLocations().find(d => d.id === parseInt(locationId, 10));
+    if (location) {
+      this.calendarService.setLocation(location);
+    }
+  }
+
+  onShiftTypeChangeFromGantt(shiftTypeId: string): void {
+    const shiftType = this.calendarService.getShiftType().find(d => d.id === parseInt(shiftTypeId, 10));
+    if (shiftType) {
+      this.calendarService.setLocation(shiftType); // This might need to be setShiftType if available
+    }
+  }
 }

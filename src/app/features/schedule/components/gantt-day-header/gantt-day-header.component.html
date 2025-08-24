@@ -1,0 +1,12 @@
+<!-- Fila 2: Días numerados alineados a columnas de 52px -->
+<div
+  class="bg-gray-100 dark:bg-gray-800 grid"
+  [style.grid-column]="'2 / span ' + days.length"
+  [style.grid-template-columns]="getGridTemplateColumns()">
+  <div 
+    *ngFor="let day of days; let isLast = last"
+    class="py-1 text-center border-l border-gray-200 dark:border-gray-700"
+    [class.border-r]="isLast">
+    {{ getDayNumber(day) }}
+  </div>
+</div>

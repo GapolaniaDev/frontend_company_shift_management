@@ -1,0 +1,4 @@
+/* Cell specific styles */
+:host {
+  display: block;
+}

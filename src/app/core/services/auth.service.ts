@@ -1,12 +1,7 @@
-import { Injectable } from '@angular/core';
-import { Observable, catchError, map, tap, throwError } from 'rxjs';
-import { ApiService } from '@core/services/api.service';
-import {
-  AuthResponse,
-  LoginRequest,
-  RegisterRequest,
-  User
-} from "@app/models/user.model";
+import {Injectable} from '@angular/core';
+import {catchError, map, Observable, tap, throwError} from 'rxjs';
+import {ApiService} from '@core/services/api.service';
+import {AuthResponse, LoginRequest, RegisterRequest, User} from "@app/models/user.model";
 
 @Injectable({
   providedIn: 'root'

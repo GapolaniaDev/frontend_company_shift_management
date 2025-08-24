@@ -1,18 +1,17 @@
-import { Routes } from '@angular/router'
-import { MainLayoutComponent } from './main-layout/main-layout.component'
-import { AuthGuard, LoginGuard } from '@core/auth.guard'
-import { HomeComponent } from '@core/components/home/home.component'
-import { PublicHomeComponent } from '@core/components/public-home/public-home.component'
-import { PublicHomeLayoutComponent } from '@core/layouts/public-home-layout/public-home-layout.component'
-import {LoginComponent} from "@features/session";
-import {RegisterComponent} from "@features/session";
-import {ForgotPasswordComponent} from "@features/session";
-import {TermsConditionsComponent} from "@features/session";
-import {ShiftSettingsComponent} from "@features/shifts";
-import {ShiftTypesComponent} from "@features/shifts";
+import {Routes} from '@angular/router'
+import {MainLayoutComponent} from '@app/layouts/main-layout/main-layout.component'
+import {AuthGuard, LoginGuard} from '@core/auth.guard'
+import {HomeComponent} from '@features/public/home/home.component'
+import {PublicLayoutComponent} from '@app/layouts/public-layout/public-layout.component'
+import {
+  ForgotPasswordComponent,
+  LoginComponent,
+  ProfileComponent,
+  RegisterComponent,
+  TermsConditionsComponent
+} from "@features/session";
+import {ShiftHistoryComponent, ShiftSettingsComponent, ShiftTypesComponent} from "@features/shifts";
 import {PaymentPeriodsComponent} from "@features/schedule";
-import {ProfileComponent} from "@features/session";
-import {ShiftHistoryComponent} from "@features/shifts";
 
 
 export const routes: Routes = [
@@ -25,9 +24,15 @@ export const routes: Routes = [
   // Public routes (no layout)
   {
     path: '',
-    component: PublicHomeLayoutComponent,
+    component: PublicLayoutComponent,
     children: [
-      { path: '', component: PublicHomeComponent }
+      { 
+        path: '', 
+        pathMatch: 'full',
+        loadComponent: () =>
+          import('@features/public/public-home/public-home.component')
+            .then(m => m.PublicHomeComponent)
+      }
     ]
   },
 
@@ -69,8 +74,8 @@ export const routes: Routes = [
       // 404 page
       {
         path: '**',
-        loadComponent: () => import('@core/components/pages-not-found/pages-not-found.component')
-          .then(m => m.PagesNotFoundComponent)
+        loadComponent: () => import('@features/public/not-found/not-found.component')
+          .then(m => m.NotFoundComponent)
       }
     ]
   },
@@ -78,7 +83,7 @@ export const routes: Routes = [
   // Global 404
   {
     path: '**',
-    loadComponent: () => import('@core/components/pages-not-found/pages-not-found.component')
-      .then(m => m.PagesNotFoundComponent)
+    loadComponent: () => import('@features/public/not-found/not-found.component')
+      .then(m => m.NotFoundComponent)
   }
 ];

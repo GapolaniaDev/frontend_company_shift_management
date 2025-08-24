@@ -1,0 +1,26 @@
+<div 
+  class="w-[52px] min-h-[52px] border-r border-b border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 relative"
+  [class.cursor-pointer]="!hasShifts"
+  [class.hover:bg-gray-50]="!hasShifts"
+  [class.dark:hover:bg-gray-800]="!hasShifts"
+  [class.ring-2]="isSelected"
+  [class.ring-indigo-500]="isSelected"
+  (click)="onCellClick($event)">
+  
+  <!-- Shift blocks -->
+  <app-shift-block
+    *ngFor="let shift of displayShifts; trackBy: trackByShiftId"
+    [shift]="shift"
+    [isSelected]="false"
+    [isHovered]="false"
+    (shiftClick)="onShiftClick($event)"
+    (shiftHover)="onShiftHover($event)">
+  </app-shift-block>
+
+  <!-- Overflow indicator -->
+  <div 
+    *ngIf="isOverflowing"
+    class="text-[8px] text-gray-500 dark:text-gray-400 text-center py-0.5">
+    +{{ remainingCount }} more
+  </div>
+</div>

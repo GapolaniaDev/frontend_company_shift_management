@@ -1,11 +1,11 @@
 import {Component, OnDestroy, OnInit} from '@angular/core'
 import {GoogleMap, MapCircle, MapMarker} from "@angular/google-maps";
 import {NgIf} from "@angular/common";
-import {MapService} from "@core/services/map/map.service";
+import {MapService} from "@features/shifts/data-access/map/map.service";
 import {Subscription} from 'rxjs'
-import {ICON_CLOCK_ON, ICON_CLOCK_OFF, ICON_USER_LOCATION, BUILDING_ICON} from "../menu/constants/map.constants";
-import {MapDataService} from "@core/services/map-data/map-data.service";
-import {ShiftStateService} from "@core/services/shift-state/shift-state.service";
+import {BUILDING_ICON, ICON_CLOCK_OFF, ICON_CLOCK_ON, ICON_USER_LOCATION} from "@shared/constants/map.constants";
+import {MapDataService} from "@features/shifts/data-access/map-data/map-data.service";
+import {ShiftStateService} from "@features/shifts/data-access/shift-state/shift-state.service";
 import {DarkModeService} from "@core/services/dark-mode.service";
 
 @Component({
@@ -58,14 +58,14 @@ export class MapsComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     // Apply theme based on dark mode status
     this.applyThemeToMap();
-    
+
     // Listen for dark mode changes
     this.subscriptions.add(
       this.darkModeService.isDarkMode$.subscribe(isDarkMode => {
         this.applyThemeToMap();
       })
     );
-    
+
     // Get map data
     this.subscriptions.add(
       this.mapDataService.getMapData(this.radius).subscribe(({center, buildingPosition, isWithinZone}) => {
@@ -75,7 +75,7 @@ export class MapsComponent implements OnInit, OnDestroy {
       })
     );
   }
-  
+
   /**
    * Apply the current theme to the map
    */
