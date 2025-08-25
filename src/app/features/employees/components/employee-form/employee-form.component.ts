@@ -70,7 +70,7 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
       last_name: ['', [Validators.required, Validators.minLength(2)]],
       email: ['', [Validators.required, Validators.email]],
       phone_number: ['', [Validators.required, Validators.pattern(/^(\+61|0)[2-9]\d{8}$/)]],
-      address: [''],
+      address: ['', Validators.required],
       
       // Employment Info
       role: ['employee', Validators.required],
