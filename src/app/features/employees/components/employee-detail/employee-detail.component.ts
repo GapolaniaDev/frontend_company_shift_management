@@ -138,4 +138,24 @@ export class EmployeeDetailComponent implements OnInit, OnDestroy {
     const lastActivity = employee.audit?.last_session?.last_activity;
     return lastActivity ? this.formatDateTime(lastActivity) : 'N/A';
   }
+
+  getShiftBorderClass(status: string): string {
+    switch (status.toLowerCase()) {
+      case 'not_started':
+      case 'pending':
+        return 'border-l-4 border-muted-highlight';
+      case 'in_progress':
+      case 'started':
+      case 'active':
+        return 'border-l-4 border-bright-primary';
+      case 'completed':
+      case 'finished':
+        return 'border-l-4 border-full-accent1';
+      case 'cancelled':
+      case 'rejected':
+        return 'border-l-4 border-red-400';
+      default:
+        return 'border-l-4 border-red-400';
+    }
+  }
 }

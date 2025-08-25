@@ -1,4 +1,4 @@
-<div class="bg-bright-background min-h-screen p-6 pt-20">
+<div class="bg-gray-50 dark:bg-gray-800 min-h-screen p-6 pt-20">
 
   <!-- Loading State -->
   <div *ngIf="loading" class="flex items-center justify-center py-12">
@@ -7,7 +7,7 @@
 
   <!-- Error State -->
   <div *ngIf="error && !loading" class="max-w-4xl mx-auto">
-    <div class="bg-red-50 border border-red-200 rounded-xl shadow-md p-6">
+    <div class="bg-red-50 dark:bg-red-900 border border-red-200 dark:border-red-700 rounded-xl shadow-md p-6">
       <div class="flex">
         <div class="flex-shrink-0">
           <svg class="h-5 w-5 text-red-400" fill="currentColor" viewBox="0 0 20 20">
@@ -15,12 +15,12 @@
           </svg>
         </div>
         <div class="ml-3">
-          <h3 class="text-sm font-medium text-red-800">Error</h3>
-          <p class="mt-2 text-sm text-red-700">{{error}}</p>
+          <h3 class="text-sm font-medium text-red-800 dark:text-red-200">Error</h3>
+          <p class="mt-2 text-sm text-red-700 dark:text-red-300">{{error}}</p>
           <div class="mt-4">
             <button
               (click)="goBack()"
-              class="bg-red-100 px-4 py-2 rounded-md text-sm font-medium text-red-800 hover:bg-red-200"
+              class="bg-red-100 dark:bg-red-800 px-4 py-2 rounded-md text-sm font-medium text-red-800 dark:text-red-200 hover:bg-red-200 dark:hover:bg-red-700"
             >
               Back to Employees
             </button>
@@ -38,14 +38,14 @@
       <div class="flex items-center space-x-4">
         <button 
           (click)="goBack()"
-          class="inline-flex items-center px-3 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50"
+          class="inline-flex items-center px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
         >
           <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
           </svg>
           Back
         </button>
-        <h1 class="text-2xl font-bold text-gray-800">Employee Profile</h1>
+        <h1 class="text-2xl font-bold text-gray-800 dark:text-gray-100">Employee Profile</h1>
       </div>
       
       <div class="mt-4 sm:mt-0">
@@ -65,77 +65,79 @@
 
     <!-- Main Content Grid: Left Column (Employee Info) + Right Column (Upcoming Shifts) -->
     <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+      <!-- Mobile: Upcoming Shifts will appear at bottom on mobile -->
       
       <!-- Left Column - Employee Information (3/4 width) -->
-      <div class="lg:col-span-3 space-y-6">
+      <!-- On mobile, this appears first (order-1), on desktop it stays left -->
+      <div class="lg:col-span-3 space-y-6 order-1 lg:order-1">
         
         <!-- Summary Card -->
-        <div class="bg-bright-background border border-full-primary/20 rounded-xl shadow-md p-6">
+        <div class="bg-white dark:bg-gray-700 border border-full-primary/20 dark:border-full-primary/30 rounded-xl shadow-md p-6">
           <h2 class="text-xl font-semibold mb-4 text-full-primary">Summary</h2>
-          <p><span class="font-medium text-full-primary">Name:</span> <span class="text-bright-text">{{employee.summary.first_name}} {{employee.summary.last_name}}</span></p>
-          <p><span class="font-medium text-full-primary">Email:</span> <span class="text-bright-text">{{employee.summary.email}}</span></p>
-          <p><span class="font-medium text-full-primary">Phone:</span> <span class="text-bright-text">{{employee.summary.phone_number}}</span></p>
-          <p><span class="font-medium text-full-primary">Weekly Hours:</span> <span class="text-bright-text">{{employee.summary.weekly_working_hours}}</span></p>
+          <p><span class="font-medium text-full-primary">Name:</span> <span class="text-gray-900 dark:text-gray-100">{{employee.summary.first_name}} {{employee.summary.last_name}}</span></p>
+          <p><span class="font-medium text-full-primary">Email:</span> <span class="text-gray-900 dark:text-gray-100">{{employee.summary.email}}</span></p>
+          <p><span class="font-medium text-full-primary">Phone:</span> <span class="text-gray-900 dark:text-gray-100">{{employee.summary.phone_number}}</span></p>
+          <p><span class="font-medium text-full-primary">Weekly Hours:</span> <span class="text-gray-900 dark:text-gray-100">{{employee.summary.weekly_working_hours}}</span></p>
         </div>
 
         <!-- Company & Supervisor -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div class="bg-bright-background border border-full-secondary/20 rounded-xl shadow-md p-6">
+          <div class="bg-white dark:bg-gray-700 border border-full-secondary/20 dark:border-full-secondary/30 rounded-xl shadow-md p-6">
             <h2 class="text-xl font-semibold mb-4 text-full-secondary">Company</h2>
-            <p><span class="font-medium text-full-secondary">Name:</span> <span class="text-bright-text">{{employee.company.name || 'N/A'}}</span></p>
+            <p><span class="font-medium text-full-secondary">Name:</span> <span class="text-gray-900 dark:text-gray-100">{{employee.company.name || 'N/A'}}</span></p>
           </div>
-          <div class="bg-bright-background border border-full-secondary/20 rounded-xl shadow-md p-6">
+          <div class="bg-white dark:bg-gray-700 border border-full-secondary/20 dark:border-full-secondary/30 rounded-xl shadow-md p-6">
             <h2 class="text-xl font-semibold mb-4 text-full-secondary">Supervisor</h2>
-            <p *ngIf="employee.supervisor"><span class="font-medium text-full-secondary">Name:</span> <span class="text-bright-text">{{employee.supervisor.name}}</span></p>
-            <p *ngIf="!employee.supervisor" class="text-bright-text">No supervisor assigned</p>
+            <p *ngIf="employee.supervisor"><span class="font-medium text-full-secondary">Name:</span> <span class="text-gray-900 dark:text-gray-100">{{employee.supervisor.name}}</span></p>
+            <p *ngIf="!employee.supervisor" class="text-gray-900 dark:text-gray-100">No supervisor assigned</p>
           </div>
         </div>
 
         <!-- Personal Info -->
-        <div class="bg-bright-background border border-full-accent1/20 rounded-xl shadow-md p-6">
+        <div class="bg-white dark:bg-gray-700 border border-full-accent1/20 dark:border-full-accent1/30 rounded-xl shadow-md p-6">
           <h2 class="text-xl font-semibold mb-4 text-full-accent1">Personal Info</h2>
           <div *ngIf="!employee.personal">
-            <p class="text-bright-text">No personal data available</p>
+            <p class="text-gray-900 dark:text-gray-100">No personal data available</p>
           </div>
           <div *ngIf="employee.personal" class="space-y-2">
-            <p *ngIf="employee.personal.address"><span class="font-medium text-full-accent1">Address:</span> <span class="text-bright-text">{{employee.personal.address}}</span></p>
-            <p *ngIf="employee.personal.tax_number"><span class="font-medium text-full-accent1">Tax Number:</span> <span class="text-bright-text">{{employee.personal.tax_number}}</span></p>
-            <p *ngIf="employee.personal.abn"><span class="font-medium text-full-accent1">ABN:</span> <span class="text-bright-text">{{employee.personal.abn}}</span></p>
-            <p *ngIf="employee.personal.bsb"><span class="font-medium text-full-accent1">BSB:</span> <span class="text-bright-text">{{employee.personal.bsb}}</span></p>
-            <p *ngIf="employee.personal.account"><span class="font-medium text-full-accent1">Account:</span> <span class="text-bright-text">{{employee.personal.account}}</span></p>
+            <p *ngIf="employee.personal.address"><span class="font-medium text-full-accent1">Address:</span> <span class="text-gray-900 dark:text-gray-100">{{employee.personal.address}}</span></p>
+            <p *ngIf="employee.personal.tax_number"><span class="font-medium text-full-accent1">Tax Number:</span> <span class="text-gray-900 dark:text-gray-100">{{employee.personal.tax_number}}</span></p>
+            <p *ngIf="employee.personal.abn"><span class="font-medium text-full-accent1">ABN:</span> <span class="text-gray-900 dark:text-gray-100">{{employee.personal.abn}}</span></p>
+            <p *ngIf="employee.personal.bsb"><span class="font-medium text-full-accent1">BSB:</span> <span class="text-gray-900 dark:text-gray-100">{{employee.personal.bsb}}</span></p>
+            <p *ngIf="employee.personal.account"><span class="font-medium text-full-accent1">Account:</span> <span class="text-gray-900 dark:text-gray-100">{{employee.personal.account}}</span></p>
             <div *ngIf="!employee.personal.address && !employee.personal.tax_number && !employee.personal.abn && !employee.personal.bsb && !employee.personal.account">
-              <p class="text-bright-text">No personal data available</p>
+              <p class="text-gray-900 dark:text-gray-100">No personal data available</p>
             </div>
           </div>
         </div>
 
         <!-- System / Audit -->
-        <div class="bg-bright-background border border-full-accent2/20 rounded-xl shadow-md p-6">
+        <div class="bg-white dark:bg-gray-700 border border-full-accent2/20 dark:border-full-accent2/30 rounded-xl shadow-md p-6">
           <h2 class="text-xl font-semibold mb-4 text-full-accent2">System</h2>
-          <p *ngIf="employee.user"><span class="font-medium text-full-accent2">Role:</span> <span class="text-bright-text">{{employee.user.role}}</span></p>
-          <p *ngIf="employee.user && employee.user.email_verified_at"><span class="font-medium text-full-accent2">Email Verified:</span> <span class="text-bright-text">{{formatDate(employee.user.email_verified_at)}}</span></p>
+          <p *ngIf="employee.user"><span class="font-medium text-full-accent2">Role:</span> <span class="text-gray-900 dark:text-gray-100">{{employee.user.role}}</span></p>
+          <p *ngIf="employee.user && employee.user.email_verified_at"><span class="font-medium text-full-accent2">Email Verified:</span> <span class="text-gray-900 dark:text-gray-100">{{formatDate(employee.user.email_verified_at)}}</span></p>
           <div *ngIf="employee.audit?.last_session" class="mt-4 space-y-2">
-            <p><span class="font-medium text-full-accent2">Last Session IP:</span> <span class="text-bright-text">{{employee.audit?.last_session?.ip_address || 'N/A'}}</span></p>
-            <p><span class="font-medium text-full-accent2">Last Activity:</span> <span class="text-bright-text">{{formatLastActivity(employee)}}</span></p>
+            <p><span class="font-medium text-full-accent2">Last Session IP:</span> <span class="text-gray-900 dark:text-gray-100">{{employee.audit?.last_session?.ip_address || 'N/A'}}</span></p>
+            <p><span class="font-medium text-full-accent2">Last Activity:</span> <span class="text-gray-900 dark:text-gray-100">{{formatLastActivity(employee)}}</span></p>
           </div>
         </div>
 
         <!-- Clock Activity -->
-        <div *ngIf="employee.clock_activity.last_clock_on || employee.clock_activity.last_clock_off" class="bg-bright-background border border-full-highlight/30 rounded-xl shadow-md p-6">
+        <div *ngIf="employee.clock_activity.last_clock_on || employee.clock_activity.last_clock_off" class="bg-white dark:bg-gray-700 border border-full-highlight/30 dark:border-full-highlight/40 rounded-xl shadow-md p-6">
           <h2 class="text-xl font-semibold mb-4 text-full-primary">Clock Activity</h2>
           <div *ngIf="employee.clock_activity.last_clock_on">
-            <p><span class="font-medium text-full-primary">Last Clock On:</span> <span class="text-bright-text">{{formatDateTime(employee.clock_activity.last_clock_on.time)}}</span></p>
+            <p><span class="font-medium text-full-primary">Last Clock On:</span> <span class="text-gray-900 dark:text-gray-100">{{formatDateTime(employee.clock_activity.last_clock_on.time)}}</span></p>
           </div>
           <div *ngIf="employee.clock_activity.last_clock_off">
-            <p><span class="font-medium text-full-primary">Last Clock Off:</span> <span class="text-bright-text">{{formatDateTime(employee.clock_activity.last_clock_off.time)}}</span></p>
+            <p><span class="font-medium text-full-primary">Last Clock Off:</span> <span class="text-gray-900 dark:text-gray-100">{{formatDateTime(employee.clock_activity.last_clock_off.time)}}</span></p>
           </div>
         </div>
 
         <!-- Assignments -->
-        <div *ngIf="employee.assignments.length > 0" class="bg-bright-background border border-muted-accent1/20 rounded-xl shadow-md p-6">
+        <div *ngIf="employee.assignments.length > 0" class="bg-white dark:bg-gray-700 border border-muted-accent1/20 dark:border-muted-accent1/30 rounded-xl shadow-md p-6">
           <h2 class="text-xl font-semibold mb-4 text-muted-accent1">Shift Assignments ({{employee.assignments.length}})</h2>
           <div class="space-y-4">
-            <div *ngFor="let assignment of employee.assignments" class="border border-muted-accent1/20 rounded-lg p-4 bg-white">
+            <div *ngFor="let assignment of employee.assignments" class="border border-muted-accent1/20 dark:border-muted-accent1/30 rounded-lg p-4 bg-white dark:bg-gray-600">
               <div class="flex items-center space-x-2 mb-2">
                 <span class="font-medium text-muted-accent1">Assignment #{{assignment.id}}</span>
                 <span [class]="getStatusBadgeClass(assignment.status)">{{assignment.status | titlecase}}</span>
@@ -143,67 +145,117 @@
                   {{assignment.assignment_type | titlecase}}
                 </span>
               </div>
-              <p class="text-sm text-bright-text">Assigned: {{formatDateTime(assignment.assigned_at)}}</p>
+              <p class="text-sm text-gray-900 dark:text-gray-100">Assigned: {{formatDateTime(assignment.assigned_at)}}</p>
             </div>
           </div>
         </div>
 
         <!-- Replacement Requests -->
-        <div *ngIf="employee.replacement_requests.length > 0" class="bg-bright-background border border-muted-accent2/20 rounded-xl shadow-md p-6">
+        <div *ngIf="employee.replacement_requests.length > 0" class="bg-white dark:bg-gray-700 border border-muted-accent2/20 dark:border-muted-accent2/30 rounded-xl shadow-md p-6">
           <h2 class="text-xl font-semibold mb-4 text-muted-accent2">Replacement Requests ({{employee.replacement_requests.length}})</h2>
           <div class="space-y-4">
-            <div *ngFor="let request of employee.replacement_requests" class="border border-muted-accent2/20 rounded-lg p-4 bg-white">
+            <div *ngFor="let request of employee.replacement_requests" class="border border-muted-accent2/20 dark:border-muted-accent2/30 rounded-lg p-4 bg-white dark:bg-gray-600">
               <div class="flex items-center space-x-2 mb-2">
                 <span class="font-medium text-muted-accent2">Request #{{request.id}}</span>
                 <span [class]="getStatusBadgeClass(request.status)">{{request.status | titlecase}}</span>
                 <span [class]="getUrgencyBadgeClass(request.urgency)">{{request.urgency | titlecase}}</span>
               </div>
-              <p class="text-sm text-bright-text">{{request.reason}}</p>
-              <p *ngIf="request.needed_by" class="text-sm text-bright-text">Needed by: {{formatDateTime(request.needed_by)}}</p>
+              <p class="text-sm text-gray-900 dark:text-gray-100">{{request.reason}}</p>
+              <p *ngIf="request.needed_by" class="text-sm text-gray-900 dark:text-gray-100">Needed by: {{formatDateTime(request.needed_by)}}</p>
             </div>
           </div>
         </div>
 
         <!-- Replacement Bids -->
-        <div *ngIf="employee.replacement_bids.length > 0" class="bg-bright-background border border-muted-highlight/30 rounded-xl shadow-md p-6">
+        <div *ngIf="employee.replacement_bids.length > 0" class="bg-white dark:bg-gray-700 border border-muted-highlight/30 dark:border-muted-highlight/40 rounded-xl shadow-md p-6">
           <h2 class="text-xl font-semibold mb-4 text-muted-highlight">Replacement Bids ({{employee.replacement_bids.length}})</h2>
           <div class="space-y-4">
-            <div *ngFor="let bid of employee.replacement_bids" class="border border-muted-highlight/20 rounded-lg p-4 bg-white">
+            <div *ngFor="let bid of employee.replacement_bids" class="border border-muted-highlight/20 dark:border-muted-highlight/30 rounded-lg p-4 bg-white dark:bg-gray-600">
               <div class="flex items-center space-x-2 mb-2">
                 <span class="font-medium text-muted-highlight">Bid #{{bid.id}}</span>
                 <span [class]="getStatusBadgeClass(bid.status)">{{bid.status | titlecase}}</span>
                 <span class="text-sm font-medium text-full-accent1">{{formatCurrency(bid.bid_amount)}}</span>
               </div>
-              <p class="text-sm text-bright-text">{{bid.message}}</p>
-              <p class="text-sm text-bright-text">Bid placed: {{formatDateTime(bid.bid_at)}}</p>
+              <p class="text-sm text-gray-900 dark:text-gray-100">{{bid.message}}</p>
+              <p class="text-sm text-gray-900 dark:text-gray-100">Bid placed: {{formatDateTime(bid.bid_at)}}</p>
             </div>
           </div>
         </div>
       </div>
 
       <!-- Right Column - Upcoming Shifts (1/4 width) -->
-      <div class="lg:col-span-1">
-        <div class="bg-gradient-to-b from-gradient-start to-gradient-middle border border-full-primary/30 rounded-xl shadow-lg p-6 sticky top-6">
-          <h2 class="text-xl font-semibold mb-4 text-full-primary">Upcoming Shifts</h2>
-          <div class="text-sm text-full-primary mb-3">({{employee.upcoming_shifts.length}} shifts)</div>
-          
-          <div *ngIf="employee.upcoming_shifts.length === 0" class="text-center py-6">
-            <p class="text-sm text-full-primary/70">No upcoming shifts scheduled</p>
+      <!-- On mobile, this will appear below due to grid order -->
+      <div class="lg:col-span-1 order-2 lg:order-2">
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden lg:sticky lg:top-6 lg:h-[calc(100vh-8rem)]">
+          <!-- Header with gradient (like shift-history) -->
+          <div class="bg-gradient-to-r from-slate-700 to-slate-800 py-4 px-6">
+            <h2 class="text-lg font-bold text-white">Upcoming Shifts</h2>
+            <div class="text-slate-200 text-sm">({{employee.upcoming_shifts.length}} shifts)</div>
           </div>
           
-          <div *ngIf="employee.upcoming_shifts.length > 0" class="space-y-3 max-h-96 overflow-y-auto">
+          <div *ngIf="employee.upcoming_shifts.length === 0" class="p-8 text-center">
+            <div class="w-16 h-16 mx-auto bg-slate-100 dark:bg-slate-700 rounded-full flex items-center justify-center mb-4">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+              </svg>
+            </div>
+            <h3 class="text-lg font-bold text-slate-700 dark:text-slate-200 mb-2">No Upcoming Shifts</h3>
+            <p class="text-slate-500 dark:text-slate-400">No upcoming shifts scheduled</p>
+          </div>
+          
+          <div *ngIf="employee.upcoming_shifts.length > 0" class="divide-y divide-slate-100 dark:divide-slate-700 lg:max-h-[calc(100vh-16rem)] lg:overflow-y-auto">
             <div *ngFor="let shift of employee.upcoming_shifts" 
-                 class="border border-full-primary/20 rounded-lg p-3 bg-white/90 hover:bg-white transition-colors">
-              <div class="flex items-center space-x-2 mb-2">
-                <h4 class="text-sm font-medium text-full-primary">{{shift.shift_type.name}}</h4>
-                <span [class]="getStatusBadgeClass(shift.status)">{{shift.status | titlecase}}</span>
+                 class="p-4 hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors">
+              <div class="flex justify-between items-center mb-3">
+                <div class="text-slate-800 dark:text-slate-200 font-bold">
+                  {{shift.shift_type.name}}
+                </div>
+                <div class="flex items-center gap-2">
+                  <!-- Status badge with slate colors -->
+                  <div class="px-2 py-1 text-xs font-bold rounded-md"
+                       [ngClass]="{
+                         'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300': shift.status.toLowerCase() === 'not_started' || shift.status.toLowerCase() === 'pending',
+                         'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300': shift.status.toLowerCase() === 'in_progress' || shift.status.toLowerCase() === 'started' || shift.status.toLowerCase() === 'active',
+                         'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300': shift.status.toLowerCase() === 'completed' || shift.status.toLowerCase() === 'finished',
+                         'bg-slate-100 text-slate-800 dark:bg-slate-900/30 dark:text-slate-300': shift.status.toLowerCase() === 'cancelled' || shift.status.toLowerCase() === 'rejected'
+                       }">
+                    {{shift.status | titlecase}}
+                  </div>
+                  <!-- Hours badge -->
+                  <div class="bg-slate-100 dark:bg-slate-900/30 text-slate-700 dark:text-slate-300 text-sm font-medium py-1 px-3 rounded-full">
+                    {{formatHours(shift.total_hours)}}
+                  </div>
+                </div>
               </div>
-              <p class="text-xs text-bright-text mb-1">{{formatDateTime(shift.date_start)}}</p>
-              <p class="text-xs text-bright-text mb-1">{{formatDateTime(shift.date_end)}}</p>
-              <p class="text-xs text-full-secondary font-medium">Duration: {{formatHours(shift.total_hours)}}</p>
-              <p *ngIf="shift.location" class="text-xs text-bright-text mt-1">
-                📍 {{shift.location.name}}
-              </p>
+              
+              <!-- Time information -->
+              <div class="bg-slate-50 dark:bg-slate-700 p-3 rounded-lg mb-3">
+                <div class="flex items-center text-slate-500 dark:text-slate-400 mb-1 text-xs font-medium">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  TIME
+                </div>
+                <div class="text-sm font-bold text-slate-800 dark:text-white flex items-center">
+                  <span class="text-blue-600 dark:text-blue-400">{{formatDateTime(shift.date_start)}}</span>
+                  <span class="mx-2 text-slate-400">—</span>
+                  <span class="text-blue-600 dark:text-blue-400">{{formatDateTime(shift.date_end)}}</span>
+                </div>
+              </div>
+              
+              <!-- Location information -->
+              <div *ngIf="shift.location" class="bg-slate-50 dark:bg-slate-700 p-3 rounded-lg">
+                <div class="flex items-center text-slate-500 dark:text-slate-400 mb-1 text-xs font-medium">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                  LOCATION
+                </div>
+                <div class="text-slate-800 dark:text-white text-sm">
+                  {{shift.location.name}} - {{shift.location.address}}
+                </div>
+              </div>
             </div>
           </div>
         </div>
