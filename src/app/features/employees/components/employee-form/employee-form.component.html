@@ -1,1 +1,473 @@
-<p>employee-form works!</p>
+<div class="bg-gray-50 dark:bg-gray-800 min-h-screen p-6 pt-20">
+
+  <!-- Loading State -->
+  <div *ngIf="loading" class="flex items-center justify-center py-12">
+    <div class="animate-spin rounded-full h-32 w-32 border-b-2 border-[#1F8C45]"></div>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="error && !loading" class="max-w-4xl mx-auto">
+    <div class="bg-red-50 dark:bg-red-900 border border-red-200 dark:border-red-700 rounded-xl shadow-md p-6">
+      <div class="flex">
+        <div class="flex-shrink-0">
+          <svg class="h-5 w-5 text-red-400" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path>
+          </svg>
+        </div>
+        <div class="ml-3">
+          <h3 class="text-sm font-medium text-red-800 dark:text-red-200">Error</h3>
+          <p class="mt-2 text-sm text-red-700 dark:text-red-300">{{error}}</p>
+          <div class="mt-4">
+            <button
+              (click)="goBack()"
+              class="bg-red-100 dark:bg-red-800 px-4 py-2 rounded-md text-sm font-medium text-red-800 dark:text-red-200 hover:bg-red-200 dark:hover:bg-red-700"
+            >
+              Back to Employees
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Employee Form Content -->
+  <div *ngIf="!loading && !error" class="max-w-7xl mx-auto">
+    
+    <!-- Header with Actions -->
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6">
+      <div class="flex items-center space-x-4">
+        <button 
+          (click)="goBack()"
+          class="inline-flex items-center px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
+        >
+          <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+          </svg>
+          Back
+        </button>
+        <h1 class="text-2xl font-bold text-gray-800 dark:text-gray-100">
+          {{isEditMode ? 'Edit Employee' : 'New Employee'}}
+        </h1>
+      </div>
+      
+      <div class="mt-4 sm:mt-0 flex space-x-3">
+        <button
+          type="button"
+          (click)="onCancel()"
+          class="inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 text-sm font-medium rounded
+                 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50
+                 transition-colors duration-150"
+        >
+          Cancel
+        </button>
+        <button
+          type="submit"
+          form="employeeForm"
+          [disabled]="saving"
+          class="inline-flex items-center px-4 py-2 bg-[#1F8C45] text-white text-sm font-medium rounded
+                 hover:bg-[#1A7A3A] focus:outline-none focus:ring-2 focus:ring-[#1F8C45] focus:ring-opacity-50
+                 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-150"
+        >
+          <svg *ngIf="saving" class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          </svg>
+          {{saving ? 'Saving...' : 'Save Employee'}}
+        </button>
+      </div>
+    </div>
+
+    <!-- Form -->
+    <form id="employeeForm" [formGroup]="employeeForm" (ngSubmit)="onSubmit()" class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      
+      <!-- Left Column - Form Fields (2/3 width) -->
+      <div class="lg:col-span-2 space-y-6">
+        
+        <!-- Personal Information -->
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden">
+          <div class="bg-gradient-to-r from-slate-700 to-slate-800 py-4 px-6">
+            <h2 class="text-lg font-bold text-white">Personal Information</h2>
+          </div>
+          <div class="p-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <!-- First Name -->
+              <div>
+                <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                  First Name *
+                </label>
+                <input
+                  type="text"
+                  formControlName="first_name"
+                  [class]="'w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[#1F8C45] focus:border-[#1F8C45] ' + 
+                          (isFieldInvalid('first_name') ? 'border-red-300 dark:border-red-600' : 'border-gray-300 dark:border-gray-600') + 
+                          ' bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100'"
+                  placeholder="Enter first name"
+                >
+                <div *ngIf="isFieldInvalid('first_name')" class="mt-1 text-sm text-red-600 dark:text-red-400">
+                  {{getFieldError('first_name')}}
+                </div>
+              </div>
+
+              <!-- Last Name -->
+              <div>
+                <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                  Last Name *
+                </label>
+                <input
+                  type="text"
+                  formControlName="last_name"
+                  [class]="'w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[#1F8C45] focus:border-[#1F8C45] ' + 
+                          (isFieldInvalid('last_name') ? 'border-red-300 dark:border-red-600' : 'border-gray-300 dark:border-gray-600') + 
+                          ' bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100'"
+                  placeholder="Enter last name"
+                >
+                <div *ngIf="isFieldInvalid('last_name')" class="mt-1 text-sm text-red-600 dark:text-red-400">
+                  {{getFieldError('last_name')}}
+                </div>
+              </div>
+
+              <!-- Email -->
+              <div>
+                <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                  Email *
+                </label>
+                <input
+                  type="email"
+                  formControlName="email"
+                  [class]="'w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[#1F8C45] focus:border-[#1F8C45] ' + 
+                          (isFieldInvalid('email') ? 'border-red-300 dark:border-red-600' : 'border-gray-300 dark:border-gray-600') + 
+                          ' bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100'"
+                  placeholder="Enter email address"
+                >
+                <div *ngIf="isFieldInvalid('email')" class="mt-1 text-sm text-red-600 dark:text-red-400">
+                  {{getFieldError('email')}}
+                </div>
+              </div>
+
+              <!-- Phone -->
+              <div>
+                <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                  Phone Number *
+                </label>
+                <input
+                  type="tel"
+                  formControlName="phone_number"
+                  [class]="'w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[#1F8C45] focus:border-[#1F8C45] ' + 
+                          (isFieldInvalid('phone_number') ? 'border-red-300 dark:border-red-600' : 'border-gray-300 dark:border-gray-600') + 
+                          ' bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100'"
+                  placeholder="0412 345 678"
+                >
+                <div *ngIf="isFieldInvalid('phone_number')" class="mt-1 text-sm text-red-600 dark:text-red-400">
+                  {{getFieldError('phone_number')}}
+                </div>
+              </div>
+
+              <!-- Address -->
+              <div class="md:col-span-2">
+                <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                  Address <span class="text-red-500">*</span>
+                </label>
+                <input
+                  type="text"
+                  formControlName="address"
+                  [class]="'w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[#1F8C45] focus:border-[#1F8C45] ' + 
+                          (isFieldInvalid('address') ? 'border-red-300 dark:border-red-600' : 'border-gray-300 dark:border-gray-600') + 
+                          ' bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100'"
+                  placeholder="Enter address"
+                >
+                <div *ngIf="isFieldInvalid('address')" class="mt-1 text-sm text-red-600 dark:text-red-400">
+                  {{getFieldError('address')}}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Employment Information -->
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden">
+          <div class="bg-gradient-to-r from-slate-700 to-slate-800 py-4 px-6">
+            <h2 class="text-lg font-bold text-white">Employment Information</h2>
+          </div>
+          <div class="p-6">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <!-- Role -->
+              <div>
+                <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                  Role *
+                </label>
+                <select
+                  formControlName="role"
+                  [class]="'w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[#1F8C45] focus:border-[#1F8C45] ' + 
+                          (isFieldInvalid('role') ? 'border-red-300 dark:border-red-600' : 'border-gray-300 dark:border-gray-600') + 
+                          ' bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100'"
+                >
+                  <option value="">Select Role</option>
+                  <option *ngFor="let role of roleOptions" [value]="role.value">
+                    {{role.label}}
+                  </option>
+                </select>
+                <div *ngIf="isFieldInvalid('role')" class="mt-1 text-sm text-red-600 dark:text-red-400">
+                  {{getFieldError('role')}}
+                </div>
+              </div>
+
+              <!-- Supervisor -->
+              <div>
+                <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                  Supervisor
+                </label>
+                <select
+                  formControlName="supervisor_id"
+                  class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[#1F8C45] focus:border-[#1F8C45] bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+                >
+                  <option value="">No Supervisor</option>
+                  <option *ngFor="let supervisor of supervisorOptions" [value]="supervisor.value">
+                    {{supervisor.label}}
+                  </option>
+                </select>
+              </div>
+
+              <!-- Weekly Hours -->
+              <div>
+                <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                  Weekly Hours *
+                </label>
+                <input
+                  type="number"
+                  formControlName="weekly_working_hours"
+                  min="1"
+                  max="168"
+                  [class]="'w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[#1F8C45] focus:border-[#1F8C45] ' + 
+                          (isFieldInvalid('weekly_working_hours') ? 'border-red-300 dark:border-red-600' : 'border-gray-300 dark:border-gray-600') + 
+                          ' bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100'"
+                  placeholder="40"
+                >
+                <div *ngIf="isFieldInvalid('weekly_working_hours')" class="mt-1 text-sm text-red-600 dark:text-red-400">
+                  {{getFieldError('weekly_working_hours')}}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Financial Information -->
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden">
+          <div class="bg-gradient-to-r from-slate-700 to-slate-800 py-4 px-6">
+            <h2 class="text-lg font-bold text-white">Financial Information</h2>
+            <div class="text-slate-200 text-sm">Optional - Australian formats required</div>
+          </div>
+          <div class="p-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <!-- TFN -->
+              <div>
+                <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                  Tax File Number (TFN)
+                </label>
+                <input
+                  type="text"
+                  formControlName="tax_number"
+                  [class]="'w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[#1F8C45] focus:border-[#1F8C45] ' + 
+                          (isFieldInvalid('tax_number') ? 'border-red-300 dark:border-red-600' : 'border-gray-300 dark:border-gray-600') + 
+                          ' bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100'"
+                  placeholder="123456789"
+                >
+                <div *ngIf="isFieldInvalid('tax_number')" class="mt-1 text-sm text-red-600 dark:text-red-400">
+                  {{getFieldError('tax_number')}}
+                </div>
+              </div>
+
+              <!-- ABN -->
+              <div>
+                <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                  ABN
+                </label>
+                <input
+                  type="text"
+                  formControlName="abn"
+                  [class]="'w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[#1F8C45] focus:border-[#1F8C45] ' + 
+                          (isFieldInvalid('abn') ? 'border-red-300 dark:border-red-600' : 'border-gray-300 dark:border-gray-600') + 
+                          ' bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100'"
+                  placeholder="12345678901"
+                >
+                <div *ngIf="isFieldInvalid('abn')" class="mt-1 text-sm text-red-600 dark:text-red-400">
+                  {{getFieldError('abn')}}
+                </div>
+              </div>
+
+              <!-- BSB -->
+              <div>
+                <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                  BSB
+                </label>
+                <input
+                  type="text"
+                  formControlName="bsb"
+                  [class]="'w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[#1F8C45] focus:border-[#1F8C45] ' + 
+                          (isFieldInvalid('bsb') ? 'border-red-300 dark:border-red-600' : 'border-gray-300 dark:border-gray-600') + 
+                          ' bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100'"
+                  placeholder="123456"
+                >
+                <div *ngIf="isFieldInvalid('bsb')" class="mt-1 text-sm text-red-600 dark:text-red-400">
+                  {{getFieldError('bsb')}}
+                </div>
+              </div>
+
+              <!-- Account Number -->
+              <div>
+                <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                  Account Number
+                </label>
+                <input
+                  type="text"
+                  formControlName="account"
+                  [class]="'w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[#1F8C45] focus:border-[#1F8C45] ' + 
+                          (isFieldInvalid('account') ? 'border-red-300 dark:border-red-600' : 'border-gray-300 dark:border-gray-600') + 
+                          ' bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100'"
+                  placeholder="1234567890"
+                >
+                <div *ngIf="isFieldInvalid('account')" class="mt-1 text-sm text-red-600 dark:text-red-400">
+                  {{getFieldError('account')}}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column - Form Summary (1/3 width) -->
+      <div class="lg:col-span-1 order-2 lg:order-2">
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden lg:sticky lg:top-6">
+          <!-- Header -->
+          <div class="bg-gradient-to-r from-slate-700 to-slate-800 py-4 px-6">
+            <h2 class="text-lg font-bold text-white">Form Summary</h2>
+          </div>
+          
+          <div class="p-6">
+            <!-- Form Status -->
+            <div class="mb-6">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-sm text-slate-600 dark:text-slate-400">Form Status</span>
+                <div class="px-2 py-1 text-xs font-bold rounded-md"
+                     [class]="employeeForm.valid ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300' : 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300'">
+                  {{employeeForm.valid ? 'Valid' : 'Has Errors'}}
+                </div>
+              </div>
+              
+              <!-- Progress Bar -->
+              <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                <div class="bg-[#1F8C45] h-2 rounded-full transition-all duration-300" 
+                     [style.width.%]="(employeeForm.valid ? 100 : 60)"></div>
+              </div>
+            </div>
+
+            <!-- Required Fields Check -->
+            <div class="space-y-3">
+              <h3 class="text-sm font-medium text-slate-700 dark:text-slate-300">Required Fields</h3>
+              
+              <div class="space-y-2 text-sm">
+                <div class="flex items-center justify-between">
+                  <span class="text-slate-600 dark:text-slate-400">First Name</span>
+                  <div class="w-4 h-4">
+                    <svg *ngIf="employeeForm.get('first_name')?.valid" class="text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                      <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                    </svg>
+                    <svg *ngIf="!employeeForm.get('first_name')?.valid" class="text-red-500" fill="currentColor" viewBox="0 0 20 20">
+                      <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                    </svg>
+                  </div>
+                </div>
+                
+                <div class="flex items-center justify-between">
+                  <span class="text-slate-600 dark:text-slate-400">Last Name</span>
+                  <div class="w-4 h-4">
+                    <svg *ngIf="employeeForm.get('last_name')?.valid" class="text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                      <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                    </svg>
+                    <svg *ngIf="!employeeForm.get('last_name')?.valid" class="text-red-500" fill="currentColor" viewBox="0 0 20 20">
+                      <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                    </svg>
+                  </div>
+                </div>
+                
+                <div class="flex items-center justify-between">
+                  <span class="text-slate-600 dark:text-slate-400">Email</span>
+                  <div class="w-4 h-4">
+                    <svg *ngIf="employeeForm.get('email')?.valid" class="text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                      <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                    </svg>
+                    <svg *ngIf="!employeeForm.get('email')?.valid" class="text-red-500" fill="currentColor" viewBox="0 0 20 20">
+                      <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                    </svg>
+                  </div>
+                </div>
+                
+                <div class="flex items-center justify-between">
+                  <span class="text-slate-600 dark:text-slate-400">Phone</span>
+                  <div class="w-4 h-4">
+                    <svg *ngIf="employeeForm.get('phone_number')?.valid" class="text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                      <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                    </svg>
+                    <svg *ngIf="!employeeForm.get('phone_number')?.valid" class="text-red-500" fill="currentColor" viewBox="0 0 20 20">
+                      <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                    </svg>
+                  </div>
+                </div>
+                
+                <div class="flex items-center justify-between">
+                  <span class="text-slate-600 dark:text-slate-400">Address</span>
+                  <div class="w-4 h-4">
+                    <svg *ngIf="employeeForm.get('address')?.valid" class="text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                      <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                    </svg>
+                    <svg *ngIf="!employeeForm.get('address')?.valid" class="text-red-500" fill="currentColor" viewBox="0 0 20 20">
+                      <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                    </svg>
+                  </div>
+                </div>
+                
+                <div class="flex items-center justify-between">
+                  <span class="text-slate-600 dark:text-slate-400">Role</span>
+                  <div class="w-4 h-4">
+                    <svg *ngIf="employeeForm.get('role')?.valid" class="text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                      <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                    </svg>
+                    <svg *ngIf="!employeeForm.get('role')?.valid" class="text-red-500" fill="currentColor" viewBox="0 0 20 20">
+                      <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                    </svg>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Action Buttons (Mobile) -->
+            <div class="mt-6 lg:hidden flex flex-col space-y-3">
+              <button
+                type="submit"
+                form="employeeForm"
+                [disabled]="saving"
+                class="w-full inline-flex justify-center items-center px-4 py-2 bg-[#1F8C45] text-white text-sm font-medium rounded
+                       hover:bg-[#1A7A3A] focus:outline-none focus:ring-2 focus:ring-[#1F8C45] focus:ring-opacity-50
+                       disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-150"
+              >
+                <svg *ngIf="saving" class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
+                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                  <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                {{saving ? 'Saving...' : 'Save Employee'}}
+              </button>
+              <button
+                type="button"
+                (click)="onCancel()"
+                class="w-full inline-flex justify-center items-center px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 text-sm font-medium rounded
+                       hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50
+                       transition-colors duration-150"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
